@@ -16,13 +16,13 @@ public class PickupAndDropHandler : MonoBehaviour
 
     private void HandlePickUpAndDropObject()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            if(_objectInHand == null)
+            if (_objectInHand == null)
             {
-                if(Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
+                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
                 {
-                    if(hit.collider.TryGetComponent(out InteractableObject interactableObject))
+                    if (hit.collider.TryGetComponent(out InteractableObject interactableObject))
                     {
                         _objectInHand = interactableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);
@@ -31,7 +31,27 @@ public class PickupAndDropHandler : MonoBehaviour
             }
             else
             {
-                
+                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
+                {
+                    if (hit.collider.gameObject == _objectInHand.gameObject)
+                    {
+                        return;
+                    }
+                    else if (hit.collider.TryGetComponent<InteractableObject>(out var other))
+                    {
+
+                    }
+                    else if (hit.collider.TryGetComponent<PlaceableSurface>(out var placeableSurface))
+                    {
+                        if (hit.normal.y >= 0.5f)
+                        {
+                            Vector3 dropPosition = placeableSurface.SnapPoint != null ? placeableSurface.SnapPoint.position : hit.point;
+                            _objectInHand.MoveToPlaceableSurface(dropPosition, _collider);
+                            DropObject();
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -43,10 +63,10 @@ public class PickupAndDropHandler : MonoBehaviour
 
     private void HandleAutoDropObject()
     {
-        if(_objectInHand != null)
+        if (_objectInHand != null)
         {
             float distanceToCamera = Vector3.Distance(_objectInHand.transform.position, _camera.position);
-            if(distanceToCamera >= _autoDropDistance)
+            if (distanceToCamera >= _autoDropDistance)
             {
                 _objectInHand.OnDrop(_collider);
                 DropObject();
