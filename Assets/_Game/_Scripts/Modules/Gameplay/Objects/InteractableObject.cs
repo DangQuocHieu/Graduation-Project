@@ -12,6 +12,12 @@ public class InteractableObject : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
+        SetUpRigidbody();
+    }
+
+    void Update()
+    {
+        
     }
 
     private void FixedUpdate()
@@ -23,12 +29,18 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
+    private void SetUpRigidbody()
+    {
+        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+    }
+
     public void OnPickUp(Transform grabObjectPoint, Collider collider)
     {
         _grabObjectPoint = grabObjectPoint;
         _rb.useGravity = false;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+        _rb.freezeRotation = true;
         Physics.IgnoreCollision(collider, _collider, true);
     }
 
@@ -43,6 +55,17 @@ public class InteractableObject : MonoBehaviour
         Quaternion targetRotation = Quaternion.Slerp(transform.rotation, _grabObjectPoint.rotation, _rotationSpeed * Time.fixedDeltaTime);
         _rb.MoveRotation(targetRotation);
     }
+
+    public void OnDrop(Collider collider)
+    {
+        Debug.Log("Drop: " + gameObject.name);
+        _grabObjectPoint = null;
+        _rb.useGravity = true;
+        _rb.freezeRotation = false;
+        Physics.IgnoreCollision(collider, _collider, false);
+    }
+
+
 
 
 

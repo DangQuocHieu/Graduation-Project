@@ -6,10 +6,12 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Transform _camera;
     [SerializeField] private Transform _grabObjectPoint;
     [SerializeField] private Collider _collider;
+    [SerializeField] private float _autoDropDistance = 8f;
     private InteractableObject _objectInHand;
     void Update()
     {
         HandlePickUpAndDropObject();
+        HandleAutoDropObject();
     }
 
     private void HandlePickUpAndDropObject()
@@ -37,5 +39,18 @@ public class PickupAndDropHandler : MonoBehaviour
     private void DropObject()
     {
         _objectInHand = null;
+    }
+
+    private void HandleAutoDropObject()
+    {
+        if(_objectInHand != null)
+        {
+            float distanceToCamera = Vector3.Distance(_objectInHand.transform.position, _camera.position);
+            if(distanceToCamera >= _autoDropDistance)
+            {
+                _objectInHand.OnDrop(_collider);
+                DropObject();
+            }
+        }
     }
 }

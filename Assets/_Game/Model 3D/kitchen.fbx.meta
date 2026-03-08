@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 5a5502a7fc3f12c4cb799cb4aec334e9
+guid: e39d0ca3a0a0dcb4da9ae4ea1edb5a53
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: knife_brown
-    second: {fileID: 2100000, guid: 3dea2610a70e2314297f5dc686a949f8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: white_knife
-    second: {fileID: 2100000, guid: 8de786477c5f5a0499f07e0e5e808ec4, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
