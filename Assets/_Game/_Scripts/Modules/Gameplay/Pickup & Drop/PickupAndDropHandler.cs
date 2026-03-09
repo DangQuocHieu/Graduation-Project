@@ -1,3 +1,4 @@
+using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PickupAndDropHandler : MonoBehaviour
@@ -7,7 +8,7 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Transform _grabObjectPoint;
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
-    private InteractableObject _objectInHand;
+    private GrabbaleObject _objectInHand;
     void Update()
     {
         HandlePickUpAndDropObject();
@@ -22,7 +23,7 @@ public class PickupAndDropHandler : MonoBehaviour
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
                 {
-                    if (hit.collider.TryGetComponent(out InteractableObject interactableObject))
+                    if (hit.collider.TryGetComponent(out GrabbaleObject interactableObject))
                     {
                         _objectInHand = interactableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);
@@ -37,27 +38,19 @@ public class PickupAndDropHandler : MonoBehaviour
                     {
                         return;
                     }
-                    else if (hit.collider.TryGetComponent<InteractableObject>(out var other))
+                    else
                     {
-
+                        _objectInHand.InteractWith(hit, this);
                     }
-                    else if (hit.collider.TryGetComponent<PlaceableSurface>(out var placeableSurface))
-                    {
-                        if (hit.normal.y >= 0.5f)
-                        {
-                            Vector3 dropPosition = placeableSurface.SnapPoint != null ? placeableSurface.SnapPoint.position : hit.point;
-                            _objectInHand.MoveToPlaceableSurface(dropPosition, _collider);
-                            DropObject();
-                        }
 
-                    }
                 }
             }
         }
     }
 
-    private void DropObject()
+    public void DropObject()
     {
+        _objectInHand.OnDrop();
         _objectInHand = null;
     }
 
@@ -68,7 +61,6 @@ public class PickupAndDropHandler : MonoBehaviour
             float distanceToCamera = Vector3.Distance(_objectInHand.transform.position, _camera.position);
             if (distanceToCamera >= _autoDropDistance)
             {
-                _objectInHand.OnDrop(_collider);
                 DropObject();
             }
         }

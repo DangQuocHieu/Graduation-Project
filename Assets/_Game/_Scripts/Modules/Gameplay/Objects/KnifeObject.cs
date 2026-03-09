@@ -1,14 +1,6 @@
 using UnityEngine;
 
-public class KnifeObject : InteractableObject
+public class KnifeObject : GrabbaleObject
 {
-    public override void InteractWith(InteractableObject other)
-    {
-        if(other.TryGetComponent<CuttingBoard>(out var cuttingBoard))
-        {
-            
-        }   
-    }
-
-
+    
 }

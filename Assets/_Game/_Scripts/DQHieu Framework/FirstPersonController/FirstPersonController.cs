@@ -20,6 +20,7 @@ namespace DQHieu.Framework
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                Debug.Log("Lock Cursor");
             }
         }
 

@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
-public class InteractableObject : MonoBehaviour
+public class GrabbaleObject : MonoBehaviour
 {
     private Rigidbody _rb;
     private Collider _collider;
+    private Collider _playerCollider;
     private Transform _grabObjectPoint;
     [SerializeField] private float _moveSpeed = 10f; //speed use when move to placeable surface
     [SerializeField] private float _followSpeed = 20f; //speed use when follow player
@@ -37,18 +38,15 @@ public class InteractableObject : MonoBehaviour
         _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
-    public virtual void InteractWith(InteractableObject other)
-    {
-
-    }
 
     public void OnPickUp(Transform grabObjectPoint, Collider collider)
     {
         _grabObjectPoint = grabObjectPoint;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _rb.useGravity = false;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-        _rb.freezeRotation = true;
+        _playerCollider = collider;
         Physics.IgnoreCollision(collider, _collider, true);
     }
 
@@ -60,20 +58,26 @@ public class InteractableObject : MonoBehaviour
 
     private void HandleRotateToTarget()
     {
-        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, _grabObjectPoint.rotation, _rotationSpeed * Time.fixedDeltaTime);
-        _rb.MoveRotation(targetRotation);
+        float targetY = _grabObjectPoint.eulerAngles.y;
+        Quaternion targetRotation = Quaternion.Euler(0, targetY, 0);
+        Quaternion smoothedRotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
+        _rb.MoveRotation(smoothedRotation);
     }
 
-    public void OnDrop(Collider collider)
+    public void OnDrop()
     {
         Debug.Log("Drop: " + gameObject.name);
         _grabObjectPoint = null;
         _rb.useGravity = true;
-        _rb.freezeRotation = false;
-        Physics.IgnoreCollision(collider, _collider, false);
+        _rb.constraints = RigidbodyConstraints.None;
+        if (_playerCollider != null)
+        {
+            Physics.IgnoreCollision(_collider, _playerCollider, false);
+            _playerCollider = null;
+        }
     }
 
-    public void MoveToPlaceableSurface(Vector3 dropPosition, Collider collider)
+    public void MoveToPlaceableSurface(Vector3 dropPosition)
     {
         Debug.Log("Object: " + gameObject.name + " move to surface");
         _grabObjectPoint = null;
@@ -83,27 +87,41 @@ public class InteractableObject : MonoBehaviour
             StopCoroutine(_moveToPlaceableSurfaceCoroutine);
             _moveToPlaceableSurfaceCoroutine = null;
         }
-        _moveToPlaceableSurfaceCoroutine = StartCoroutine(MoveToPlaceableSurfaceCoroutine(dropPosition, collider));
+        _moveToPlaceableSurfaceCoroutine = StartCoroutine(MoveToPlaceableSurfaceCoroutine(dropPosition));
     }
 
-    private IEnumerator MoveToPlaceableSurfaceCoroutine(Vector3 dropPosition, Collider collider)
+    private IEnumerator MoveToPlaceableSurfaceCoroutine(Vector3 dropPosition)
     {
-        while (Vector3.Distance(transform.position, dropPosition) >= 0.1f)
+        while (Vector3.Distance(transform.position, dropPosition) > 0.05f)
         {
-            Vector3 direction = dropPosition - transform.position;
-            _rb.linearVelocity = direction * _moveSpeed;
+            Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, _moveSpeed * Time.fixedDeltaTime);
+            _rb.MovePosition(newPos);
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+
             yield return new WaitForFixedUpdate();
         }
-
-        _rb.constraints = RigidbodyConstraints.None;
+        transform.position = dropPosition;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+        yield return new WaitForFixedUpdate();
         _rb.useGravity = true;
-        Physics.IgnoreCollision(_collider, collider, false);
-
+        _rb.constraints = RigidbodyConstraints.None;
+        if (_playerCollider != null)
+        {
+            Physics.IgnoreCollision(_collider, _playerCollider, false);
+            _playerCollider = null;
+        }
+        _moveToPlaceableSurfaceCoroutine = null;
     }
 
-
-
-
+    public virtual void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
+    {
+        if(hit.collider.TryGetComponent<PlaceableSurface>(out var placeableSurface))
+        {
+            Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
+            MoveToPlaceableSurface(dropPosition);
+            pickupAndDropHandler.DropObject();
+        }
+    }
 }
