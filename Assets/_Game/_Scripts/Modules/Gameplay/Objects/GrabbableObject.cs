@@ -10,6 +10,7 @@ public class GrabbaleObject : MonoBehaviour
     [SerializeField] private float _moveSpeed = 10f; //speed use when move to placeable surface
     [SerializeField] private float _followSpeed = 20f; //speed use when follow player
     [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private bool _kinematicWhenIdle = false;
     private Coroutine _moveToPlaceableSurfaceCoroutine;
 
     private void Awake()
@@ -36,14 +37,20 @@ public class GrabbaleObject : MonoBehaviour
     private void SetUpRigidbody()
     {
         _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        if(_kinematicWhenIdle)
+        {
+            _rb.isKinematic = true;
+        }
     }
 
 
     public void OnPickUp(Transform grabObjectPoint, Collider collider)
     {
         _grabObjectPoint = grabObjectPoint;
+        _rb.isKinematic = false;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _rb.useGravity = false;
+        _collider.isTrigger = true;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _playerCollider = collider;
@@ -67,6 +74,7 @@ public class GrabbaleObject : MonoBehaviour
     public void OnDrop()
     {
         Debug.Log("Drop: " + gameObject.name);
+        _collider.isTrigger = false;
         _grabObjectPoint = null;
         _rb.useGravity = true;
         _rb.constraints = RigidbodyConstraints.None;
@@ -104,6 +112,7 @@ public class GrabbaleObject : MonoBehaviour
         transform.position = dropPosition;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+        _collider.isTrigger = false;
         yield return new WaitForFixedUpdate();
         _rb.useGravity = true;
         _rb.constraints = RigidbodyConstraints.None;
@@ -111,6 +120,11 @@ public class GrabbaleObject : MonoBehaviour
         {
             Physics.IgnoreCollision(_collider, _playerCollider, false);
             _playerCollider = null;
+        }
+
+        if(_kinematicWhenIdle)
+        {
+            _rb.isKinematic = true;
         }
         _moveToPlaceableSurfaceCoroutine = null;
     }
