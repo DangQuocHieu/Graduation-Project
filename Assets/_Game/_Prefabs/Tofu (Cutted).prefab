@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4118377944395494800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7491137811960433408}
+  m_Layer: 0
+  m_Name: Tofu (Cutted)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7491137811960433408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4118377944395494800}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.898, y: 1.7667, z: -2.081}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7380703603605553226}
+  - {fileID: 3796307390018673799}
+  - {fileID: 87068292644011881}
+  - {fileID: 8679439439263542513}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &486368263643830402
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7491137811960433408}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0561
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_Name
+      value: tofu_piece (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+--- !u!4 &87068292644011881 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+  m_PrefabInstance: {fileID: 486368263643830402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3685501439607421804
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7491137811960433408}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0022
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9982621
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.055113923
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.018474635
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.009686884
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -6.338
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -2.065
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -0.998
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_Name
+      value: tofu_piece (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+--- !u!4 &3796307390018673799 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+  m_PrefabInstance: {fileID: 3685501439607421804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7054677365840390049
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7491137811960433408}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0728
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9977416
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.06717059
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 7.703
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_Name
+      value: tofu_piece
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+--- !u!4 &7380703603605553226 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+  m_PrefabInstance: {fileID: 7054677365840390049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9221447145464056602
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7491137811960433408}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.007
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1213
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99450785
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.10466243
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 12.015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+      propertyPath: m_Name
+      value: tofu_piece (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+--- !u!4 &8679439439263542513 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
+  m_PrefabInstance: {fileID: 9221447145464056602}
+  m_PrefabAsset: {fileID: 0}

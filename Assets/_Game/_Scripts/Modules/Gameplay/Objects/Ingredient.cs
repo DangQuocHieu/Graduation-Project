@@ -6,10 +6,9 @@ public class Ingredient : GrabbaleObject
     {
         if(hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
         {
-            Vector3 dropPosition = cuttingBoard.PlaceableSurface.SnapPoint == null ? hit.point : cuttingBoard.PlaceableSurface.SnapPoint.position;
-            MoveToPlaceableSurface(dropPosition);
+            MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
             pickupAndDropHandler.DropObject();
-            //cuttingBoard.InteractWithIngredient(this);
+            cuttingBoard.InteractWithIngredient(this);
         }
         else
         {

@@ -2,10 +2,16 @@ using UnityEngine;
 
 public class SliceableObject : MonoBehaviour
 {
-    [SerializeField] private GameObject _piecePrefab;
-
-    public void OnSlice()
+    public GrabbaleObject grabbaleObject;
+    public SlicePieces slicePiecesPrefab;
+    public void OnSlice(CuttingBoard cuttingBoard)
     {
-        Debug.Log("Slice: " + gameObject.name);
+        var slicePieces = Instantiate(slicePiecesPrefab, transform.position, Quaternion.identity, transform.parent);
+        foreach(var piece in slicePieces.pieces)
+        {
+            cuttingBoard.ItemContainer.Add(piece);
+            piece.JoinWithOtherRigidbody(cuttingBoard.ItemContainer.rb);
+        }
+        Destroy(gameObject);
     }
 }
