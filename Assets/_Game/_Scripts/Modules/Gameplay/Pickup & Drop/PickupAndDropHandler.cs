@@ -8,7 +8,7 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Transform _grabObjectPoint;
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
-    private GrabbaleObject _objectInHand;
+    private GrabbableObject _objectInHand;
     void Update()
     {
         HandlePickUpAndDropObject();
@@ -23,7 +23,7 @@ public class PickupAndDropHandler : MonoBehaviour
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
                 {
-                    if (hit.collider.TryGetComponent(out GrabbaleObject interactableObject))
+                    if (hit.collider.TryGetComponent(out GrabbableObject interactableObject))
                     {
                         _objectInHand = interactableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);

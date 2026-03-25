@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ItemContainer : MonoBehaviour
 {
-    public HashSet<GrabbaleObject> containedItems = new();
+    public HashSet<GrabbableObject> containedItems = new();
     public Rigidbody rb;
-    public HashSet<GrabbaleObject> ContainedItems => containedItems;
+    public HashSet<GrabbableObject> ContainedItems => containedItems;
 
-    public void Add(GrabbaleObject objectToAdd)
+    public void Add(GrabbableObject objectToAdd)
     { 
         containedItems.Add(objectToAdd);
 
     }
 
-    public void Remove(GrabbaleObject objectToRemove)
+    public void Remove(GrabbableObject objectToRemove)
     {
         containedItems.Remove(objectToRemove);
     }
@@ -24,7 +25,10 @@ public class ItemContainer : MonoBehaviour
         List<Collider> colliders = new();
         foreach(var obj in containedItems)
         {
-            colliders.Add(obj.objectCollider);
+            foreach(var collider in obj.objectColliders)
+            {
+                colliders.Add(collider);
+            }
         }
         return colliders;
     }

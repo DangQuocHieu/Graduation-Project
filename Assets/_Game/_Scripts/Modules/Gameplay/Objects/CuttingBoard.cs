@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CuttingBoard : GrabbaleObject
+public class CuttingBoard : GrabbableObject
 {
     public PlaceableSurface PlaceableSurface;
 

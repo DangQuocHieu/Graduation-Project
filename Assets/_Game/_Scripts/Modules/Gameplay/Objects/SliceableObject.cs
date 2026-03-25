@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SliceableObject : MonoBehaviour
+public class SliceableObject : MonoBehaviour 
 {
-    public GrabbaleObject grabbaleObject;
+    public GrabbableObject grabbaleObject;
     public SlicePieces slicePiecesPrefab;
     public void OnSlice(CuttingBoard cuttingBoard)
     {

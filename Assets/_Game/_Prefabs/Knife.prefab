@@ -62,6 +62,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5a5502a7fc3f12c4cb799cb4aec334e9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6440427432621469952}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5a5502a7fc3f12c4cb799cb4aec334e9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1861316050038801817}
   m_SourcePrefab: {fileID: 100100000, guid: 5a5502a7fc3f12c4cb799cb4aec334e9, type: 3}
 --- !u!1 &3395495252598826228 stripped
 GameObject:
@@ -116,3 +119,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.023130402, y: 0.13633153, z: 0.7572103}
   m_Center: {x: -0.000141975, y: -0.042392783, z: 0.28496942}
+--- !u!114 &1861316050038801817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3395495252598826228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730b68403dca1c742bb487839b1d3613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectColliders:
+  - {fileID: 6440427432621469952}
+  moveSpeed: 10
+  followSpeed: 20
+  rotationSpeed: 10
+  fixedJoint: {fileID: 0}
+  ItemContainer: {fileID: 0}
+  isWaitingForSurfaceImpact: 0
+  targetSurface: {fileID: 0}
+  _currentSliceableObjects: []

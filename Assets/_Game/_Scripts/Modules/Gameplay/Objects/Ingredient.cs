@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ingredient : GrabbaleObject
+public class Ingredient : GrabbableObject
 {
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnifeObject : GrabbaleObject
+public class KnifeObject : GrabbableObject
 {
     [SerializeField] private List<SliceableObject> _currentSliceableObjects = new();
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)

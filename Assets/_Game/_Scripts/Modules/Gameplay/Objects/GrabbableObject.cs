@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+
 [RequireComponent(typeof(Rigidbody))]
-public class GrabbaleObject : MonoBehaviour
+public class GrabbableObject : MonoBehaviour
 {
     private Rigidbody _rb;
-    public Collider objectCollider;
+    public Collider[] objectColliders; // Đã đổi thành mảng
     private Collider _playerCollider;
     private Transform _grabObjectPoint;
+
     [Title("Physics Configurations")]
     public float moveSpeed = 10f; //speed use when move to placeable surface
     public float followSpeed = 20f; //speed use when follow player
@@ -29,7 +32,8 @@ public class GrabbaleObject : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        objectCollider = GetComponent<Collider>();
+        // Lấy tất cả collider trên object này và các object con (nếu có)
+        objectColliders = GetComponentsInChildren<Collider>();
         SetUpRigidbody();
     }
 
@@ -49,22 +53,33 @@ public class GrabbaleObject : MonoBehaviour
 
     private void SetUpRigidbody()
     {
-        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
     }
 
 
     public void OnPickUp(Transform grabObjectPoint, Collider collider)
     {
+        if (_moveToPlaceableSurfaceCoroutine != null)
+        {
+            StopCoroutine(_moveToPlaceableSurfaceCoroutine);
+            _moveToPlaceableSurfaceCoroutine = null;
+        }
         RemoveRigidbodyJoin();
         _grabObjectPoint = grabObjectPoint;
         _rb.isKinematic = false;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _rb.useGravity = false;
-        this.objectCollider.isTrigger = true;
+
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _playerCollider = collider;
-        Physics.IgnoreCollision(collider, this.objectCollider, true);
+
+        // Duyệt qua tất cả collider để set isTrigger và ignore collision
+        foreach (var col in objectColliders)
+        {
+            Physics.IgnoreCollision(_playerCollider, col, true);
+        }
+
         if (ItemContainer != null)
         {
             List<Collider> colliders = ItemContainer.GetContainedColliders();
@@ -92,13 +107,17 @@ public class GrabbaleObject : MonoBehaviour
     public void OnDrop()
     {
         Debug.Log("Drop: " + gameObject.name);
-        objectCollider.isTrigger = false;
         _grabObjectPoint = null;
         _rb.useGravity = true;
         _rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
-            Physics.IgnoreCollision(objectCollider, _playerCollider, false);
+            // Bỏ ignore collision cho toàn bộ collider
+            foreach (var col in objectColliders)
+            {
+                Physics.IgnoreCollision(col, _playerCollider, false);
+            }
+
             if (ItemContainer != null)
             {
                 List<Collider> colliders = ItemContainer.GetContainedColliders();
@@ -117,6 +136,7 @@ public class GrabbaleObject : MonoBehaviour
         _grabObjectPoint = null;
         Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
         dropPosition += Vector3.up * 0.5f;
+
         if (_moveToPlaceableSurfaceCoroutine != null)
         {
             StopCoroutine(_moveToPlaceableSurfaceCoroutine);
@@ -140,25 +160,25 @@ public class GrabbaleObject : MonoBehaviour
         }
 
         transform.position = dropPosition;
-        objectCollider.isTrigger = false;
-
         yield return new WaitForFixedUpdate();
 
-        // 2. Trả lại trạng thái vật lý bình thường sau khi đã đến nơi
+
         _rb.isKinematic = false;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _rb.useGravity = true;
         _rb.constraints = RigidbodyConstraints.None;
-
-        if (_playerCollider != null)
-        {
-            Physics.IgnoreCollision(objectCollider, _playerCollider, false);
-            _playerCollider = null;
-        }
-
         targetSurface = placeableSurface;
         isWaitingForSurfaceImpact = true;
+        yield return new WaitUntil(() => targetSurface == null);
+        if (_playerCollider != null)
+        {
+            foreach (var col in objectColliders)
+            {
+                Physics.IgnoreCollision(col, _playerCollider, false);
+            }
+            _playerCollider = null;
+        }
         _moveToPlaceableSurfaceCoroutine = null;
     }
 
@@ -167,6 +187,7 @@ public class GrabbaleObject : MonoBehaviour
         if (hit.collider.TryGetComponent<PlaceableSurface>(out var placeableSurface))
         {
             MoveToPlaceableSurface(placeableSurface, hit);
+
             pickupAndDropHandler.DropObject();
         }
     }
@@ -188,15 +209,17 @@ public class GrabbaleObject : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Collide with: " + collision.gameObject.name);
         if (isWaitingForSurfaceImpact)
         {
             if (collision.gameObject.TryGetComponent<PlaceableSurface>(out var placeableSurface))
             {
-                if (placeableSurface == targetSurface)
+
+                if (placeableSurface.gameObject == targetSurface.gameObject)
                 {
-                    if (targetSurface.TryGetComponent<ItemContainer>(out var itemContainer))
+                    if (targetSurface.ItemContainer != null)
                     {
-                        JoinWithOtherRigidbody(itemContainer.rb);
+                        JoinWithOtherRigidbody(targetSurface.ItemContainer.rb);
                     }
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;
@@ -204,6 +227,4 @@ public class GrabbaleObject : MonoBehaviour
             }
         }
     }
-
-
 }

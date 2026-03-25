@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class SlicePieces : MonoBehaviour
 {
-    public GrabbaleObject[] pieces;
+    public GrabbableObject[] pieces;
 }

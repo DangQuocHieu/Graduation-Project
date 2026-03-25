@@ -3,4 +3,5 @@ using UnityEngine;
 public class PlaceableSurface : MonoBehaviour
 {
     public Transform SnapPoint;
+    public ItemContainer ItemContainer;
 }
