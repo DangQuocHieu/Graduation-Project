@@ -19,6 +19,7 @@ public class KnifeObject : GrabbableObject
 
     public void InteractWithCuttingBoard(CuttingBoard cuttingBoard)
     {
+        Debug.Log("Knife interact with cutting board");
         cuttingBoard.ItemContainer.GetSliceableList(_currentSliceableObjects);
         foreach (var sliceableObject in _currentSliceableObjects)
         {

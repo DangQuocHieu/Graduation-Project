@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -19,6 +20,7 @@ public class GrabbableObject : MonoBehaviour
     public float followSpeed = 20f; //speed use when follow player
     public float rotationSpeed = 10f;
     private Coroutine _moveToPlaceableSurfaceCoroutine;
+    private Coroutine _waitForPickupCompleteCoroutine;
 
     [Title("Base References")]
     public FixedJoint fixedJoint;
@@ -32,8 +34,6 @@ public class GrabbableObject : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        // Lấy tất cả collider trên object này và các object con (nếu có)
-        objectColliders = GetComponentsInChildren<Collider>();
         SetUpRigidbody();
     }
 
@@ -77,7 +77,9 @@ public class GrabbableObject : MonoBehaviour
         // Duyệt qua tất cả collider để set isTrigger và ignore collision
         foreach (var col in objectColliders)
         {
+            col.isTrigger = true;
             Physics.IgnoreCollision(_playerCollider, col, true);
+
         }
 
         if (ItemContainer != null)
@@ -88,6 +90,23 @@ public class GrabbableObject : MonoBehaviour
                 Physics.IgnoreCollision(_playerCollider, col, true);
             }
         }
+
+        if (_waitForPickupCompleteCoroutine != null)
+        {
+            StopCoroutine(_waitForPickupCompleteCoroutine);
+            _waitForPickupCompleteCoroutine = null;
+        }
+        _waitForPickupCompleteCoroutine = StartCoroutine(WaitForPickupComplete());
+    }
+
+    private IEnumerator WaitForPickupComplete()
+    {
+        yield return new WaitUntil(() => Vector3.Distance(transform.position, _grabObjectPoint.position) <= 0.05f);
+        foreach (var collider in objectColliders)
+        {
+            collider.isTrigger = false;
+        }
+
     }
 
     private void HandleFollowToTarget()
@@ -115,6 +134,7 @@ public class GrabbableObject : MonoBehaviour
             // Bỏ ignore collision cho toàn bộ collider
             foreach (var col in objectColliders)
             {
+
                 Physics.IgnoreCollision(col, _playerCollider, false);
             }
 
@@ -186,9 +206,12 @@ public class GrabbableObject : MonoBehaviour
     {
         if (hit.collider.TryGetComponent<PlaceableSurface>(out var placeableSurface))
         {
-            MoveToPlaceableSurface(placeableSurface, hit);
+            if (hit.normal.y > 0.5f)
+            {
+                MoveToPlaceableSurface(placeableSurface, hit);
 
-            pickupAndDropHandler.DropObject();
+                pickupAndDropHandler.DropObject();
+            }
         }
     }
 

@@ -20,11 +20,11 @@ public class CookableObject : MonoBehaviour
     {
         meshRenderer = GetComponent<MeshRenderer>();
         foodMat = meshRenderer.material;
-        StartCooking();
     }
 
     public void StartCooking()
     {
+        if(cookingTween != null) return;        
         float remainingPercentage = 1f - (cookProgress/maxBurnLevel);
         float timeRemaining = totalTimeToBurn * remainingPercentage;
         cookingTween = DOTween.To(()=>cookProgress, x => cookProgress = x, maxBurnLevel, timeRemaining)
@@ -43,4 +43,5 @@ public class CookableObject : MonoBehaviour
         float percentage = cookProgress / maxBurnLevel;
         foodMat.color = cookingColors.Evaluate(percentage);
     }
+
 }

@@ -9,6 +9,7 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
     private GrabbableObject _objectInHand;
+    public LayerMask liquidLayer;
     void Update()
     {
         HandlePickUpAndDropObject();
@@ -17,22 +18,28 @@ public class PickupAndDropHandler : MonoBehaviour
 
     private void HandlePickUpAndDropObject()
     {
+
         if (Input.GetMouseButtonDown(0))
         {
+            int mask = ~liquidLayer;
             if (_objectInHand == null)
             {
-                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
+                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange, mask))
                 {
                     if (hit.collider.TryGetComponent(out GrabbableObject interactableObject))
                     {
                         _objectInHand = interactableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);
                     }
+                    else if(hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
+                    {
+                        stoveSwitch.OnInteract();
+                    }
                 }
             }
             else
             {
-                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
+                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange,mask))
                 {
                     if (hit.collider.gameObject == _objectInHand.gameObject)
                     {
