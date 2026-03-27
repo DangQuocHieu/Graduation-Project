@@ -12,9 +12,9 @@ TagManager:
   - Water
   - UI
   - Ignore Collision
-  - 
-  - 
-  - 
+  - Liquid
+  - Interactable Object
+  - Player
   - 
   - 
   - 

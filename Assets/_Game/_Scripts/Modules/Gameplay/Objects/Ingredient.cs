@@ -8,7 +8,7 @@ public class Ingredient : GrabbableObject
         {
             MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
             pickupAndDropHandler.DropObject();
-            cuttingBoard.InteractWithIngredient(this);
+            cuttingBoard.InteractWithIngredient(this);      
         }
         else
         {

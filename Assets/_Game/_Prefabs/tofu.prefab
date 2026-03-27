@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tofu
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -97,7 +101,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1

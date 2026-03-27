@@ -16,8 +16,8 @@ public class GrabbableObject : MonoBehaviour
     private Transform _grabObjectPoint;
 
     [Title("Physics Configurations")]
-    public float moveSpeed = 10f; //speed use when move to placeable surface
-    public float followSpeed = 20f; //speed use when follow player
+    public float moveSpeed = 10f; 
+    public float followSpeed = 20f; 
     public float rotationSpeed = 10f;
     private Coroutine _moveToPlaceableSurfaceCoroutine;
     private Coroutine _waitForPickupCompleteCoroutine;
@@ -73,24 +73,10 @@ public class GrabbableObject : MonoBehaviour
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _playerCollider = collider;
-
-        // Duyệt qua tất cả collider để set isTrigger và ignore collision
         foreach (var col in objectColliders)
         {
             col.isTrigger = true;
-            Physics.IgnoreCollision(_playerCollider, col, true);
-
         }
-
-        if (ItemContainer != null)
-        {
-            List<Collider> colliders = ItemContainer.GetContainedColliders();
-            foreach (var col in colliders)
-            {
-                Physics.IgnoreCollision(_playerCollider, col, true);
-            }
-        }
-
         if (_waitForPickupCompleteCoroutine != null)
         {
             StopCoroutine(_waitForPickupCompleteCoroutine);
@@ -131,21 +117,6 @@ public class GrabbableObject : MonoBehaviour
         _rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
-            // Bỏ ignore collision cho toàn bộ collider
-            foreach (var col in objectColliders)
-            {
-
-                Physics.IgnoreCollision(col, _playerCollider, false);
-            }
-
-            if (ItemContainer != null)
-            {
-                List<Collider> colliders = ItemContainer.GetContainedColliders();
-                foreach (var col in colliders)
-                {
-                    Physics.IgnoreCollision(_playerCollider, col, false);
-                }
-            }
             _playerCollider = null;
         }
     }
@@ -193,10 +164,6 @@ public class GrabbableObject : MonoBehaviour
         yield return new WaitUntil(() => targetSurface == null);
         if (_playerCollider != null)
         {
-            foreach (var col in objectColliders)
-            {
-                Physics.IgnoreCollision(col, _playerCollider, false);
-            }
             _playerCollider = null;
         }
         _moveToPlaceableSurfaceCoroutine = null;
@@ -204,14 +171,10 @@ public class GrabbableObject : MonoBehaviour
 
     public virtual void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.TryGetComponent<PlaceableSurface>(out var placeableSurface))
+        if(hit.collider.TryGetComponent<PlaceableArea>(out var placeableArea))
         {
-            if (hit.normal.y > 0.5f)
-            {
-                MoveToPlaceableSurface(placeableSurface, hit);
-
-                pickupAndDropHandler.DropObject();
-            }
+            MoveToPlaceableSurface(placeableArea.placeableSurface, hit);
+            pickupAndDropHandler.DropObject();
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 
@@ -26,8 +27,11 @@ public class PickupAndDropHandler : MonoBehaviour
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange, mask))
                 {
-                    if (hit.collider.TryGetComponent(out GrabbableObject interactableObject))
+
+
+                if (hit.collider.GetComponentInParent<GrabbableObject>() != null)
                     {
+                        var interactableObject = hit.collider.GetComponentInParent<GrabbableObject>();
                         _objectInHand = interactableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);
                     }
