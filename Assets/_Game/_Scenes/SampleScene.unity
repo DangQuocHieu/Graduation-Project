@@ -1144,7 +1144,7 @@ Transform:
   m_GameObject: {fileID: 581885463}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0.6, y: -0.05, z: 1.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3386,26 +3386,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6411e68059587c9448941a540647b0cd, type: 3}
   m_PrefabInstance: {fileID: 1990748280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1986943505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1986943501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31dd25e31ba0a3b44af62987f8c99e6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectColliders: []
-  moveSpeed: 10
-  followSpeed: 20
-  rotationSpeed: 10
-  fixedJoint: {fileID: 0}
-  ItemContainer: {fileID: 0}
-  isWaitingForSurfaceImpact: 0
-  targetSurface: {fileID: 0}
 --- !u!54 &1986943506
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3432,7 +3412,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &1986943507
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3454,6 +3434,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8773562, y: 3.2882726, z: 0.8773562}
   m_Center: {x: 0, y: -0.14625394, z: -0.000000014901161}
+--- !u!114 &1986943511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986943501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 926f4d7855b295546a205be0898a4624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectColliders:
+  - {fileID: 1986943507}
+  moveSpeed: 10
+  followSpeed: 20
+  rotationSpeed: 10
+  fixedJoint: {fileID: 0}
+  ItemContainer: {fileID: 0}
+  isWaitingForSurfaceImpact: 0
+  targetSurface: {fileID: 0}
 --- !u!1001 &1990748280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3518,6 +3519,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: oil_bottle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6411e68059587c9448941a540647b0cd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3530,7 +3535,7 @@ PrefabInstance:
       addedObject: {fileID: 1986943506}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1986943505}
+      addedObject: {fileID: 1986943511}
   m_SourcePrefab: {fileID: 100100000, guid: 6411e68059587c9448941a540647b0cd, type: 3}
 --- !u!1 &2029310285
 GameObject:
@@ -3974,6 +3979,10 @@ PrefabInstance:
     - target: {fileID: 5685783200444026932, guid: 57eee4470bcf68f4a813da43be94dd1b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8967103501618531298, guid: 57eee4470bcf68f4a813da43be94dd1b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
