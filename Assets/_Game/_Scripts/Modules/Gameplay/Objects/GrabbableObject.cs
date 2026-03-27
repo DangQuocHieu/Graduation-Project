@@ -16,8 +16,8 @@ public class GrabbableObject : MonoBehaviour
     private Transform _grabObjectPoint;
 
     [Title("Physics Configurations")]
-    public float moveSpeed = 10f; 
-    public float followSpeed = 20f; 
+    public float moveSpeed = 10f;
+    public float followSpeed = 20f;
     public float rotationSpeed = 10f;
     private Coroutine _moveToPlaceableSurfaceCoroutine;
     private Coroutine _waitForPickupCompleteCoroutine;
@@ -138,21 +138,29 @@ public class GrabbableObject : MonoBehaviour
 
     private IEnumerator MoveToPlaceableSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
     {
-        // 1. Tạm thời bật isKinematic để không bị lực của Joint kéo lệch
         _rb.isKinematic = true;
+
+        // 1. BẬT isTrigger để bay xuyên qua các vật khác trên đường đi
+        foreach (var col in objectColliders)
+        {
+            col.isTrigger = true;
+        }
 
         while (Vector3.Distance(transform.position, dropPosition) > 0.05f)
         {
             Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, moveSpeed * Time.fixedDeltaTime);
             _rb.MovePosition(newPos);
-
-            // Không cần reset velocity ở đây nữa vì Kinematic body không sử dụng velocity
             yield return new WaitForFixedUpdate();
         }
 
         transform.position = dropPosition;
         yield return new WaitForFixedUpdate();
 
+        // 2. TẮT isTrigger để chuẩn bị rơi tự do xuống mặt phẳng
+        foreach (var col in objectColliders)
+        {
+            col.isTrigger = false;
+        }
 
         _rb.isKinematic = false;
         _rb.linearVelocity = Vector3.zero;
@@ -161,17 +169,20 @@ public class GrabbableObject : MonoBehaviour
         _rb.constraints = RigidbodyConstraints.None;
         targetSurface = placeableSurface;
         isWaitingForSurfaceImpact = true;
+
         yield return new WaitUntil(() => targetSurface == null);
+
         if (_playerCollider != null)
         {
             _playerCollider = null;
         }
+
         _moveToPlaceableSurfaceCoroutine = null;
     }
 
     public virtual void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if(hit.collider.TryGetComponent<PlaceableArea>(out var placeableArea))
+        if (hit.collider.TryGetComponent<PlaceableArea>(out var placeableArea))
         {
             MoveToPlaceableSurface(placeableArea.placeableSurface, hit);
             pickupAndDropHandler.DropObject();
@@ -207,6 +218,11 @@ public class GrabbableObject : MonoBehaviour
                     {
                         JoinWithOtherRigidbody(targetSurface.ItemContainer.rb);
                     }
+                    isWaitingForSurfaceImpact = false;
+                    targetSurface = null;
+                }
+                else
+                {
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;
                 }

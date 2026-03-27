@@ -27,15 +27,13 @@ public class PickupAndDropHandler : MonoBehaviour
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange, mask))
                 {
-
-
-                if (hit.collider.GetComponentInParent<GrabbableObject>() != null)
+                    if (hit.collider.GetComponentInParent<GrabbableObject>() != null)
                     {
                         var interactableObject = hit.collider.GetComponentInParent<GrabbableObject>();
                         _objectInHand = interactableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);
                     }
-                    else if(hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
+                    else if (hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
                     {
                         stoveSwitch.OnInteract();
                     }
@@ -43,7 +41,7 @@ public class PickupAndDropHandler : MonoBehaviour
             }
             else
             {
-                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange,mask))
+                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange, mask))
                 {
                     if (hit.collider.gameObject == _objectInHand.gameObject)
                     {
