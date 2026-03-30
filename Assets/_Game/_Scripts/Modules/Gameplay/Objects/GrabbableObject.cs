@@ -10,7 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour
 {
-    private Rigidbody _rb;
+    protected Rigidbody rb;
     public Collider[] objectColliders; // Đã đổi thành mảng
     private Collider _playerCollider;
     private Transform _grabObjectPoint;
@@ -33,14 +33,10 @@ public class GrabbableObject : MonoBehaviour
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         SetUpRigidbody();
     }
 
-    void Update()
-    {
-
-    }
 
     private void FixedUpdate()
     {
@@ -66,12 +62,12 @@ public class GrabbableObject : MonoBehaviour
         }
         RemoveRigidbodyJoin();
         _grabObjectPoint = grabObjectPoint;
-        _rb.isKinematic = false;
-        _rb.constraints = RigidbodyConstraints.FreezeRotation;
-        _rb.useGravity = false;
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.useGravity = false;
 
-        _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         _playerCollider = collider;
         foreach (var col in objectColliders)
         {
@@ -87,18 +83,35 @@ public class GrabbableObject : MonoBehaviour
 
     private IEnumerator WaitForPickupComplete()
     {
-        yield return new WaitUntil(() => Vector3.Distance(transform.position, _grabObjectPoint.position) <= 0.05f);
+        yield return new WaitUntil(() =>
+        {
+            if (_grabObjectPoint == null)
+            {
+                return true;
+            }
+            Vector3 currentPosXZ = new Vector3(transform.position.x, 0f, transform.position.z);
+            Vector3 targetPosXZ = new Vector3(_grabObjectPoint.position.x, 0f, _grabObjectPoint.position.z);
+            return Vector3.Distance(currentPosXZ, targetPosXZ) <= 0.05f;
+        });
+        if (_grabObjectPoint == null)
+        {
+            yield break;
+        }
         foreach (var collider in objectColliders)
         {
             collider.isTrigger = false;
         }
-
     }
 
     private void HandleFollowToTarget()
     {
-        Vector3 directionToTarget = _grabObjectPoint.position - transform.position;
-        _rb.linearVelocity = directionToTarget * followSpeed;
+        float holdDistance = Vector3.Distance(Camera.main.transform.position, _grabObjectPoint.position);
+        Vector3 centerScreenVector = new Vector3(Screen.width / 2f, Screen.height / 2f, holdDistance);
+        Vector3 exactCenterWorldPos = Camera.main.ScreenToWorldPoint(centerScreenVector);
+        Vector3 targetPos = new Vector3(_grabObjectPoint.position.x, exactCenterWorldPos.y, _grabObjectPoint.position.z);
+        Vector3 directionToTarget = targetPos - transform.position;
+        directionToTarget -= new Vector3(0f, 0.5f, 0f);
+        rb.linearVelocity = directionToTarget * followSpeed;
     }
 
     private void HandleRotateToTarget()
@@ -106,15 +119,19 @@ public class GrabbableObject : MonoBehaviour
         float targetY = _grabObjectPoint.eulerAngles.y;
         Quaternion targetRotation = Quaternion.Euler(0, targetY, 0);
         Quaternion smoothedRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-        _rb.MoveRotation(smoothedRotation);
+        rb.MoveRotation(smoothedRotation);
     }
 
     public void OnDrop()
     {
-        Debug.Log("Drop: " + gameObject.name);
+        if (_waitForPickupCompleteCoroutine != null)
+        {
+            StopCoroutine(_waitForPickupCompleteCoroutine);
+            _waitForPickupCompleteCoroutine = null;
+        }
         _grabObjectPoint = null;
-        _rb.useGravity = true;
-        _rb.constraints = RigidbodyConstraints.None;
+        rb.useGravity = true;
+        rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
             _playerCollider = null;
@@ -123,7 +140,6 @@ public class GrabbableObject : MonoBehaviour
 
     public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit)
     {
-        Debug.Log("Object: " + gameObject.name + " move to surface");
         _grabObjectPoint = null;
         Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
         dropPosition += Vector3.up * 0.5f;
@@ -138,7 +154,7 @@ public class GrabbableObject : MonoBehaviour
 
     private IEnumerator MoveToPlaceableSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
     {
-        _rb.isKinematic = true;
+        rb.isKinematic = true;
 
         // 1. BẬT isTrigger để bay xuyên qua các vật khác trên đường đi
         foreach (var col in objectColliders)
@@ -149,7 +165,7 @@ public class GrabbableObject : MonoBehaviour
         while (Vector3.Distance(transform.position, dropPosition) > 0.05f)
         {
             Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, moveSpeed * Time.fixedDeltaTime);
-            _rb.MovePosition(newPos);
+            rb.MovePosition(newPos);
             yield return new WaitForFixedUpdate();
         }
 
@@ -162,11 +178,11 @@ public class GrabbableObject : MonoBehaviour
             col.isTrigger = false;
         }
 
-        _rb.isKinematic = false;
-        _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
-        _rb.useGravity = true;
-        _rb.constraints = RigidbodyConstraints.None;
+        rb.isKinematic = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.useGravity = true;
+        rb.constraints = RigidbodyConstraints.None;
         targetSurface = placeableSurface;
         isWaitingForSurfaceImpact = true;
 

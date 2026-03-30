@@ -9,6 +9,7 @@ public class CookingZone : MonoBehaviour
     public float toggleDuration = 1f;
     public float timer = 0f;
     private Coroutine toggleCoroutine;
+    public PlaceableSurface placeableSurface;
 
     public void Toggle()
     {
