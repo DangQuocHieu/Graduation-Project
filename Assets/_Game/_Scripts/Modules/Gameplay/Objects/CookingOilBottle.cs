@@ -33,12 +33,13 @@ public class CookingOilBottle : GrabbableObject
         EventBus.SendMessage<PourOilIntoPan>(new PourOilIntoPan());
         rb.isKinematic = true;
 
-        yield return topNap.DOLocalRotate(new Vector3(0f, 0f, 90f), 0.3f).SetEase(Ease.InSine).SetLink(gameObject).WaitForCompletion();
+        yield return topNap.DOLocalRotate(new Vector3(0f, 0f, 90f), 0.3f).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
         transform.DOMove(fryingPan.pourPoint.position, 0.5f).SetEase(Ease.InOutSine).SetLink(gameObject);
-        yield return transform.DORotate(new Vector3(100f, 0f, 45f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
+        yield return transform.DORotate(new Vector3(0, 0f, 180f), 0.5f).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
         pourEffect.Play();
         yield return new WaitForSeconds(0.3f);
-        yield return fryingPan.FillCookingOil().WaitForCompletion();
+        fryingPan.FillCookingOil();
+        yield return new WaitForSeconds(2f);
         pourEffect.Stop();
         pickupAndDropHandler.PickupObject(this);
         StopWaitForPickupCompleteCoroutine();
