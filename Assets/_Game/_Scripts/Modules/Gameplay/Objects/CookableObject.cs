@@ -24,10 +24,10 @@ public class CookableObject : MonoBehaviour
 
     public void StartCooking()
     {
-        if(cookingTween != null) return;        
-        float remainingPercentage = 1f - (cookProgress/maxBurnLevel);
+        if (cookingTween != null) return;
+        float remainingPercentage = 1f - (cookProgress / maxBurnLevel);
         float timeRemaining = totalTimeToBurn * remainingPercentage;
-        cookingTween = DOTween.To(()=>cookProgress, x => cookProgress = x, maxBurnLevel, timeRemaining)
+        cookingTween = DOTween.To(() => cookProgress, x => cookProgress = x, maxBurnLevel, timeRemaining)
             .SetEase(Ease.Linear)
             .SetLink(gameObject)
             .OnUpdate(() => UpdateFoodColor());
@@ -36,12 +36,46 @@ public class CookableObject : MonoBehaviour
     public void PauseCooking()
     {
         cookingTween?.Kill();
+        cookingTween = null;
     }
 
     private void UpdateFoodColor()
     {
         float percentage = cookProgress / maxBurnLevel;
         foodMat.color = cookingColors.Evaluate(percentage);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<CookingOil>(out var cookingOil))
+        {
+            if (cookingOil.isHot)
+            {
+                StartCooking();
+            }
+        }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent<CookingOil>(out var cookingOil))
+        {
+            if (cookingOil.isHot)
+            {
+                StartCooking();
+            }
+            else
+            {
+                PauseCooking();
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if(other.TryGetComponent<CookingOil>(out var cookingOil))
+        {
+            PauseCooking();
+        }
     }
 
 }

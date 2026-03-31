@@ -19,8 +19,9 @@ public class GrabbableObject : MonoBehaviour
     public float moveSpeed = 10f;
     public float followSpeed = 20f;
     public float rotationSpeed = 10f;
+    public float dropOffset = 0.5f;
     private Coroutine _moveToPlaceableSurfaceCoroutine;
-    private Coroutine _waitForPickupCompleteCoroutine;
+    protected Coroutine _waitForPickupCompleteCoroutine;
 
     [Title("Base References")]
     public FixedJoint fixedJoint;
@@ -73,15 +74,22 @@ public class GrabbableObject : MonoBehaviour
         {
             col.isTrigger = true;
         }
+        StopWaitForPickupCompleteCoroutine();
+        _waitForPickupCompleteCoroutine = StartCoroutine(WaitForPickupComplete());
+    }
+
+    
+
+    protected void StopWaitForPickupCompleteCoroutine()
+    {
         if (_waitForPickupCompleteCoroutine != null)
         {
             StopCoroutine(_waitForPickupCompleteCoroutine);
             _waitForPickupCompleteCoroutine = null;
         }
-        _waitForPickupCompleteCoroutine = StartCoroutine(WaitForPickupComplete());
     }
 
-    private IEnumerator WaitForPickupComplete()
+    protected IEnumerator WaitForPickupComplete()
     {
         yield return new WaitUntil(() =>
         {
@@ -103,14 +111,32 @@ public class GrabbableObject : MonoBehaviour
         }
     }
 
+    // private void HandleFollowToTarget()
+    // {
+    //     // float holdDistance = Vector3.Distance(Camera.main.transform.position, _grabObjectPoint.position);
+    //     // Vector3 centerScreenVector = new Vector3(Screen.width / 2f, Screen.height / 2f, holdDistance);
+    //     // Vector3 exactCenterWorldPos = Camera.main.ScreenToWorldPoint(centerScreenVector);
+    //     // Vector3 targetPos = new Vector3(_grabObjectPoint.position.x, exactCenterWorldPos.y, _grabObjectPoint.position.z);
+    //     // Vector3 directionToTarget = targetPos - transform.position;
+    //     // directionToTarget -= new Vector3(0f, 0.5f, 0f);
+    //     // rb.linearVelocity = directionToTarget * followSpeed;
+
+    //     Vector3 directionToTarget = _grabObjectPoint.position - transform.position;
+    //     rb.linearVelocity = directionToTarget * followSpeed;
+
+    // }
+
     private void HandleFollowToTarget()
     {
-        float holdDistance = Vector3.Distance(Camera.main.transform.position, _grabObjectPoint.position);
-        Vector3 centerScreenVector = new Vector3(Screen.width / 2f, Screen.height / 2f, holdDistance);
-        Vector3 exactCenterWorldPos = Camera.main.ScreenToWorldPoint(centerScreenVector);
-        Vector3 targetPos = new Vector3(_grabObjectPoint.position.x, exactCenterWorldPos.y, _grabObjectPoint.position.z);
-        Vector3 directionToTarget = targetPos - transform.position;
-        directionToTarget -= new Vector3(0f, 0.5f, 0f);
+        if (_grabObjectPoint == null) return;
+        // Lấy vị trí hiện tại của điểm bám (grab point)
+        Vector3 targetPosition = _grabObjectPoint.position;
+
+        // Clamp (Giới hạn) trục Y của vị trí đích trong khoảng từ 3f đến 4f
+        targetPosition.y = Mathf.Clamp(targetPosition.y, 3f, 4f);
+
+        // Tính toán hướng đi và áp dụng vận tốc
+        Vector3 directionToTarget = targetPosition - transform.position;
         rb.linearVelocity = directionToTarget * followSpeed;
     }
 
@@ -142,7 +168,7 @@ public class GrabbableObject : MonoBehaviour
     {
         _grabObjectPoint = null;
         Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
-        dropPosition += Vector3.up * 0.5f;
+        dropPosition += Vector3.up * dropOffset;
 
         if (_moveToPlaceableSurfaceCoroutine != null)
         {
@@ -225,10 +251,10 @@ public class GrabbableObject : MonoBehaviour
         Debug.Log("Collide with: " + collision.gameObject.name);
         if (isWaitingForSurfaceImpact)
         {
-            if (collision.gameObject.TryGetComponent<PlaceableSurface>(out var placeableSurface))
+            if (collision.gameObject.TryGetComponent<PlaceableArea>(out var placeableArea))
             {
 
-                if (placeableSurface.gameObject == targetSurface.gameObject)
+                if (placeableArea.placeableSurface.gameObject == targetSurface.gameObject)
                 {
                     if (targetSurface.ItemContainer != null)
                     {

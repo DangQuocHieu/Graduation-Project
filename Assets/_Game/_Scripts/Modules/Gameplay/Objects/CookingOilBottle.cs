@@ -8,10 +8,11 @@ using UnityEditor;
 public class CookingOilBottle : GrabbableObject
 {
     public ParticleSystem pourEffect;
+    public Transform topNap;
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
         var fryingPan = hit.collider.GetComponentInParent<FryingPan>();
-        if(fryingPan != null)
+        if (fryingPan != null)
         {
             pickupAndDropHandler.DropObject();
             HandleInteractWithFryingPan(fryingPan, pickupAndDropHandler);
@@ -30,13 +31,19 @@ public class CookingOilBottle : GrabbableObject
     private IEnumerator InteractWithFryingPanCoroutine(FryingPan fryingPan, PickupAndDropHandler pickupAndDropHandler)
     {
         EventBus.SendMessage<PourOilIntoPan>(new PourOilIntoPan());
-        rb.isKinematic = true;  
+        rb.isKinematic = true;
+
+        yield return topNap.DOLocalRotate(new Vector3(0f, 0f, 90f), 0.3f).SetEase(Ease.InSine).SetLink(gameObject).WaitForCompletion();
         transform.DOMove(fryingPan.pourPoint.position, 0.5f).SetEase(Ease.InOutSine).SetLink(gameObject);
-        yield return transform.DORotate(new Vector3(-100f, 0f, 0f), 0.5f).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
+        yield return transform.DORotate(new Vector3(100f, 0f, 45f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
         pourEffect.Play();
-        // yield return new WaitForSeconds(2f);
-        // pickupAndDropHandler.PickupObject(this);
-        // yield return new WaitForSeconds(0.5f);
-        // EventBus.SendMessage<PourOilIntoPanComplete>(new PourOilIntoPanComplete());
+        yield return new WaitForSeconds(0.3f);
+        yield return fryingPan.FillCookingOil().WaitForCompletion();
+        pourEffect.Stop();
+        pickupAndDropHandler.PickupObject(this);
+        StopWaitForPickupCompleteCoroutine();
+        yield return WaitForPickupComplete();
+        yield return topNap.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.3f).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
+        EventBus.SendMessage<PourOilIntoPanComplete>(new PourOilIntoPanComplete());
     }
 }

@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 6411e68059587c9448941a540647b0cd
+guid: e89696310dc8766439708f3863e38ebe
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: oil bottle
-    second: {fileID: 2100000, guid: df7ba64532d69ff46b004f115f417231, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: meizan_gold_uv_texture
-    second: {fileID: 2800000, guid: 5599b0d608acf1341a25d9d244160a0c, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
