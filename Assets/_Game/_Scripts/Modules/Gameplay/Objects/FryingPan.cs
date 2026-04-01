@@ -5,8 +5,7 @@ public class FryingPan : GrabbableObject
 {
     public bool isHot = false;
     public CookingZone attachedCookingZone;
-    public Transform pourPoint;
-    public CookingOil cookingOil;
+    public LiquidContainer oilContainer;
     public PlaceableSurface placeableSurface;
 
     void Update()
@@ -48,11 +47,12 @@ public class FryingPan : GrabbableObject
 
     public Tween FillCookingOil()
     {
-        cookingOil.transform.localScale = new Vector3(0.1f, 0f, 0.1f);
+        Transform cookingOil = oilContainer.liquid;
+        cookingOil.localScale = new Vector3(0.1f, 0f, 0.1f);
         Sequence oilSequence = DOTween.Sequence();
-        oilSequence.Append(cookingOil.transform.DOScaleX(1f, 1.2f).SetEase(Ease.OutCubic));
-        oilSequence.Join(cookingOil.transform.DOScaleZ(1f, 1.2f).SetEase(Ease.OutCubic));
-        oilSequence.Join(cookingOil.transform.DOScaleY(1f, 2f).SetEase(Ease.Linear));
+        oilSequence.Append(cookingOil.DOScaleX(1f, 1.2f).SetEase(Ease.OutCubic));
+        oilSequence.Join(cookingOil.DOScaleZ(1f, 1.2f).SetEase(Ease.OutCubic));
+        oilSequence.Join(cookingOil.DOScaleY(1f, 2f).SetEase(Ease.Linear));
         return oilSequence.SetLink(gameObject);
     }
 }
