@@ -9,8 +9,8 @@ public class SliceableObject : MonoBehaviour
         var slicePieces = Instantiate(slicePiecesPrefab, transform.position, Quaternion.identity, transform.parent);
         foreach(var piece in slicePieces.pieces)
         {
-            cuttingBoard.ItemContainer.Add(piece);
-            piece.JoinWithOtherRigidbody(cuttingBoard.ItemContainer.rb);
+            cuttingBoard.itemContainer.Add(piece);
+            piece.JoinWithOtherRigidbody(cuttingBoard.rb);
         }
         Destroy(gameObject);
     }

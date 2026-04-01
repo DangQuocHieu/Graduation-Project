@@ -6,6 +6,9 @@ using UnityEngine;
 public class ItemContainer : MonoBehaviour
 {
     public HashSet<GrabbableObject> containedItems = new();
+    #if UNITY_EDITOR
+    public List<GrabbableObject> containedItemList = new();
+    #endif
     public Rigidbody rb;
     public HashSet<GrabbableObject> ContainedItems => containedItems;
 
@@ -15,6 +18,12 @@ public class ItemContainer : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        #if UNITY_EDITOR
+        containedItemList = containedItems.ToList();
+        #endif
+    }
     public void Remove(GrabbableObject objectToRemove)
     {
         containedItems.Remove(objectToRemove);

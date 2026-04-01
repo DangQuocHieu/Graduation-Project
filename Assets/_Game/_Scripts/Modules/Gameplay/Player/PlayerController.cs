@@ -8,23 +8,23 @@ public class PlayerController : MonoBehaviour
 
     void OnEnable()
     {
-        EventBus.Subcribe<PourOilIntoPan>(HandlePourOilIntoPanMessage);
-        EventBus.Subcribe<PourOilIntoPanComplete>(HandlePourOilIntoPanCompleteEvent);
+        EventBus.Subcribe<PourLiquid>(HandlePourLiquidMessage);
+        EventBus.Subcribe<PourLiquidComplete>(HandlePourLiquidComplete);
     }
 
     void OnDisable()
     {
-        EventBus.UnSubcribe<PourOilIntoPan>(HandlePourOilIntoPanMessage);
-        EventBus.UnSubcribe<PourOilIntoPanComplete>(HandlePourOilIntoPanCompleteEvent);
+        EventBus.UnSubcribe<PourLiquid>(HandlePourLiquidMessage);
+        EventBus.UnSubcribe<PourLiquidComplete>(HandlePourLiquidComplete);
     }
 
-    public void HandlePourOilIntoPanMessage(PourOilIntoPan message)
+    public void HandlePourLiquidMessage(PourLiquid message)
     {
         DisableMovement();
         DisablePickup();
     }
 
-    public void HandlePourOilIntoPanCompleteEvent(PourOilIntoPanComplete evt)
+    public void HandlePourLiquidComplete(PourLiquidComplete evt)
     {
         EnableMovement();
         EnablePickup();

@@ -361,8 +361,6 @@ GameObject:
   - component: {fileID: 8930418855893514248}
   - component: {fileID: 7223222306104230754}
   - component: {fileID: 5417083543997874781}
-  - component: {fileID: 5936515883401734851}
-  - component: {fileID: 1212909897126440461}
   m_Layer: 8
   m_Name: Surface Collider
   m_TagString: Untagged
@@ -401,7 +399,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956125992107673703}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -461,33 +459,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1069549520042242758, guid: d0edf28a341bce340806adc20ce91160, type: 3}
---- !u!114 &5936515883401734851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956125992107673703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b854b0e09fc2cd747bdce82c32c93a10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SnapPoint: {fileID: 0}
-  ItemContainer: {fileID: 1212909897126440461}
---- !u!114 &1212909897126440461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956125992107673703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce8a9e47912c5524db5a7af276f219de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 2319734231406479394}
 --- !u!1 &1995962175998895387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,6 +1859,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e89696310dc8766439708f3863e38ebe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5910755449074225974}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e89696310dc8766439708f3863e38ebe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6519151032947025399}
   m_SourcePrefab: {fileID: 100100000, guid: e89696310dc8766439708f3863e38ebe, type: 3}
 --- !u!1 &5180894518098495058 stripped
 GameObject:
@@ -1908,6 +1882,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachedFryingPan: {fileID: 8645046773514096464}
   isHot: 0
+--- !u!64 &6519151032947025399
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5180894518098495058}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2511099425683435825, guid: e89696310dc8766439708f3863e38ebe, type: 3}
 --- !u!4 &5525332566040108264 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e89696310dc8766439708f3863e38ebe, type: 3}
@@ -2086,6 +2082,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e35283dfc5f584f428c4aadf782c54d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8645046773514096464}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e35283dfc5f584f428c4aadf782c54d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3642298609774106106}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e35283dfc5f584f428c4aadf782c54d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8469663405168327152}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e35283dfc5f584f428c4aadf782c54d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 269179931102796131}
   m_SourcePrefab: {fileID: 100100000, guid: e35283dfc5f584f428c4aadf782c54d3, type: 3}
 --- !u!4 &8515769840718140180 stripped
 Transform:
@@ -2136,6 +2141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987d69fe4b5b91e43aff05ad0916054f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 2319734231406479394}
   objectColliders:
   - {fileID: 5417083543997874781}
   - {fileID: 6475155407668854716}
@@ -2174,11 +2180,51 @@ MonoBehaviour:
   rotationSpeed: 10
   dropOffset: 0.5
   fixedJoint: {fileID: 0}
-  ItemContainer: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   isHot: 0
   attachedCookingZone: {fileID: 0}
+  oilContainer: {fileID: 3642298609774106106}
+  placeableSurface: {fileID: 8469663405168327152}
+--- !u!114 &3642298609774106106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9035847174659574190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade4b537ab05ddd428a7558634869d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   pourPoint: {fileID: 5672992461730210260}
-  cookingOil: {fileID: 5910755449074225974}
-  placeableSurface: {fileID: 5936515883401734851}
+  liquid: {fileID: 5525332566040108264}
+--- !u!114 &8469663405168327152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9035847174659574190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b854b0e09fc2cd747bdce82c32c93a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnapPoint: {fileID: 0}
+  itemContainer: {fileID: 269179931102796131}
+--- !u!114 &269179931102796131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9035847174659574190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8a9e47912c5524db5a7af276f219de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  containedItemList: []
+  rb: {fileID: 2319734231406479394}

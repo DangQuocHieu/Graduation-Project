@@ -10,7 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour
 {
-    protected Rigidbody rb;
+    public Rigidbody rb;
     public Collider[] objectColliders; // Đã đổi thành mảng
     private Collider _playerCollider;
     private Transform _grabObjectPoint;
@@ -20,13 +20,11 @@ public class GrabbableObject : MonoBehaviour
     public float followSpeed = 20f;
     public float rotationSpeed = 10f;
     public float dropOffset = 0.5f;
-    private Coroutine _moveToPlaceableSurfaceCoroutine;
+    private Coroutine _moveCoroutine;
     protected Coroutine _waitForPickupCompleteCoroutine;
 
     [Title("Base References")]
     public FixedJoint fixedJoint;
-    public ItemContainer ItemContainer;
-
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
     public PlaceableSurface targetSurface;
@@ -54,12 +52,12 @@ public class GrabbableObject : MonoBehaviour
     }
 
 
-    public void OnPickUp(Transform grabObjectPoint, Collider collider)
+    public virtual void OnPickUp(Transform grabObjectPoint, Collider collider)
     {
-        if (_moveToPlaceableSurfaceCoroutine != null)
+        if (_moveCoroutine != null)
         {
-            StopCoroutine(_moveToPlaceableSurfaceCoroutine);
-            _moveToPlaceableSurfaceCoroutine = null;
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
         }
         RemoveRigidbodyJoin();
         _grabObjectPoint = grabObjectPoint;
@@ -78,7 +76,7 @@ public class GrabbableObject : MonoBehaviour
         _waitForPickupCompleteCoroutine = StartCoroutine(WaitForPickupComplete());
     }
 
-    
+
 
     protected void StopWaitForPickupCompleteCoroutine()
     {
@@ -169,20 +167,30 @@ public class GrabbableObject : MonoBehaviour
         _grabObjectPoint = null;
         Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
         dropPosition += Vector3.up * dropOffset;
-
-        if (_moveToPlaceableSurfaceCoroutine != null)
+        if (_moveCoroutine != null)
         {
-            StopCoroutine(_moveToPlaceableSurfaceCoroutine);
-            _moveToPlaceableSurfaceCoroutine = null;
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
         }
-        _moveToPlaceableSurfaceCoroutine = StartCoroutine(MoveToPlaceableSurfaceCoroutine(dropPosition, placeableSurface));
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface));
     }
 
-    private IEnumerator MoveToPlaceableSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
+    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, Vector3 position)
     {
-        rb.isKinematic = true;
+        _grabObjectPoint = null;
+        Vector3 dropPosition = position + Vector3.up * dropOffset;
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface));
+    }
 
-        // 1. BẬT isTrigger để bay xuyên qua các vật khác trên đường đi
+
+    public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
+    {
+        rb.isKinematic = true; 
         foreach (var col in objectColliders)
         {
             col.isTrigger = true;
@@ -219,14 +227,15 @@ public class GrabbableObject : MonoBehaviour
             _playerCollider = null;
         }
 
-        _moveToPlaceableSurfaceCoroutine = null;
+        _moveCoroutine = null;
     }
 
     public virtual void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.TryGetComponent<PlaceableArea>(out var placeableArea))
+        if (hit.collider.TryGetComponent<KitchenArea>(out var kitchenArea))
         {
-            MoveToPlaceableSurface(placeableArea.placeableSurface, hit);
+            Debug.Log("PLACEABLE AREA OF " + hit.collider.name);
+            MoveToPlaceableSurface(kitchenArea.placeableSurface, hit);
             pickupAndDropHandler.DropObject();
         }
     }
@@ -251,14 +260,14 @@ public class GrabbableObject : MonoBehaviour
         Debug.Log("Collide with: " + collision.gameObject.name);
         if (isWaitingForSurfaceImpact)
         {
-            if (collision.gameObject.TryGetComponent<PlaceableArea>(out var placeableArea))
+            if (collision.gameObject.TryGetComponent<PlaceableSurface>(out var placeableSurface))
             {
 
-                if (placeableArea.placeableSurface.gameObject == targetSurface.gameObject)
+                if (placeableSurface.gameObject == targetSurface.gameObject)
                 {
-                    if (targetSurface.ItemContainer != null)
+                    if (targetSurface.itemContainer != null)
                     {
-                        JoinWithOtherRigidbody(targetSurface.ItemContainer.rb);
+                        JoinWithOtherRigidbody(targetSurface.itemContainer.rb);
                     }
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;

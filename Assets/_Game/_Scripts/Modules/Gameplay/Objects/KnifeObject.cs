@@ -20,10 +20,10 @@ public class KnifeObject : GrabbableObject
     public void InteractWithCuttingBoard(CuttingBoard cuttingBoard)
     {
         Debug.Log("Knife interact with cutting board");
-        cuttingBoard.ItemContainer.GetSliceableList(_currentSliceableObjects);
+        cuttingBoard.itemContainer.GetSliceableList(_currentSliceableObjects);
         foreach (var sliceableObject in _currentSliceableObjects)
         {
-            cuttingBoard.ItemContainer.Remove(sliceableObject.grabbaleObject);
+            cuttingBoard.itemContainer.Remove(sliceableObject.grabbaleObject);
             sliceableObject.OnSlice(cuttingBoard);
         }
     }

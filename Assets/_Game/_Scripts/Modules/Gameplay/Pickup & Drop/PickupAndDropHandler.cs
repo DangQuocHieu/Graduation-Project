@@ -33,10 +33,9 @@ public class PickupAndDropHandler : MonoBehaviour
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange, mask))
                 {
-                    if (hit.collider.GetComponentInParent<GrabbableObject>() != null)
+                    if (hit.collider.attachedRigidbody!=null && hit.collider.attachedRigidbody.TryGetComponent<GrabbableObject>(out var grabbableObject))
                     {
-                        var interactableObject = hit.collider.GetComponentInParent<GrabbableObject>();
-                        _objectInHand = interactableObject;
+                        _objectInHand = grabbableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint, _collider);
                     }
                     else if (hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
@@ -47,25 +46,18 @@ public class PickupAndDropHandler : MonoBehaviour
             }
             else
             {
-                // Thay vì Raycast thường, dùng RaycastAll để xuyên qua vật đang cầm
                 RaycastHit[] hits = Physics.RaycastAll(_camera.position, _camera.forward, _pickUpRange, mask);
-
-                // Sắp xếp lại danh sách hit theo khoảng cách từ camera (từ gần đến xa)
                 System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
                 foreach (RaycastHit hit in hits)
                 {
                     if (hit.collider.gameObject == _objectInHand.gameObject)
                     {
-                        // Nếu trúng chính vật đang cầm thì bỏ qua, xét tiếp vật phía sau
                         continue;
                     }
                     else
                     {
-                        // Tương tác với vật đầu tiên trúng được (mà không phải vật đang cầm)
                         _objectInHand.InteractWith(hit, this);
-                        
-                        // Đã tìm thấy và tương tác xong thì thoát khỏi vòng lặp/hàm
                         return; 
                     }
                 }

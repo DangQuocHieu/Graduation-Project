@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlaceableArea : MonoBehaviour
+public class KitchenArea : MonoBehaviour
 {
     public PlaceableSurface placeableSurface;
 }

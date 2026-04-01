@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: d9abe26c7632f4044afec450a2f8af0d
+guid: 4d5bd598fe94d424e9baa2412ca29961
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: bun
-    second: {fileID: 2100000, guid: 742da431bb7f7444f9edcbb4e09b4462, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: istockphoto-687874850-170667a
-    second: {fileID: 2800000, guid: b1f1f3b8a70bc774698ec00b13198454, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
