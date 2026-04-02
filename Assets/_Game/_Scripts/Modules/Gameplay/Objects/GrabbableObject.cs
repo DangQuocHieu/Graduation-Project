@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor.Validation;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour
@@ -16,7 +18,6 @@ public class GrabbableObject : MonoBehaviour
     private Transform _grabObjectPoint;
 
     [Title("Physics Configurations")]
-    public float moveSpeed = 10f;
     public float followSpeed = 20f;
     public float rotationSpeed = 10f;
     public float dropOffset = 0.5f;
@@ -30,14 +31,15 @@ public class GrabbableObject : MonoBehaviour
     public PlaceableSurface targetSurface;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+
         SetUpRigidbody();
     }
 
 
-    private void FixedUpdate()
+
+    private void LateUpdate()
     {
         if (_grabObjectPoint != null)
         {
@@ -48,7 +50,9 @@ public class GrabbableObject : MonoBehaviour
 
     private void SetUpRigidbody()
     {
-
+        rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.isKinematic = false;
     }
 
 
@@ -60,8 +64,8 @@ public class GrabbableObject : MonoBehaviour
             _moveCoroutine = null;
         }
         RemoveRigidbodyJoin();
-        _grabObjectPoint = grabObjectPoint;
         rb.isKinematic = false;
+        _grabObjectPoint = grabObjectPoint;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.useGravity = false;
 
@@ -109,21 +113,6 @@ public class GrabbableObject : MonoBehaviour
         }
     }
 
-    // private void HandleFollowToTarget()
-    // {
-    //     // float holdDistance = Vector3.Distance(Camera.main.transform.position, _grabObjectPoint.position);
-    //     // Vector3 centerScreenVector = new Vector3(Screen.width / 2f, Screen.height / 2f, holdDistance);
-    //     // Vector3 exactCenterWorldPos = Camera.main.ScreenToWorldPoint(centerScreenVector);
-    //     // Vector3 targetPos = new Vector3(_grabObjectPoint.position.x, exactCenterWorldPos.y, _grabObjectPoint.position.z);
-    //     // Vector3 directionToTarget = targetPos - transform.position;
-    //     // directionToTarget -= new Vector3(0f, 0.5f, 0f);
-    //     // rb.linearVelocity = directionToTarget * followSpeed;
-
-    //     Vector3 directionToTarget = _grabObjectPoint.position - transform.position;
-    //     rb.linearVelocity = directionToTarget * followSpeed;
-
-    // }
-
     private void HandleFollowToTarget()
     {
         if (_grabObjectPoint == null) return;
@@ -137,6 +126,7 @@ public class GrabbableObject : MonoBehaviour
         Vector3 directionToTarget = targetPosition - transform.position;
         rb.linearVelocity = directionToTarget * followSpeed;
     }
+
 
     private void HandleRotateToTarget()
     {
@@ -155,7 +145,6 @@ public class GrabbableObject : MonoBehaviour
         }
         _grabObjectPoint = null;
         rb.useGravity = true;
-        rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
             _playerCollider = null;
@@ -190,38 +179,36 @@ public class GrabbableObject : MonoBehaviour
 
     public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
     {
-        rb.isKinematic = true; 
         foreach (var col in objectColliders)
         {
             col.isTrigger = true;
         }
-
+        rb.isKinematic = true;
         while (Vector3.Distance(transform.position, dropPosition) > 0.05f)
         {
-            Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, moveSpeed * Time.fixedDeltaTime);
+            Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
             rb.MovePosition(newPos);
             yield return new WaitForFixedUpdate();
         }
 
-        transform.position = dropPosition;
-        yield return new WaitForFixedUpdate();
 
-        // 2. TẮT isTrigger để chuẩn bị rơi tự do xuống mặt phẳng
+        transform.position = dropPosition;
         foreach (var col in objectColliders)
         {
             col.isTrigger = false;
         }
 
+        yield return null;
         rb.isKinematic = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.useGravity = true;
-        rb.constraints = RigidbodyConstraints.None;
         targetSurface = placeableSurface;
         isWaitingForSurfaceImpact = true;
 
-        yield return new WaitUntil(() => targetSurface == null);
 
+        yield return new WaitUntil(() => targetSurface == null);
+        rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
             _playerCollider = null;
@@ -244,6 +231,8 @@ public class GrabbableObject : MonoBehaviour
     {
         fixedJoint = gameObject.AddComponent<FixedJoint>();
         fixedJoint.connectedBody = other;
+
+
     }
 
     public void RemoveRigidbodyJoin()

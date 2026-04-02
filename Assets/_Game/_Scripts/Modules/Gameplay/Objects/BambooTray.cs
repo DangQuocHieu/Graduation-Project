@@ -8,7 +8,7 @@ public class BambooTray : GrabbableObject
     public PlaceableSurface placeableSurface;
 
     [Title("Sauce")]
-    public Transform sauceAnchor; 
+    public Transform sauceAnchor;
 
     [Title("Tofu")]
     public List<AnchorPoint> tofuAnchorPoints = new();
@@ -16,11 +16,13 @@ public class BambooTray : GrabbableObject
     [Title("Rice Noodle")]
     public List<AnchorPoint> riceNoodleAnchorPoints = new();
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         anchorPointsDic.Add(IngredientType.Tofu, tofuAnchorPoints);
         anchorPointsDic.Add(IngredientType.RiceNoodle, riceNoodleAnchorPoints);
     }
+
 
     public AnchorPoint GetAnchorPoint(IngredientType ingredientType)
     {

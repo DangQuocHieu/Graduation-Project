@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public PickupAndDropHandler pickupAndDropHandler;
-    public FirstPersonController firstPersonController;
+    
 
     void OnEnable()
     {
@@ -32,12 +32,12 @@ public class PlayerController : MonoBehaviour
 
     public void DisableMovement()
     {
-        firstPersonController.enabled = false;
+        
     }
 
     public void EnableMovement()
     {
-        firstPersonController.enabled = true;
+        
     }
 
     public void DisablePickup()

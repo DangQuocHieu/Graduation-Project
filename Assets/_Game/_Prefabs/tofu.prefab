@@ -101,7 +101,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
@@ -138,15 +138,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8222c26442ca7f4f953edbeec2a4e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   objectColliders:
   - {fileID: 3374722911651194581}
   moveSpeed: 10
   followSpeed: 20
   rotationSpeed: 10
+  dropOffset: 0.5
   fixedJoint: {fileID: 0}
-  ItemContainer: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
+  attachedAnchorPoint:
+    anchor: {fileID: 0}
+    isEmpty: 0
+  ingredientType: 0
 --- !u!114 &7438299991417878759
 MonoBehaviour:
   m_ObjectHideFlags: 0
