@@ -20,9 +20,9 @@ public class ItemContainer : MonoBehaviour
 
     void Update()
     {
-        #if UNITY_EDITOR
+
         containedItemList = containedItems.ToList();
-        #endif
+
     }
     public void Remove(GrabbableObject objectToRemove)
     {

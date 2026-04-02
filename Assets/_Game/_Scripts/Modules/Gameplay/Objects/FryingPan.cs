@@ -17,8 +17,8 @@ public class FryingPan : GrabbableObject
     {
         if (hit.collider.TryGetComponent<CookingZone>(out var cookingZone))
         {
-            MoveToPlaceableSurface(cookingZone.placeableSurface, hit);
             pickupAndDropHandler.DropObject();
+            MoveToPlaceableSurface(cookingZone.placeableSurface, hit);
         }
         else
         {

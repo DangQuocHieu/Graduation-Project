@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: fff822fbd494fae42935960d28cea401
+guid: a96e00323c5ca044e9ad58ae666a92fd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bun
+    second: {fileID: 2100000, guid: 58043bd8a3b49764786546a9f051297e, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: rice_noodle
+    second: {fileID: 2800000, guid: 00cd3f3544132eb4db6a6a7724014340, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
