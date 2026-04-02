@@ -187,37 +187,52 @@ public class GrabbableObject : MonoBehaviour
     {
         rb.isKinematic = true;
         var itemContainer = GetComponent<ItemContainer>();
+
         if (itemContainer != null)
         {
             foreach (var item in itemContainer.containedItems)
             {
+
                 item.ToggleCollider(isTrigger: true);
             }
         }
         ToggleCollider(isTrigger: true);
+
         while (Vector3.Distance(transform.position, dropPosition) > 0.05f)
         {
             Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
             rb.MovePosition(newPos);
             yield return new WaitForFixedUpdate();
         }
-        transform.position = dropPosition;
+
+        // --- SỬA LỖI Ở ĐÂY ---
+        // Thay vì dùng transform.position = dropPosition; (Gây giật Joint)
+        rb.MovePosition(dropPosition);
+        // BẮT BUỘC: Đợi 1 frame vật lý để Unity đồng bộ lại vị trí của các object bị nối bởi Joint
+        yield return new WaitForFixedUpdate();
         if (itemContainer != null)
         {
             foreach (var item in itemContainer.containedItems)
             {
+                // Triệt tiêu lực của các Object con (tránh việc tàn dư lực từ Joint kéo văng object)
+                item.rb.linearVelocity = Vector3.zero;
+                item.rb.angularVelocity = Vector3.zero;
                 item.ToggleCollider(isTrigger: false);
             }
         }
+
         ToggleCollider(isTrigger: false);
+        yield return new WaitForFixedUpdate();
         rb.isKinematic = false;
+        // Đảm bảo an toàn lần cuối sau khi bật lại isKinematic
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
         targetSurface = placeableSurface;
         isWaitingForSurfaceImpact = true;
 
-
         yield return new WaitUntil(() => targetSurface == null);
+
         rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
