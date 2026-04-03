@@ -10,7 +10,6 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
     private GrabbableObject _objectInHand;
-    public LayerMask liquidLayer;
 
     void Update()
     {
@@ -28,10 +27,9 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            int mask = ~liquidLayer;
             if (_objectInHand == null)
             {
-                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange, mask))
+                if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
                 {
                     if (hit.collider.attachedRigidbody!=null && hit.collider.attachedRigidbody.TryGetComponent<GrabbableObject>(out var grabbableObject))
                     {
@@ -46,7 +44,7 @@ public class PickupAndDropHandler : MonoBehaviour
             }
             else
             {
-                RaycastHit[] hits = Physics.RaycastAll(_camera.position, _camera.forward, _pickUpRange, mask);
+                RaycastHit[] hits = Physics.RaycastAll(_camera.position, _camera.forward, _pickUpRange);
                 System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
                 foreach (RaycastHit hit in hits)

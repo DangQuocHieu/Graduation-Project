@@ -137,10 +137,11 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
-  configurableJoint: {fileID: 0}
+  fixedJoint: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedItemContainer: {fileID: 0}
+  weight: 0.025
   attachedAnchorPoint:
     anchor: {fileID: 0}
     isEmpty: 1

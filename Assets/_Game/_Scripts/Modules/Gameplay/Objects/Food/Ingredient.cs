@@ -7,6 +7,7 @@ public enum IngredientType
 }
 public class Ingredient : GrabbableObject
 {
+    public float weight;
     public AnchorPoint attachedAnchorPoint;
     public IngredientType ingredientType;
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)

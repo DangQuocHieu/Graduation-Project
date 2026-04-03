@@ -26,7 +26,7 @@ public class GrabbableObject : MonoBehaviour
 
     [Title("Base References")]
     // Đã đổi từ FixedJoint sang ConfigurableJoint
-    public FixedJoint fixedJoint;
+    public ConfigurableJoint configurableJoint;
 
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
@@ -253,16 +253,24 @@ public class GrabbableObject : MonoBehaviour
     // --- CÁC HÀM XỬ LÝ JOINT ĐÃ ĐƯỢC CẬP NHẬT Ở ĐÂY ---
     public void JoinWithOtherRigidbody(Rigidbody other)
     {
-        fixedJoint = gameObject.AddComponent<FixedJoint>();
-        fixedJoint.connectedBody = other;
+        configurableJoint = gameObject.AddComponent<ConfigurableJoint>();
+        configurableJoint.connectedBody = other;
+        
+        // Khóa tất cả các trục để mô phỏng lại hành vi của FixedJoint
+        configurableJoint.xMotion = ConfigurableJointMotion.Locked;
+        configurableJoint.yMotion = ConfigurableJointMotion.Locked;
+        configurableJoint.zMotion = ConfigurableJointMotion.Locked;
+        configurableJoint.angularXMotion = ConfigurableJointMotion.Locked;
+        configurableJoint.angularYMotion = ConfigurableJointMotion.Locked;
+        configurableJoint.angularZMotion = ConfigurableJointMotion.Locked;
     }
 
     public void RemoveRigidbodyJoin()
     {
-        if (fixedJoint != null)
+        if (configurableJoint != null)
         {
-            Destroy(fixedJoint);
-            fixedJoint = null;
+            Destroy(configurableJoint);
+            configurableJoint = null;
         }
     }
 
