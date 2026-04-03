@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.075
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c38244ebd839a8543b9994de172b3afc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -117,15 +117,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8222c26442ca7f4f953edbeec2a4e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   objectColliders:
   - {fileID: 3699888589502071970}
-  moveSpeed: 10
   followSpeed: 20
   rotationSpeed: 10
+  dropOffset: 0.5
   fixedJoint: {fileID: 0}
-  ItemContainer: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
+  attachedItemContainer: {fileID: 0}
+  weight: 0
+  attachedAnchorPoint:
+    anchor: {fileID: 0}
+    isEmpty: 1
+  ingredientType: 0
 --- !u!65 &3699888589502071970
 BoxCollider:
   m_ObjectHideFlags: 0

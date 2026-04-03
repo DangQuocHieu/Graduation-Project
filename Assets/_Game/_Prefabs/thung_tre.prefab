@@ -164,8 +164,8 @@ MonoBehaviour:
   riceNoodleVisual: {fileID: 8360178620922199295}
   riceNoodlePiecePrefab: {fileID: 2814046689594467737, guid: 139adcdda593f5b458a0b056c81b3a7d, type: 3}
   ingredientSpawnPoint: {fileID: 8206645068950499071}
-  capacity: 0
-  currentRiceNoodleWeight: 0
+  capacity: 2
+  currentRiceNoodleWeight: 2
 --- !u!65 &4848665913801106429
 BoxCollider:
   m_ObjectHideFlags: 0

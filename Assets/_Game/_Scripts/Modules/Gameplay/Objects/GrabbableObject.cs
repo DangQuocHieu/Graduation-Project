@@ -26,7 +26,7 @@ public class GrabbableObject : MonoBehaviour
 
     [Title("Base References")]
     // Đã đổi từ FixedJoint sang ConfigurableJoint
-    public ConfigurableJoint configurableJoint;
+    public FixedJoint fixedJoint;
 
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
@@ -41,7 +41,7 @@ public class GrabbableObject : MonoBehaviour
 
 
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (_grabObjectPoint != null)
         {
@@ -72,6 +72,7 @@ public class GrabbableObject : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        rb.useGravity = true;
         rb.isKinematic = true;
         _playerCollider = collider;
         ToggleCollider(isTrigger: true);
@@ -157,7 +158,7 @@ public class GrabbableObject : MonoBehaviour
         }
     }
 
-    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit)
+    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit, Quaternion? targetRotation = null)
     {
         _grabObjectPoint = null;
         Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
@@ -167,10 +168,10 @@ public class GrabbableObject : MonoBehaviour
             StopCoroutine(_moveCoroutine);
             _moveCoroutine = null;
         }
-        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface));
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation));
     }
 
-    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, Vector3 position)
+    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, Vector3 position, Quaternion? targetRotation = null)
     {
         _grabObjectPoint = null;
         Vector3 dropPosition = position + Vector3.up * dropOffset;
@@ -179,13 +180,13 @@ public class GrabbableObject : MonoBehaviour
             StopCoroutine(_moveCoroutine);
             _moveCoroutine = null;
         }
-        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface));
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation));
     }
 
 
-    public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
+    public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
     {
-        // rb.isKinematic = true;
+        rb.isKinematic = true;
         var itemContainer = GetComponent<ItemContainer>();
 
         if (itemContainer != null)
@@ -198,17 +199,38 @@ public class GrabbableObject : MonoBehaviour
         }
         ToggleCollider(isTrigger: true);
 
-        while (Vector3.Distance(transform.position, dropPosition) > 0.01f)
+        float initialDistance = Vector3.Distance(transform.position, dropPosition);
+        Quaternion startRotation = transform.rotation;
+
+        while (Vector3.Distance(transform.position, dropPosition) > 0.02f)
         {
-            // Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
-            // rb.MovePosition(newPos);
-            Vector3 direction = dropPosition - transform.position;
-            rb.linearVelocity = followSpeed * direction;
-            yield return new WaitForFixedUpdate();
+            Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
+            rb.MovePosition(newPos);
+            
+            if (targetRotation.HasValue && initialDistance > 0f)
+            {
+                float currentDistance = Vector3.Distance(newPos, dropPosition);
+                float progress = 1f - (currentDistance / initialDistance);
+                rb.MoveRotation(Quaternion.Slerp(startRotation, targetRotation.Value, progress));
+            }
+
+            yield return new WaitForFixedUpdate(); 
+            // Vector3 direction = dropPosition - transform.position;
+            // rb.linearVelocity = followSpeed * direction;
+            // yield return new WaitForFixedUpdate();
         }
 
         rb.MovePosition(dropPosition);
+        if (targetRotation.HasValue)
+        {
+            rb.MoveRotation(targetRotation.Value);
+        }
         yield return new WaitForFixedUpdate();
+        rb.isKinematic = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.useGravity = false;
+        ToggleCollider(isTrigger: false);
         if (itemContainer != null)
         {
             foreach (var item in itemContainer.containedItems)
@@ -217,15 +239,9 @@ public class GrabbableObject : MonoBehaviour
                 item.rb.angularVelocity = Vector3.zero;
                 item.ToggleCollider(isTrigger: false);
             }
-        }
-
-        ToggleCollider(isTrigger: false);
-
+        } 
         yield return new WaitForFixedUpdate();
-        // rb.isKinematic = false;
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-
+        rb.useGravity = true;
         targetSurface = placeableSurface;
         isWaitingForSurfaceImpact = true;
 
@@ -253,24 +269,19 @@ public class GrabbableObject : MonoBehaviour
     // --- CÁC HÀM XỬ LÝ JOINT ĐÃ ĐƯỢC CẬP NHẬT Ở ĐÂY ---
     public void JoinWithOtherRigidbody(Rigidbody other)
     {
-        configurableJoint = gameObject.AddComponent<ConfigurableJoint>();
-        configurableJoint.connectedBody = other;
-        
-        // Khóa tất cả các trục để mô phỏng lại hành vi của FixedJoint
-        configurableJoint.xMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.yMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.zMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.angularXMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.angularYMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.angularZMotion = ConfigurableJointMotion.Locked;
+        fixedJoint = gameObject.AddComponent<FixedJoint>();
+        fixedJoint.connectedBody = other;
+        // fixedJoint.enableCollision = true;
+        // fixedJoint.enablePreprocessing = true;
+
     }
 
     public void RemoveRigidbodyJoin()
     {
-        if (configurableJoint != null)
+        if (fixedJoint != null)
         {
-            Destroy(configurableJoint);
-            configurableJoint = null;
+            Destroy(fixedJoint);
+            fixedJoint = null;
         }
     }
 
@@ -294,7 +305,7 @@ public class GrabbableObject : MonoBehaviour
 
                 if (placeableSurface.gameObject == targetSurface.gameObject)
                 {
-                    if (targetSurface.itemContainer != null)
+                    if (targetSurface.itemContainer != null && fixedJoint == null)
                     {
                         JoinWithOtherRigidbody(targetSurface.itemContainer.rb);
                         attachedItemContainer = targetSurface.itemContainer;

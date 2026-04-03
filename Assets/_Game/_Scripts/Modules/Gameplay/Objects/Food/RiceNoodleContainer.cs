@@ -14,14 +14,13 @@ public class RiceNoodleContainer : GrabbableObject
         base.Awake();
         riceNoodleVisual.localScale = new Vector3(1f, currentRiceNoodleWeight/capacity, 1f);
     }
-
     public Ingredient Get()
     {
         if(currentRiceNoodleWeight <= 0f)
         {
             return null;
         }
-        var riceNoodlePiece = Instantiate(riceNoodlePiecePrefab, ingredientSpawnPoint.position, Quaternion.identity, null);
+        var riceNoodlePiece = Instantiate(riceNoodlePiecePrefab, ingredientSpawnPoint.position, ingredientSpawnPoint.rotation, null);
         currentRiceNoodleWeight -= riceNoodlePiece.weight;
         return riceNoodlePiece;
     }

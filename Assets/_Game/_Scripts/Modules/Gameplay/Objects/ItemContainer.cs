@@ -1,16 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class ItemContainer : MonoBehaviour
 {
     public HashSet<GrabbableObject> containedItems = new();
-    #if UNITY_EDITOR
-    public List<GrabbableObject> containedItemList = new();
-    #endif
     public Rigidbody rb;
     public HashSet<GrabbableObject> ContainedItems => containedItems;
+
+    public AnchorPoint[] anchorPoints;
 
     public void Add(GrabbableObject objectToAdd)
     { 
@@ -18,12 +15,6 @@ public class ItemContainer : MonoBehaviour
 
     }
 
-    void Update()
-    {
-
-        containedItemList = containedItems.ToList();
-
-    }
     public void Remove(GrabbableObject objectToRemove)
     {
         containedItems.Remove(objectToRemove);
