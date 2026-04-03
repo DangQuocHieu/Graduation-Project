@@ -21,6 +21,11 @@ public class SauceBowl : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
         }
+        else if(hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
+        {
+            pickupAndDropHandler.DropObject();
+            MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
+        }
         else
         {
             base.InteractWith(hit, pickupAndDropHandler);

@@ -26,7 +26,7 @@ public class GrabbableObject : MonoBehaviour
 
     [Title("Base References")]
     // Đã đổi từ FixedJoint sang ConfigurableJoint
-    public ConfigurableJoint configurableJoint;
+    public FixedJoint fixedJoint;
 
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
@@ -185,7 +185,7 @@ public class GrabbableObject : MonoBehaviour
 
     public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface)
     {
-        rb.isKinematic = true;
+        // rb.isKinematic = true;
         var itemContainer = GetComponent<ItemContainer>();
 
         if (itemContainer != null)
@@ -198,23 +198,21 @@ public class GrabbableObject : MonoBehaviour
         }
         ToggleCollider(isTrigger: true);
 
-        while (Vector3.Distance(transform.position, dropPosition) > 0.05f)
+        while (Vector3.Distance(transform.position, dropPosition) > 0.01f)
         {
-            Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
-            rb.MovePosition(newPos);
+            // Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
+            // rb.MovePosition(newPos);
+            Vector3 direction = dropPosition - transform.position;
+            rb.linearVelocity = followSpeed * direction;
             yield return new WaitForFixedUpdate();
         }
 
-        // --- SỬA LỖI Ở ĐÂY ---
-        // Thay vì dùng transform.position = dropPosition; (Gây giật Joint)
         rb.MovePosition(dropPosition);
-        // BẮT BUỘC: Đợi 1 frame vật lý để Unity đồng bộ lại vị trí của các object bị nối bởi Joint
         yield return new WaitForFixedUpdate();
         if (itemContainer != null)
         {
             foreach (var item in itemContainer.containedItems)
             {
-                // Triệt tiêu lực của các Object con (tránh việc tàn dư lực từ Joint kéo văng object)
                 item.rb.linearVelocity = Vector3.zero;
                 item.rb.angularVelocity = Vector3.zero;
                 item.ToggleCollider(isTrigger: false);
@@ -222,9 +220,9 @@ public class GrabbableObject : MonoBehaviour
         }
 
         ToggleCollider(isTrigger: false);
+
         yield return new WaitForFixedUpdate();
-        rb.isKinematic = false;
-        // Đảm bảo an toàn lần cuối sau khi bật lại isKinematic
+        // rb.isKinematic = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
@@ -232,7 +230,7 @@ public class GrabbableObject : MonoBehaviour
         isWaitingForSurfaceImpact = true;
 
         yield return new WaitUntil(() => targetSurface == null);
-
+        yield return new WaitForFixedUpdate();
         rb.constraints = RigidbodyConstraints.None;
         if (_playerCollider != null)
         {
@@ -255,26 +253,16 @@ public class GrabbableObject : MonoBehaviour
     // --- CÁC HÀM XỬ LÝ JOINT ĐÃ ĐƯỢC CẬP NHẬT Ở ĐÂY ---
     public void JoinWithOtherRigidbody(Rigidbody other)
     {
-        configurableJoint = gameObject.AddComponent<ConfigurableJoint>();
-        configurableJoint.connectedBody = other;
-
-        // 1. Khóa chuyển động tuyến tính (Không cho xê dịch vị trí)
-        configurableJoint.xMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.yMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.zMotion = ConfigurableJointMotion.Locked;
-
-        // 2. Khóa chuyển động xoay (Không cho xoay)
-        configurableJoint.angularXMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.angularYMotion = ConfigurableJointMotion.Locked;
-        configurableJoint.angularZMotion = ConfigurableJointMotion.Locked;
+        fixedJoint = gameObject.AddComponent<FixedJoint>();
+        fixedJoint.connectedBody = other;
     }
 
     public void RemoveRigidbodyJoin()
     {
-        if (configurableJoint != null)
+        if (fixedJoint != null)
         {
-            Destroy(configurableJoint);
-            configurableJoint = null;
+            Destroy(fixedJoint);
+            fixedJoint = null;
         }
     }
 

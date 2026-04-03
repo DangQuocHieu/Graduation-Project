@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 9137571920043990251}
   - component: {fileID: 5980083197651341922}
   - component: {fileID: 354414249774353555}
-  - component: {fileID: 6579661946558560231}
+  - component: {fileID: 3398582235519068399}
   m_Layer: 0
   m_Name: 'Surface '
   m_TagString: Untagged
@@ -140,7 +140,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6579661946558560231
+--- !u!64 &3398582235519068399
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1976,7 +1976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.423265
+      value: 1.9409251
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2114,10 +2114,13 @@ PrefabInstance:
       addedObject: {fileID: 4524507837095235493}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8375694153674753984}
+      addedObject: {fileID: 8242532028722709175}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8242532028722709175}
+      addedObject: {fileID: 3976280260409323052}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8996668295465587426}
   m_SourcePrefab: {fileID: 100100000, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}
 --- !u!1 &1200612977544243947 stripped
 GameObject:
@@ -2138,7 +2141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 4524507837095235493}
   objectColliders:
-  - {fileID: 6579661946558560231}
+  - {fileID: 3398582235519068399}
   - {fileID: 6841783257224962309}
   - {fileID: 1787603133335784691}
   - {fileID: 5026795329730243793}
@@ -2172,7 +2175,7 @@ MonoBehaviour:
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedItemContainer: {fileID: 0}
-  placeableSurface: {fileID: 8375694153674753984}
+  placeableSurface: {fileID: 3976280260409323052}
   sauceAnchor: {fileID: 489990009013168799}
   tofuAnchorPoints: []
   riceNoodleAnchorPoints:
@@ -2211,7 +2214,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &8375694153674753984
+--- !u!114 &8242532028722709175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200612977544243947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8a9e47912c5524db5a7af276f219de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  containedItemList: []
+  rb: {fileID: 4524507837095235493}
+--- !u!114 &3976280260409323052
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2224,8 +2241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SnapPoint: {fileID: 0}
-  itemContainer: {fileID: 8242532028722709175}
---- !u!114 &8242532028722709175
+  itemContainer: {fileID: 8996668295465587426}
+--- !u!114 &8996668295465587426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
