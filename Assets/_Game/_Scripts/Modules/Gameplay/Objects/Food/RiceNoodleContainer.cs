@@ -1,39 +1,39 @@
 using UnityEngine;
 
-public class RiceNoodleContainer : GrabbableObject
+public class IngredientContainer : GrabbableObject
 {
-    public Transform riceNoodleVisual;
-    public Ingredient riceNoodlePiecePrefab;
+    public Transform ingredientVisual;
+    public Ingredient ingredientPrefab;
     public Transform ingredientSpawnPoint;
 
     public float capacity;
-    public float currentRiceNoodleWeight;
+    public float currentIngredientWeight;
 
     protected override void Awake()
     {
         base.Awake();
-        riceNoodleVisual.localScale = new Vector3(1f, currentRiceNoodleWeight/capacity, 1f);
+        ingredientVisual.localScale = new Vector3(1f, currentIngredientWeight/capacity, 1f);
     }
     public Ingredient Get()
     {
-        if(currentRiceNoodleWeight <= 0f)
+        if(currentIngredientWeight <= 0f)
         {
             return null;
         }
-        var riceNoodlePiece = Instantiate(riceNoodlePiecePrefab, ingredientSpawnPoint.position, ingredientSpawnPoint.rotation, null);
-        currentRiceNoodleWeight -= riceNoodlePiece.weight;
-        return riceNoodlePiece;
+        var ingredient = Instantiate(ingredientPrefab, ingredientSpawnPoint.position, ingredientSpawnPoint.rotation, null);
+        currentIngredientWeight -= ingredient.weight;
+        return ingredient;
     }
 
     public void Fill(float weight)
     {
-        if(currentRiceNoodleWeight >= capacity)
+        if(currentIngredientWeight >= capacity)
         {
             return;
         }
-        currentRiceNoodleWeight += weight;
-        float scaleY = currentRiceNoodleWeight / weight;
-        riceNoodleVisual.localScale = new Vector3(1f, scaleY, 1f);
+        currentIngredientWeight += weight;
+        float scaleY = currentIngredientWeight / weight;
+        ingredientVisual.localScale = new Vector3(1f, scaleY, 1f);
 
     }
     

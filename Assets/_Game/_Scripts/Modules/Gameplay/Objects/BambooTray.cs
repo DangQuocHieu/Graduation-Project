@@ -71,14 +71,14 @@ public class BambooTray : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.TryGetComponent<RiceNoodleContainer>(out var riceNoodleContainer))
+        if (hit.collider.TryGetComponent<IngredientContainer>(out var riceNoodleContainer))
         {
             StartCoroutine(FillRiceNoodleCoroutine(riceNoodleContainer));
         }
         base.InteractWith(hit, pickupAndDropHandler);
     }
 
-    private IEnumerator FillRiceNoodleCoroutine(RiceNoodleContainer riceNoodleContainer)
+    private IEnumerator FillRiceNoodleCoroutine(IngredientContainer riceNoodleContainer)
     {
         while (true)
         {
