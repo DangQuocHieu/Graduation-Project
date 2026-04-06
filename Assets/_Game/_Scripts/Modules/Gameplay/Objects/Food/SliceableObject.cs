@@ -6,11 +6,12 @@ public class SliceableObject : MonoBehaviour
     public SlicePieces slicePiecesPrefab;
     public void OnSlice(CuttingBoard cuttingBoard)
     {
+        cuttingBoard.PlaceableSurface.ingredientContainer.containedItems.Remove(grabbaleObject);
         var slicePieces = Instantiate(slicePiecesPrefab, transform.position, transform.rotation, transform.parent);
         foreach(var piece in slicePieces.pieces)
         {
-            cuttingBoard.itemContainer.Add(piece);
-            piece.JoinWithOtherRigidbody(cuttingBoard.itemContainer.rb);
+            piece.JoinWithOtherRigidbody(cuttingBoard.PlaceableSurface.ingredientContainer.rb);
+            cuttingBoard.PlaceableSurface.ingredientContainer.containedItems.Add(piece);
         }
         Destroy(gameObject);
     }

@@ -31,7 +31,7 @@ public class GrabbableObject : MonoBehaviour
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
     public PlaceableSurface targetSurface;
-    public ItemContainer attachedItemContainer;
+    public IngredientContainer attachedItemContainer;
 
 
     protected virtual void Awake()
@@ -67,7 +67,6 @@ public class GrabbableObject : MonoBehaviour
         }
 
         RemoveRigidbodyJoin();
-        RemoveAttachedItemContainer();
         _grabObjectPoint = grabObjectPoint;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.linearVelocity = Vector3.zero;
@@ -186,8 +185,9 @@ public class GrabbableObject : MonoBehaviour
 
     public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
     {
+
         rb.isKinematic = true;
-        var itemContainer = GetComponent<ItemContainer>();
+        var itemContainer = GetComponent<IngredientContainer>();
 
         if (itemContainer != null)
         {
@@ -284,18 +284,10 @@ public class GrabbableObject : MonoBehaviour
             fixedJoint = null;
         }
     }
-
-    public void RemoveAttachedItemContainer()
-    {
-        if (attachedItemContainer != null)
-        {
-            attachedItemContainer.Remove(this);
-            attachedItemContainer = null;
-        }
-    }
+    
     // ------------------------------------------------
 
-    void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collide with: " + collision.gameObject.name);
         if (isWaitingForSurfaceImpact)
@@ -305,10 +297,10 @@ public class GrabbableObject : MonoBehaviour
 
                 if (placeableSurface.gameObject == targetSurface.gameObject)
                 {
-                    if (targetSurface.itemContainer != null && fixedJoint == null)
+                    if (targetSurface.ingredientContainer != null && fixedJoint == null)
                     {
-                        JoinWithOtherRigidbody(targetSurface.itemContainer.rb);
-                        attachedItemContainer = targetSurface.itemContainer;
+                        JoinWithOtherRigidbody(targetSurface.ingredientContainer.rb);
+                        attachedItemContainer = targetSurface.ingredientContainer;
                     }
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;

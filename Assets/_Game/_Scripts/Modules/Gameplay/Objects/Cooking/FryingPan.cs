@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ public class FryingPan : GrabbableObject
     public LiquidContainer oilContainer;
     public PlaceableSurface placeableSurface;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     void Update()
     {
         isHot = attachedCookingZone != null && attachedCookingZone.turnOn;
@@ -20,14 +25,21 @@ public class FryingPan : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cookingZone.placeableSurface, hit);
         }
+        else if(hit.collider.GetComponentInParent<BambooTray>())
+        {
+            var bambooTray = hit.collider.GetComponentInParent<BambooTray>();
+            StartCoroutine(bambooTray.FillCookableObjectCoroutine(placeableSurface.ingredientContainer.GetCookableList()));
+            
+        }
         else
         {
             base.InteractWith(hit, pickupAndDropHandler);
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
+        base.OnCollisionEnter(collision);
         if (collision.gameObject.TryGetComponent<CookingZone>(out var cookingZone))
         {
             attachedCookingZone = cookingZone;

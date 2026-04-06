@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IngredientContainer : GrabbableObject
+public class RiceNoodleContainer : GrabbableObject
 {
     public Transform ingredientVisual;
     public Ingredient ingredientPrefab;

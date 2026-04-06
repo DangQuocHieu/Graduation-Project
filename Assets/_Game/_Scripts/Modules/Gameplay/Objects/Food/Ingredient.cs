@@ -24,7 +24,6 @@ public class Ingredient : GrabbableObject
         {
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
-            cuttingBoard.itemContainer.Add(this);
         }
         else if (hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
         {
@@ -60,7 +59,5 @@ public class Ingredient : GrabbableObject
             attachedAnchorPoint = null;
         }
     }
-
-
 
 }

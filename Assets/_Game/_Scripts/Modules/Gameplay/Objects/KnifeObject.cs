@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class KnifeObject : GrabbableObject
 {
-    [SerializeField] private List<SliceableObject> _currentSliceableObjects = new();
+
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
         if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
@@ -19,11 +19,10 @@ public class KnifeObject : GrabbableObject
 
     public void InteractWithCuttingBoard(CuttingBoard cuttingBoard)
     {
-        Debug.Log("Knife interact with cutting board");
-        cuttingBoard.itemContainer.GetSliceableList(_currentSliceableObjects);
-        foreach (var sliceableObject in _currentSliceableObjects)
+        var currentSliceableObjects = cuttingBoard.PlaceableSurface.ingredientContainer.GetSliceableList();
+        foreach (var sliceableObject in currentSliceableObjects)
         {
-            cuttingBoard.itemContainer.Remove(sliceableObject.grabbaleObject);
+        
             sliceableObject.OnSlice(cuttingBoard);
         }
     }
