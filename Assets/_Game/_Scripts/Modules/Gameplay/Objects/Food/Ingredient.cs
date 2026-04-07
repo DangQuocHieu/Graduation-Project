@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum IngredientType
@@ -12,6 +13,7 @@ public class Ingredient : GrabbableObject
     public float weight;
     public AnchorPoint attachedAnchorPoint;
     public IngredientType ingredientType;
+    public IngredientContainer attachedIngredientContainer;
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
@@ -39,24 +41,69 @@ public class Ingredient : GrabbableObject
     {
         AnchorPoint anchorPoint = bambooTray.GetAnchorPoint(ingredientType);
         if (anchorPoint == null) return false;
-
         attachedAnchorPoint = anchorPoint;
         attachedAnchorPoint.isEmpty = false;
         pickupAndDropHandler?.DropObject();
-
-        // TRUYỀN THÊM anchor.rotation VÀO ĐÂY
+        RemoveRigidbodyJoin();
         MoveToPlaceableSurface(bambooTray.placeableSurface, attachedAnchorPoint.anchor.position, attachedAnchorPoint.anchor.rotation);
 
         return true;
     }
-
-    public override void OnPickUp(Transform grabObjectPoint, Collider collider)
+    public void RemoveAttachedAnchorPoint()
     {
-        base.OnPickUp(grabObjectPoint, collider);
         if (attachedAnchorPoint != null)
         {
             attachedAnchorPoint.isEmpty = true;
             attachedAnchorPoint = null;
+        }
+    }
+
+    public override IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
+    {
+        RemoveAttachedIngredientContainer();
+        yield return base.MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation);
+    }
+    public void RemoveAttachedIngredientContainer()
+    {
+        if (attachedIngredientContainer != null)
+        {
+            attachedIngredientContainer.containedItems.Remove(this);
+            attachedIngredientContainer = null;
+        }
+    }
+    public override void OnPickUp(Transform grabObjectPoint, Collider collider)
+    {
+        base.OnPickUp(grabObjectPoint, collider);
+        RemoveAttachedAnchorPoint();
+        RemoveAttachedIngredientContainer();
+    }
+
+
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        if (isWaitingForSurfaceImpact)
+        {
+            if (collision.gameObject.TryGetComponent<PlaceableSurface>(out var placeableSurface))
+            {
+
+                if (placeableSurface.gameObject == targetSurface.gameObject)
+                {
+                    if (placeableSurface.ingredientContainer != null)
+                    {
+                        placeableSurface.ingredientContainer.containedItems.Add(this);
+                        attachedIngredientContainer = placeableSurface.ingredientContainer;
+                        JoinWithOtherRigidbody(placeableSurface.ingredientContainer.rb);
+                    }
+
+                    isWaitingForSurfaceImpact = false;
+                    targetSurface = null;
+                }
+                else
+                {
+                    isWaitingForSurfaceImpact = false;
+                    targetSurface = null;
+                }
+            }
         }
     }
 

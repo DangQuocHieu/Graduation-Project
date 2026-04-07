@@ -18,6 +18,11 @@ public class CuttingBoard : GrabbableObject
             //Chuyen cac cookableobject tu cuttingboard -> fryingpan
             StartCoroutine(fryingPan.placeableSurface.ingredientContainer.FillCoroutine(PlaceableSurface.ingredientContainer.GetCookableList()));
         }
+        else if(hit.collider.GetComponentInParent<BambooTray>() != null)
+        {
+            var bambooTray = hit.collider.GetComponentInParent<BambooTray>();
+            StartCoroutine(bambooTray.FillCookableObjectCoroutine(PlaceableSurface.ingredientContainer.GetIngredientList()));
+        }
         base.InteractWith(hit, pickupAndDropHandler);
     }
 

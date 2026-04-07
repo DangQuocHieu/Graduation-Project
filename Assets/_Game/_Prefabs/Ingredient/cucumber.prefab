@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: bd6f11c35419c6b408380c878c4d3cc0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bd6f11c35419c6b408380c878c4d3cc0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bd6f11c35419c6b408380c878c4d3cc0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bd6f11c35419c6b408380c878c4d3cc0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -122,12 +134,12 @@ MonoBehaviour:
   fixedJoint: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
-  attachedItemContainer: {fileID: 0}
   weight: 0
   attachedAnchorPoint:
     anchor: {fileID: 0}
     isEmpty: 1
   ingredientType: 2
+  attachedIngredientContainer: {fileID: 0}
 --- !u!65 &7807342239881996831
 BoxCollider:
   m_ObjectHideFlags: 0

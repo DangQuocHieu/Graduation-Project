@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
@@ -71,58 +70,23 @@ public class BambooTray : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.TryGetComponent<RiceNoodleContainer>(out var riceNoodleContainer))
-        {
-            StartCoroutine(FillRiceNoodleCoroutine(riceNoodleContainer));
-        }
-        else if (hit.collider.GetComponentInParent<FryingPan>())
+        if (hit.collider.GetComponentInParent<FryingPan>())
         {
             var fryingPan = hit.collider.GetComponentInParent<FryingPan>();
+            var cookableObjects = placeableSurface.ingredientContainer.GetCookableList();
+            StartCoroutine(fryingPan.placeableSurface.ingredientContainer.FillCoroutine(cookableObjects));
         }
         base.InteractWith(hit, pickupAndDropHandler);
     }
 
     public IEnumerator FillCookableObjectCoroutine(List<Ingredient> cookableObjects)
     {
-        Debug.Log("SFSFSF");
         foreach (var cookableobject in cookableObjects)
         {
-            var anchorPoint = GetAnchorPoint(cookableobject.ingredientType);
-            if (anchorPoint != null)
-            {
-                anchorPoint.isEmpty = false;
-                cookableobject.attachedAnchorPoint = anchorPoint;
-                cookableobject.RemoveRigidbodyJoin();
-                cookableobject.MoveToPlaceableSurface(placeableSurface, anchorPoint.anchor.position, anchorPoint.anchor.rotation);
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-    }
-
-    private IEnumerator FillRiceNoodleCoroutine(RiceNoodleContainer riceNoodleContainer)
-    {
-        Ingredient previousRiceNoodle = null;
-        while (true)
-        {
-            var anchorPoint = GetAnchorPoint(IngredientType.RiceNoodle);
-            if (anchorPoint == null)
-            {
-                yield return new WaitUntil(() => previousRiceNoodle.targetSurface == null);
-                yield return new WaitForSeconds(0.2f);
-                yield break;
-            }
-            var riceNoodle = riceNoodleContainer.Get();
-            if (riceNoodle == null)
+            if (cookableobject.HandleInteractWithBambooTray(this))
             {
                 yield return new WaitForSeconds(0.2f);
-                yield break;
             }
-            if (riceNoodle.HandleInteractWithBambooTray(this, null))
-            {
-                previousRiceNoodle = riceNoodle;
-                yield return new WaitForSeconds(0.1f);
-            }
-
         }
     }
 

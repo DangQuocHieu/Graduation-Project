@@ -11,7 +11,11 @@ public class SliceableObject : MonoBehaviour
         foreach(var piece in slicePieces.pieces)
         {
             piece.JoinWithOtherRigidbody(cuttingBoard.PlaceableSurface.ingredientContainer.rb);
-            cuttingBoard.PlaceableSurface.ingredientContainer.containedItems.Add(piece);
+            if(piece is Ingredient ingredient)
+            {
+                ingredient.attachedIngredientContainer = cuttingBoard.PlaceableSurface.ingredientContainer;
+                cuttingBoard.PlaceableSurface.ingredientContainer.containedItems.Add(piece);
+            }
         }
         Destroy(gameObject);
     }

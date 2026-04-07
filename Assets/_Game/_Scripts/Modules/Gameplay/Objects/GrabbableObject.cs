@@ -31,7 +31,7 @@ public class GrabbableObject : MonoBehaviour
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
     public PlaceableSurface targetSurface;
-    public IngredientContainer attachedItemContainer;
+
 
 
     protected virtual void Awake()
@@ -56,7 +56,6 @@ public class GrabbableObject : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.isKinematic = false;
     }
-
 
     public virtual void OnPickUp(Transform grabObjectPoint, Collider collider)
     {
@@ -183,7 +182,7 @@ public class GrabbableObject : MonoBehaviour
     }
 
 
-    public IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
+    public virtual IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
     {
 
         rb.isKinematic = true;
@@ -206,7 +205,7 @@ public class GrabbableObject : MonoBehaviour
         {
             Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
             rb.MovePosition(newPos);
-            
+
             if (targetRotation.HasValue && initialDistance > 0f)
             {
                 float currentDistance = Vector3.Distance(newPos, dropPosition);
@@ -214,7 +213,7 @@ public class GrabbableObject : MonoBehaviour
                 rb.MoveRotation(Quaternion.Slerp(startRotation, targetRotation.Value, progress));
             }
 
-            yield return new WaitForFixedUpdate(); 
+            yield return new WaitForFixedUpdate();
             // Vector3 direction = dropPosition - transform.position;
             // rb.linearVelocity = followSpeed * direction;
             // yield return new WaitForFixedUpdate();
@@ -239,7 +238,7 @@ public class GrabbableObject : MonoBehaviour
                 item.rb.angularVelocity = Vector3.zero;
                 item.ToggleCollider(isTrigger: false);
             }
-        } 
+        }
         yield return new WaitForFixedUpdate();
         rb.useGravity = true;
         targetSurface = placeableSurface;
@@ -269,6 +268,7 @@ public class GrabbableObject : MonoBehaviour
     // --- CÁC HÀM XỬ LÝ JOINT ĐÃ ĐƯỢC CẬP NHẬT Ở ĐÂY ---
     public void JoinWithOtherRigidbody(Rigidbody other)
     {
+
         fixedJoint = gameObject.AddComponent<FixedJoint>();
         fixedJoint.connectedBody = other;
         // fixedJoint.enableCollision = true;
@@ -280,16 +280,15 @@ public class GrabbableObject : MonoBehaviour
     {
         if (fixedJoint != null)
         {
+            fixedJoint.connectedBody = null;
             Destroy(fixedJoint);
-            fixedJoint = null;
         }
     }
-    
+
     // ------------------------------------------------
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collide with: " + collision.gameObject.name);
         if (isWaitingForSurfaceImpact)
         {
             if (collision.gameObject.TryGetComponent<PlaceableSurface>(out var placeableSurface))
@@ -297,11 +296,6 @@ public class GrabbableObject : MonoBehaviour
 
                 if (placeableSurface.gameObject == targetSurface.gameObject)
                 {
-                    if (targetSurface.ingredientContainer != null && fixedJoint == null)
-                    {
-                        JoinWithOtherRigidbody(targetSurface.ingredientContainer.rb);
-                        attachedItemContainer = targetSurface.ingredientContainer;
-                    }
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;
                 }
@@ -313,6 +307,8 @@ public class GrabbableObject : MonoBehaviour
             }
         }
     }
+
+
 
     public void ToggleCollider(bool isTrigger)
     {

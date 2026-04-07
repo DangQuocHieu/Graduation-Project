@@ -66,6 +66,19 @@ public class IngredientContainer : MonoBehaviour
         return cookableObjects;
     }
 
+    public List<Ingredient> GetIngredientList()
+    {
+        List<Ingredient> ingredients = new();
+        foreach (var obj in containedItems)
+        {
+            if (obj is Ingredient ingredient)
+            {
+                ingredients.Add(ingredient);
+            }
+        }
+        return ingredients;
+    }
+
     public IEnumerator FillCoroutine(List<Ingredient> ingredients)
     {
         HashSet<IngredientSlot> selectedSlots = new();
@@ -75,6 +88,7 @@ public class IngredientContainer : MonoBehaviour
             if(ingredientSlot != null)
             {
                 selectedSlots.Add(ingredientSlot);
+                ingredient.RemoveAttachedAnchorPoint();
                 ingredient.RemoveRigidbodyJoin();
                 ingredient.MoveToPlaceableSurface(placeableSurface, ingredientSlot.transform.position, ingredientSlot.transform.rotation);
                 yield return new WaitForSeconds(0.1f);

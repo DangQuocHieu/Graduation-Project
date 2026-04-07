@@ -123,12 +123,12 @@ MonoBehaviour:
   fixedJoint: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
-  attachedItemContainer: {fileID: 0}
   weight: 0
   attachedAnchorPoint:
     anchor: {fileID: 0}
     isEmpty: 1
   ingredientType: 3
+  attachedIngredientContainer: {fileID: 0}
 --- !u!65 &1274896385208488186
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -148,5 +148,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.089849934, y: 0.0042659454, z: 0.1339341}
-  m_Center: {x: -0.0016454458, y: 0.00014233182, z: 0.011345519}
+  m_Size: {x: 0.07647849, y: 0.0042659454, z: 0.10680376}
+  m_Center: {x: -0.00052120164, y: 0.0001423317, z: 0.007995168}
