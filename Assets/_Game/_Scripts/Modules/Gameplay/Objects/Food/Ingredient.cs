@@ -13,8 +13,7 @@ public class Ingredient : GrabbableObject
     public float weight;
     public AnchorPoint attachedAnchorPoint;
     public IngredientType ingredientType;
-    public IngredientContainer attachedIngredientContainer;
-
+    
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
         if (hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
@@ -22,7 +21,7 @@ public class Ingredient : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
         }
-        else if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
+        else if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard) && GetComponent<SliceableObject>() != null)
         {
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
@@ -78,33 +77,5 @@ public class Ingredient : GrabbableObject
         RemoveAttachedIngredientContainer();
     }
 
-
-    protected override void OnCollisionEnter(Collision collision)
-    {
-        if (isWaitingForSurfaceImpact)
-        {
-            if (collision.gameObject.TryGetComponent<PlaceableSurface>(out var placeableSurface))
-            {
-
-                if (placeableSurface.gameObject == targetSurface.gameObject)
-                {
-                    if (placeableSurface.ingredientContainer != null)
-                    {
-                        placeableSurface.ingredientContainer.containedItems.Add(this);
-                        attachedIngredientContainer = placeableSurface.ingredientContainer;
-                        JoinWithOtherRigidbody(placeableSurface.ingredientContainer.rb);
-                    }
-
-                    isWaitingForSurfaceImpact = false;
-                    targetSurface = null;
-                }
-                else
-                {
-                    isWaitingForSurfaceImpact = false;
-                    targetSurface = null;
-                }
-            }
-        }
-    }
 
 }

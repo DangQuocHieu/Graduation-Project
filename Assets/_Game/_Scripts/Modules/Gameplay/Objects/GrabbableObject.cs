@@ -31,6 +31,7 @@ public class GrabbableObject : MonoBehaviour
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
     public PlaceableSurface targetSurface;
+    public IngredientContainer attachedIngredientContainer;
 
 
 
@@ -298,6 +299,13 @@ public class GrabbableObject : MonoBehaviour
                 {
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;
+
+                    if (placeableSurface.ingredientContainer != null)
+                    {
+                        placeableSurface.ingredientContainer.containedItems.Add(this);
+                        attachedIngredientContainer = placeableSurface.ingredientContainer;
+                        JoinWithOtherRigidbody(placeableSurface.ingredientContainer.rb);
+                    }
                 }
                 else
                 {
