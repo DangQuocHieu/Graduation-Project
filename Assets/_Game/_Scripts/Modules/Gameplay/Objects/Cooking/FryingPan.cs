@@ -25,7 +25,7 @@ public class FryingPan : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cookingZone.placeableSurface, hit);
         }
-        else if(hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
+        else if(hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
         {
             StartCoroutine(bambooTray.FillCookableObjectCoroutine(placeableSurface.ingredientContainer.GetCookableList()));
             

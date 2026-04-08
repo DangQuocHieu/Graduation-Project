@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Rice Noodles
   m_EditorClassIdentifier: 
   displayName: Rice Noodles
+  price: 250
   initialAmount: 25

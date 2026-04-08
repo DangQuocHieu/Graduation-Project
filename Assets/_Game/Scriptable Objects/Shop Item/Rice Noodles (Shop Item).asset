@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddca707fd92789b4c9a01db1aaa76c51, type: 3}
+  m_Name: Rice Noodles (Shop Item)
+  m_EditorClassIdentifier: 
+  grabbableObjectSO: {fileID: 11400000, guid: f14809e91cad5bd40902da5f9be055a3, type: 2}
+  itemPrefab: {fileID: 2814046689594467737, guid: 139adcdda593f5b458a0b056c81b3a7d, type: 3}
+  itemType: 0

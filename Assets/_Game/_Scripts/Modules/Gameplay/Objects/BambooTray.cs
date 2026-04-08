@@ -70,7 +70,7 @@ public class BambooTray : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
+        if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
         {
             var cookableObjects = placeableSurface.ingredientContainer.GetCookableList();
             StartCoroutine(fryingPan.placeableSurface.ingredientContainer.FillCoroutine(cookableObjects));

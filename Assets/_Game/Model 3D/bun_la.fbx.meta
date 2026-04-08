@@ -15,6 +15,11 @@ ModelImporter:
       name: bun_la
     second: {fileID: 2100000, guid: ac235034b81a7a44db415bf198988b67, type: 2}
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rice_noodle
+    second: {fileID: 2100000, guid: b25a0cde2f020d545b73b7d9a19166ad, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: rice_noodle

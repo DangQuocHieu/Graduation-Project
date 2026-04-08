@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Perilla Leaf
   m_EditorClassIdentifier: 
   displayName: Perilla Leaf
-  initialAmount: 1
+  price: 50
+  initialAmount: 2.5

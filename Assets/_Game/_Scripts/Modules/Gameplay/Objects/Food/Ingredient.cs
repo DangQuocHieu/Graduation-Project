@@ -25,7 +25,7 @@ public class Ingredient : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
+        if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
         {
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
@@ -35,7 +35,7 @@ public class Ingredient : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
         }
-        else if (hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
+        else if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
         {
             HandleInteractWithBambooTray(bambooTray, pickupAndDropHandler);
         }

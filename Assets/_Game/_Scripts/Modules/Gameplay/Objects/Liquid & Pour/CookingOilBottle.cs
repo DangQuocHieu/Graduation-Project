@@ -5,7 +5,7 @@ public class CookingOilBottle : PourableBottle
 {
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if(hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
+        if( hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
         {
             pickupAndDropHandler.DropObject();
             StartCoroutine(PourRoutine(fryingPan.oilContainer, pickupAndDropHandler, fryingPan.FillCookingOil));
