@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class KnifeObject : GrabbableObject
@@ -6,24 +8,18 @@ public class KnifeObject : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
+        if(hit.collider.TryGetComponent<Ingredient>(out var ingredient) && ingredient.canSlice)
         {
-            InteractWithCuttingBoard(cuttingBoard);
+            if(ingredient.attachedIngredientContainer != null && ingredient.attachedIngredientContainer.TryGetComponent<CuttingBoard>(out var cuttingBoard))
+            {
+                ingredient.sliceableObject.OnSlice(cuttingBoard);
+            }
         }
-
         else
         {
             base.InteractWith(hit, pickupAndDropHandler);
         }
     }
 
-    public void InteractWithCuttingBoard(CuttingBoard cuttingBoard)
-    {
-        var currentSliceableObjects = cuttingBoard.PlaceableSurface.ingredientContainer.GetSliceableList();
-        foreach (var sliceableObject in currentSliceableObjects)
-        {
-        
-            sliceableObject.OnSlice(cuttingBoard);
-        }
-    }
+
 }

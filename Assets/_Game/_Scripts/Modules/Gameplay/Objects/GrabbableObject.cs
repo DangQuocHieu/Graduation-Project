@@ -1,15 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor.Validation;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(ObjectHover))]
 public class GrabbableObject : MonoBehaviour
 {
 
@@ -21,9 +16,7 @@ public class GrabbableObject : MonoBehaviour
     public FixedJoint fixedJoint;
     public Rigidbody rb;
     public Collider[] objectColliders;
-    private Collider _playerCollider;
     private Transform _grabObjectPoint;
-    public Outline objectOutline;
 
     [Title("Physics Configurations")]
     public float followSpeed = 20f;
@@ -43,7 +36,6 @@ public class GrabbableObject : MonoBehaviour
     protected virtual void Awake()
     {
         SetUpRigidbody();
-        SetUpOutline();
     }
 
 
@@ -64,19 +56,7 @@ public class GrabbableObject : MonoBehaviour
         rb.isKinematic = false;
     }
 
-    private void SetUpOutline()
-    {
-        if (objectOutline != null)
-        {
-            objectOutline.OutlineMode = Outline.Mode.OutlineVisible;
-            objectOutline.OutlineColor = Color.yellow;
-            objectOutline.OutlineWidth = 0f;
-        }
-
-
-    }
-
-    public virtual void OnPickUp(Transform grabObjectPoint, Collider collider)
+    public virtual void OnPickUp(Transform grabObjectPoint)
     {
         if (_moveCoroutine != null)
         {
@@ -91,7 +71,6 @@ public class GrabbableObject : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.useGravity = true;
         rb.isKinematic = true;
-        _playerCollider = collider;
         ToggleCollider(isTrigger: true);
         StopWaitForPickupCompleteCoroutine();
         _waitForPickupCompleteCoroutine = StartCoroutine(WaitForPickupComplete());
@@ -169,10 +148,6 @@ public class GrabbableObject : MonoBehaviour
         }
         _grabObjectPoint = null;
         rb.isKinematic = false;
-        if (_playerCollider != null)
-        {
-            _playerCollider = null;
-        }
     }
 
     public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit, Quaternion? targetRotation = null)
@@ -265,11 +240,6 @@ public class GrabbableObject : MonoBehaviour
 
         yield return new WaitUntil(() => targetSurface == null);
         yield return new WaitForFixedUpdate();
-        rb.constraints = RigidbodyConstraints.None;
-        if (_playerCollider != null)
-        {
-            _playerCollider = null;
-        }
 
         _moveCoroutine = null;
     }
@@ -344,15 +314,4 @@ public class GrabbableObject : MonoBehaviour
         }
     }
 
-    public void OnHoverEnter()
-    {
-        if (objectOutline != null)
-            objectOutline.OutlineWidth = 5f;
-    }
-
-    public void OnHoverExit()
-    {
-        if (objectOutline != null)
-            objectOutline.OutlineWidth = 0f;
-    }
 }

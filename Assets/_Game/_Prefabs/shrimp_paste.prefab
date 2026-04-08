@@ -69,6 +69,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dfb56a79f17b92b48b882ad4a232a9e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7575786770219802629}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dfb56a79f17b92b48b882ad4a232a9e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4593036005092311495}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dfb56a79f17b92b48b882ad4a232a9e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4124037196874664091}
   m_SourcePrefab: {fileID: 100100000, guid: dfb56a79f17b92b48b882ad4a232a9e2, type: 3}
 --- !u!1 &3083025473323212945 stripped
 GameObject:
@@ -114,17 +120,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97877e486eaa4141a890d5aa564a54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grabbableObjectSO: {fileID: 0}
+  fixedJoint: {fileID: 0}
+  rb: {fileID: 0}
   objectColliders: []
-  moveSpeed: 10
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
-  fixedJoint: {fileID: 0}
-  ItemContainer: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
+  attachedIngredientContainer: {fileID: 0}
   pourEffect: {fileID: 0}
   topNap: {fileID: 0}
+  sauceType: 0
 --- !u!65 &7575786770219802629
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -146,3 +154,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.179275, y: 0.60155153, z: 0.179275}
   m_Center: {x: 0, y: -0.047369316, z: 0}
+--- !u!114 &4593036005092311495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083025473323212945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &4124037196874664091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083025473323212945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdf8ea794939fe49b7fc2b4879f252a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectOutline: {fileID: 4593036005092311495}
+  attachedObject: {fileID: 2439916544391438090}

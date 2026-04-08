@@ -7,7 +7,7 @@ public class HoverController : MonoBehaviour
     public float hoverDistance;
     public LayerMask hoverableLayer;
     public ObjectHoverPanel objectHoverPanel;
-    private GrabbableObject currentHoveredObject;
+    private ObjectHover currentHoveredObject;
 
     void Update()
     {
@@ -17,33 +17,55 @@ public class HoverController : MonoBehaviour
     private void HandleHover()
     {
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        if (Physics.Raycast(ray, out RaycastHit hit, hoverDistance, hoverableLayer))
-        {
-            var grabbableObject = hit.collider.GetComponentInParent<GrabbableObject>();
-            if (grabbableObject != null)
-            {
-                if(currentHoveredObject == grabbableObject)
-                {
-                    return;
-                }
+        
+        // Dùng RaycastAll để lấy tất cả các vật thể bị tia ray cắt qua
+        RaycastHit[] hits = Physics.RaycastAll(ray, hoverDistance, hoverableLayer);
 
-                objectHoverPanel.SetUpUI(grabbableObject.grabbableObjectSO);
-                currentHoveredObject?.OnHoverExit();
-                currentHoveredObject = grabbableObject;
-                currentHoveredObject?.OnHoverEnter();
-                objectHoverPanel.ShowPanel(grabbableObject.transform.position);
-            }
-            else
+        ObjectHover closestObjectHover = null;
+        float minDistance = float.MaxValue;
+
+        // Duyệt qua tất cả các hit phát hiện được
+        foreach (RaycastHit hit in hits)
+        {
+            var objectHover = hit.collider.GetComponentInParent<ObjectHover>();
+            
+            // Nếu có ObjectHover và khoảng cách gần hơn mức minDistance hiện tại
+            if (objectHover != null && hit.distance < minDistance)
             {
-                currentHoveredObject?.OnHoverExit();
-                currentHoveredObject = null;
-                objectHoverPanel.HidePanel();
+                minDistance = hit.distance;
+                closestObjectHover = objectHover;
             }
+        }
+
+        // Xử lý logic nếu tìm thấy ít nhất 1 object hợp lệ
+        if (closestObjectHover != null)
+        {
+            // Nếu vẫn đang nhìn vào object hiện tại thì không làm gì cả
+            if (currentHoveredObject == closestObjectHover)
+            {
+                return;
+            }
+
+            if (closestObjectHover.attachedObject != null) 
+            {
+                objectHoverPanel.SetUpUI(closestObjectHover.attachedObject.grabbableObjectSO);
+            }
+
+            currentHoveredObject?.OnHoverExit();
+            currentHoveredObject = closestObjectHover;
+            currentHoveredObject?.OnHoverEnter();
+            objectHoverPanel.ShowPanel(closestObjectHover.transform.position); 
         }
         else
         {
-            currentHoveredObject?.OnHoverExit();
-            currentHoveredObject = null;
+            // Nếu không quét trúng vật nào hoặc không có vật nào có component ObjectHover
+            if (currentHoveredObject != null)
+            {
+                currentHoveredObject.OnHoverExit();
+                currentHoveredObject = null;
+            }
+            
+            // Luôn ẩn panel khi không nhìn vào object nào
             objectHoverPanel.HidePanel();
         }
     }

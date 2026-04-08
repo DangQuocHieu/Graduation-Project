@@ -166,6 +166,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ea44414b237d134a84b1dcc98897f84, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1371924814520450368}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ea44414b237d134a84b1dcc98897f84, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2343247567233232022}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ea44414b237d134a84b1dcc98897f84, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7019734257113217221}
   m_SourcePrefab: {fileID: 100100000, guid: 5ea44414b237d134a84b1dcc98897f84, type: 3}
 --- !u!1 &4752488055543585998 stripped
 GameObject:
@@ -211,16 +217,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97877e486eaa4141a890d5aa564a54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grabbableObjectSO: {fileID: 0}
+  fixedJoint: {fileID: 0}
+  rb: {fileID: 0}
   objectColliders:
   - {fileID: 1371924814520450368}
-  moveSpeed: 10
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
-  fixedJoint: {fileID: 0}
-  ItemContainer: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
+  attachedIngredientContainer: {fileID: 0}
   pourEffect: {fileID: 1374601184781912288}
   topNap: {fileID: 5272360534761117372}
   sauceType: 0
@@ -245,6 +252,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18447825, y: 0.63419354, z: 0.18447825}
   m_Center: {x: 0, y: -0.029294029, z: 0}
+--- !u!114 &2343247567233232022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752488055543585998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdf8ea794939fe49b7fc2b4879f252a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectOutline: {fileID: 7019734257113217221}
+  attachedObject: {fileID: 5655354881450599059}
+--- !u!114 &7019734257113217221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4752488055543585998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &5386281070159595124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5ea44414b237d134a84b1dcc98897f84, type: 3}

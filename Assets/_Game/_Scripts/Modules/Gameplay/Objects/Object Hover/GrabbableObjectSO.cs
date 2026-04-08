@@ -4,4 +4,5 @@ using UnityEngine;
 public class GrabbableObjectSO : ScriptableObject
 {
     public string displayName;
+    public int price;
 }

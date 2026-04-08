@@ -13,7 +13,16 @@ public class Ingredient : GrabbableObject
     public float weight;
     public AnchorPoint attachedAnchorPoint;
     public IngredientType ingredientType;
-    
+    public SliceableObject sliceableObject;
+
+    public bool canSlice => sliceableObject != null;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        sliceableObject = GetComponent<SliceableObject>();
+    }
+
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
         if (hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
@@ -21,7 +30,7 @@ public class Ingredient : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
         }
-        else if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard) && GetComponent<SliceableObject>() != null)
+        else if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
         {
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cuttingBoard.PlaceableSurface, hit);
@@ -70,9 +79,9 @@ public class Ingredient : GrabbableObject
             attachedIngredientContainer = null;
         }
     }
-    public override void OnPickUp(Transform grabObjectPoint, Collider collider)
+    public override void OnPickUp(Transform grabObjectPoint)
     {
-        base.OnPickUp(grabObjectPoint, collider);
+        base.OnPickUp(grabObjectPoint);
         RemoveAttachedAnchorPoint();
         RemoveAttachedIngredientContainer();
     }

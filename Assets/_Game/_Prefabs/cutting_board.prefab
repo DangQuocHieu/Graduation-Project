@@ -505,6 +505,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da9afe91d07f5c04cbfce78dd5a2b4fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 544846055606956147}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da9afe91d07f5c04cbfce78dd5a2b4fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1798852176187985353}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da9afe91d07f5c04cbfce78dd5a2b4fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3649692930293625126}
   m_SourcePrefab: {fileID: 100100000, guid: da9afe91d07f5c04cbfce78dd5a2b4fa, type: 3}
 --- !u!1 &5020428498190846606 stripped
 GameObject:
@@ -555,7 +561,6 @@ MonoBehaviour:
   rb: {fileID: 0}
   objectColliders:
   - {fileID: 1307238201185897786}
-  objectOutline: {fileID: 0}
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
@@ -623,6 +628,38 @@ MonoBehaviour:
   - {fileID: 1571500604965270083}
   placeableSurface: {fileID: 0}
   ContainedItemList: []
+--- !u!114 &1798852176187985353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5020428498190846606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdf8ea794939fe49b7fc2b4879f252a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectOutline: {fileID: 3649692930293625126}
+  attachedObject: {fileID: 1887324701429268100}
+--- !u!114 &3649692930293625126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5020428498190846606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &5685783200444026932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: da9afe91d07f5c04cbfce78dd5a2b4fa, type: 3}

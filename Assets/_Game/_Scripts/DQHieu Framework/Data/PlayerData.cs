@@ -1,9 +1,11 @@
 using DQHieu.Framework;
-
+using UnityEngine;
 [System.Serializable]
 public class PlayerData
-{
-    public int money
+{   
+    [SerializeField] private int money;
+    
+    public int Money 
     {
         get
         {

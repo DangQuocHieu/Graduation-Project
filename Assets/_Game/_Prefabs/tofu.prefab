@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.182
+      value: 2.36
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7667
+      value: 1.9297
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.081
+      value: -3.344
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -72,6 +72,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7438299991417878759}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1947623006019193904}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8049149258468821351}
   m_SourcePrefab: {fileID: 100100000, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
 --- !u!1 &1897026875271249581 stripped
 GameObject:
@@ -138,16 +144,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8222c26442ca7f4f953edbeec2a4e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grabbableObjectSO: {fileID: 11400000, guid: 84f20fc7521e2f84c9ea790915238207, type: 2}
+  fixedJoint: {fileID: 0}
   rb: {fileID: 0}
   objectColliders:
   - {fileID: 3374722911651194581}
-  moveSpeed: 10
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
-  fixedJoint: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
+  attachedIngredientContainer: {fileID: 0}
+  weight: 0
   attachedAnchorPoint:
     anchor: {fileID: 0}
     isEmpty: 0
@@ -166,3 +174,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabbaleObject: {fileID: 6807298243486476670}
   slicePiecesPrefab: {fileID: 2504748691699478818, guid: 6958946996cc6a0499f7814393c974a0, type: 3}
+--- !u!114 &1947623006019193904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897026875271249581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdf8ea794939fe49b7fc2b4879f252a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectOutline: {fileID: 8049149258468821351}
+  attachedObject: {fileID: 6807298243486476670}
+--- !u!114 &8049149258468821351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897026875271249581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddca707fd92789b4c9a01db1aaa76c51, type: 3}
+  m_Name: Tofu (Shop Item)
+  m_EditorClassIdentifier: 
+  grabbableObjectSO: {fileID: 11400000, guid: 84f20fc7521e2f84c9ea790915238207, type: 2}
+  itemPrefab: {fileID: 6807298243486476670, guid: aa563afbdaf62324c9dfeaf315ca12f3, type: 3}
+  itemType: 0

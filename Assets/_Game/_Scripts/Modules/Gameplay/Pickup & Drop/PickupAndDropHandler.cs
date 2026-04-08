@@ -1,4 +1,5 @@
 using System;
+using DQHieu.Framework;
 using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 
@@ -17,10 +18,20 @@ public class PickupAndDropHandler : MonoBehaviour
         HandleAutoDropObject();
     }
 
+    void OnEnable()
+    {
+        EventBus.Subcribe<PurchaseShopItemSucess>(HandlePurchaseShopItemSuccessEvent);
+    }
+
+    void OnDisable()
+    {
+        EventBus.UnSubcribe<PurchaseShopItemSucess>(HandlePurchaseShopItemSuccessEvent);
+    }
+
     public void PickupObject(GrabbableObject grabbableObject)
     {
         _objectInHand = grabbableObject;
-        _objectInHand.OnPickUp(_grabObjectPoint, _collider);
+        _objectInHand.OnPickUp(_grabObjectPoint);
     }
     
     private void HandlePickUpAndDropObject()
@@ -34,11 +45,19 @@ public class PickupAndDropHandler : MonoBehaviour
                     if (hit.collider.attachedRigidbody!=null && hit.collider.attachedRigidbody.TryGetComponent<GrabbableObject>(out var grabbableObject))
                     {
                         _objectInHand = grabbableObject;
-                        _objectInHand.OnPickUp(_grabObjectPoint, _collider);
+                        _objectInHand.OnPickUp(_grabObjectPoint);
                     }
                     else if (hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
                     {
                         stoveSwitch.OnInteract();
+                    }
+                    else if(hit.collider.TryGetComponent<HingedObject>(out var hingedObject))
+                    {
+                        hingedObject.Toggle();
+                    }
+                    else if(hit.collider.TryGetComponent<ShopItem>(out var shopItem))
+                    {
+                        EventBus.SendMessage<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
                     }
                 }
             }
@@ -79,5 +98,11 @@ public class PickupAndDropHandler : MonoBehaviour
                 DropObject();
             }
         }
+    }
+
+    public void HandlePurchaseShopItemSuccessEvent(PurchaseShopItemSucess evt)
+    {
+        _objectInHand = evt.purchasedObject;
+        evt.purchasedObject.OnPickUp(_grabObjectPoint);
     }
 }
