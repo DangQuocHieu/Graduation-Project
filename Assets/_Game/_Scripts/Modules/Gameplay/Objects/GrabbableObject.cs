@@ -12,10 +12,18 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour
 {
+
+    [Title("Object Info")]
+    public GrabbableObjectSO grabbableObjectSO;
+
+    [Title("Base References")]
+    // Đã đổi từ FixedJoint sang ConfigurableJoint
+    public FixedJoint fixedJoint;
     public Rigidbody rb;
     public Collider[] objectColliders;
     private Collider _playerCollider;
     private Transform _grabObjectPoint;
+    public Outline objectOutline;
 
     [Title("Physics Configurations")]
     public float followSpeed = 20f;
@@ -24,9 +32,6 @@ public class GrabbableObject : MonoBehaviour
     private Coroutine _moveCoroutine;
     protected Coroutine _waitForPickupCompleteCoroutine;
 
-    [Title("Base References")]
-    // Đã đổi từ FixedJoint sang ConfigurableJoint
-    public FixedJoint fixedJoint;
 
     [Title("Runtime Tracking")]
     public bool isWaitingForSurfaceImpact = false;
@@ -38,6 +43,7 @@ public class GrabbableObject : MonoBehaviour
     protected virtual void Awake()
     {
         SetUpRigidbody();
+        SetUpOutline();
     }
 
 
@@ -56,6 +62,18 @@ public class GrabbableObject : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.isKinematic = false;
+    }
+
+    private void SetUpOutline()
+    {
+        if (objectOutline != null)
+        {
+            objectOutline.OutlineMode = Outline.Mode.OutlineVisible;
+            objectOutline.OutlineColor = Color.yellow;
+            objectOutline.OutlineWidth = 0f;
+        }
+
+
     }
 
     public virtual void OnPickUp(Transform grabObjectPoint, Collider collider)
@@ -324,5 +342,17 @@ public class GrabbableObject : MonoBehaviour
         {
             col.isTrigger = isTrigger;
         }
+    }
+
+    public void OnHoverEnter()
+    {
+        if (objectOutline != null)
+            objectOutline.OutlineWidth = 5f;
+    }
+
+    public void OnHoverExit()
+    {
+        if (objectOutline != null)
+            objectOutline.OutlineWidth = 0f;
     }
 }

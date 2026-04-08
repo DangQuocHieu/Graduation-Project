@@ -12,13 +12,7 @@ public class CuttingBoard : GrabbableObject
     }
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.GetComponentInParent<FryingPan>() != null)
-        {
-            var fryingPan = hit.collider.GetComponentInParent<FryingPan>();
-            //Chuyen cac cookableobject tu cuttingboard -> fryingpan
-            StartCoroutine(fryingPan.placeableSurface.ingredientContainer.FillCoroutine(PlaceableSurface.ingredientContainer.GetCookableList()));
-        }
-        else if(hit.collider.GetComponentInParent<BambooTray>() != null)
+        if(hit.collider.GetComponentInParent<BambooTray>() != null)
         {
             var bambooTray = hit.collider.GetComponentInParent<BambooTray>();
             StartCoroutine(bambooTray.FillCookableObjectCoroutine(PlaceableSurface.ingredientContainer.GetIngredientList()));
