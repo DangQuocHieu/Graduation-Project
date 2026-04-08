@@ -12,9 +12,8 @@ public class CuttingBoard : GrabbableObject
     }
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if(hit.collider.GetComponentInParent<BambooTray>() != null)
+        if(hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
         {
-            var bambooTray = hit.collider.GetComponentInParent<BambooTray>();
             StartCoroutine(bambooTray.FillCookableObjectCoroutine(PlaceableSurface.ingredientContainer.GetIngredientList()));
         }
         base.InteractWith(hit, pickupAndDropHandler);

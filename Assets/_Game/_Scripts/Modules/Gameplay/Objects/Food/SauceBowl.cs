@@ -8,16 +8,14 @@ public class SauceBowl : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.GetComponentInParent<BambooTray>() != null)
+        if (hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var tray))
         {
-            BambooTray tray = hit.collider.GetComponentInParent<BambooTray>();
             Vector3 sauceAnchorPos = tray.sauceAnchor.position;
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(tray.placeableSurface, sauceAnchorPos);
         }
-        else if(hit.collider.GetComponentInParent<FryingPan>() != null)
+        else if(hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
         {
-            var fryingPan = hit.collider.GetComponentInParent<FryingPan>();
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
         }

@@ -7,7 +7,7 @@ public class HoverController : MonoBehaviour
     public float hoverDistance;
     public LayerMask hoverableLayer;
     public ObjectHoverPanel objectHoverPanel;
-    private ObjectHover currentHoveredObject;
+    public ObjectHover currentHoveredObject;
 
     void Update()
     {
@@ -17,19 +17,24 @@ public class HoverController : MonoBehaviour
     private void HandleHover()
     {
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        
-        // Dùng RaycastAll để lấy tất cả các vật thể bị tia ray cắt qua
         RaycastHit[] hits = Physics.RaycastAll(ray, hoverDistance, hoverableLayer);
 
         ObjectHover closestObjectHover = null;
         float minDistance = float.MaxValue;
 
-        // Duyệt qua tất cả các hit phát hiện được
         foreach (RaycastHit hit in hits)
         {
-            var objectHover = hit.collider.GetComponentInParent<ObjectHover>();
-            
-            // Nếu có ObjectHover và khoảng cách gần hơn mức minDistance hiện tại
+            Debug.Log(hit.collider.name);
+            ObjectHover objectHover = null;
+            if(hit.collider.attachedRigidbody == null)
+            {
+                objectHover = hit.collider.GetComponent<ObjectHover>();
+            }
+            else
+            {
+                objectHover = hit.collider.attachedRigidbody.GetComponent<ObjectHover>();
+            }
+        
             if (objectHover != null && hit.distance < minDistance)
             {
                 minDistance = hit.distance;
