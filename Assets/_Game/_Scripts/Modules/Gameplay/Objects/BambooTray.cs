@@ -51,7 +51,13 @@ public class BambooTray : GrabbableObject
         }
         else if(hit.collider.TryGetComponent<Ingredient>(out var ingredient))
         {
-            ingredient.HandleInteractWithBambooTray(this);
+            if(ingredient.HandleInteractWithBambooTray(this))
+            {
+                Debug.Log("HAHA");
+                EventBus.SendMessage<PickUpIngredientByTray>(new PickUpIngredientByTray());
+                StartCoroutine(WaitForIngredientPickedUpByTray(ingredient));
+            }
+            
         }
         else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
         {
@@ -66,6 +72,12 @@ public class BambooTray : GrabbableObject
             }
         }
         base.InteractWith(hit, pickupAndDropHandler);
+    }
+
+    private IEnumerator WaitForIngredientPickedUpByTray(Ingredient ingredient)
+    {
+        yield return new WaitUntil(() => ingredient.isMoveToSurfaceCompleted);
+        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete());
     }
 
     public IEnumerator FillCookableObjectCoroutine(List<Ingredient> cookableObjects)

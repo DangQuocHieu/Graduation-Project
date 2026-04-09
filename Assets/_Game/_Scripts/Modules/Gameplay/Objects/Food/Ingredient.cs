@@ -57,9 +57,7 @@ public class Ingredient : GrabbableObject
         attachedIngredientAnchor.isEmpty = false;
         pickupAndDropHandler?.DropObject();
         RemoveRigidbodyJoin();
-        anchorPoint.gameObject.SetActive(true); 
-        anchorPoint.attachedIngredient = this;
-        gameObject.SetActive(false);
+        MoveToPlaceableSurface(bambooTray.placeableSurface, anchorPoint.transform.position, anchorPoint.transform.rotation);
         return true;
     }
 

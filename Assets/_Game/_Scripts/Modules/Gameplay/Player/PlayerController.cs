@@ -12,6 +12,9 @@ public class PlayerEventHandler : MonoBehaviour
     {
         EventBus.Subcribe<PourLiquid>(HandlePourLiquidMessage);
         EventBus.Subcribe<PourLiquidComplete>(HandlePourLiquidComplete);
+        EventBus.Subcribe<PurchaseShopItemSucess>(HandlePurchaseShopItemSuccessEvent);
+        EventBus.Subcribe<ItemPickedUpComplete>(HandlePurchaseShopItemPickedUp);
+        EventBus.Subcribe<PickUpIngredientByTray>(HandlePickUpIngredientByTray);
 
     }
 
@@ -19,6 +22,9 @@ public class PlayerEventHandler : MonoBehaviour
     {
         EventBus.UnSubcribe<PourLiquid>(HandlePourLiquidMessage);
         EventBus.UnSubcribe<PourLiquidComplete>(HandlePourLiquidComplete);
+        EventBus.UnSubcribe<PurchaseShopItemSucess>(HandlePurchaseShopItemSuccessEvent);
+        EventBus.UnSubcribe<ItemPickedUpComplete>(HandlePurchaseShopItemPickedUp);
+        EventBus.UnSubcribe<PickUpIngredientByTray>(HandlePickUpIngredientByTray);
 
     }
 
@@ -45,5 +51,19 @@ public class PlayerEventHandler : MonoBehaviour
         pickupAndDropHandler.enabled = true;
     }
 
+    private void HandlePurchaseShopItemSuccessEvent(PurchaseShopItemSucess evt)
+    {
+        kccManager.BlockInput();
+    }
+
+    private void HandlePurchaseShopItemPickedUp(ItemPickedUpComplete evt)
+    {
+        kccManager.UnblockInput();
+    }
+
+    private void HandlePickUpIngredientByTray(PickUpIngredientByTray evt)
+    {
+        kccManager.BlockInput();
+    }
 
 }

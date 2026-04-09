@@ -1,3 +1,4 @@
+using System.Collections;
 using DQHieu.Framework;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
     public GrabbableObject _objectInHand;
+    private Coroutine waitForPurchasedObjectPickedUpCoroutine;
 
 
 
@@ -106,12 +108,12 @@ public class PickupAndDropHandler : MonoBehaviour
 
     public void HandlePurchaseShopItemSuccessEvent(PurchaseShopItemSucess evt)
     {
-
+        StopAllCoroutines();
         if (_objectInHand == null)
         {
             _objectInHand = evt.purchasedObject;
             evt.purchasedObject.OnPickUp(_grabObjectPoint);
-
+            waitForPurchasedObjectPickedUpCoroutine = StartCoroutine(WaitForPurchasedObjectPickedUpByHand(evt.purchasedObject));
         }
         else
         {
@@ -120,10 +122,23 @@ public class PickupAndDropHandler : MonoBehaviour
                 if (evt.purchasedObject is Ingredient ingredient)
                 {
                     ingredient.HandleInteractWithBambooTray(bambooTray);
+                    waitForPurchasedObjectPickedUpCoroutine = StartCoroutine(WaitForPurchasedObjectPickedUpByTray(evt.purchasedObject));
 
                 }
             }
         }
+    }
+
+    private IEnumerator WaitForPurchasedObjectPickedUpByHand(GrabbableObject purchasedObject)
+    {
+        yield return new WaitUntil(() => purchasedObject.isPickupCompleted);
+        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete());
+    }
+
+    private IEnumerator WaitForPurchasedObjectPickedUpByTray(GrabbableObject purchasedObject)
+    {
+        yield return new WaitUntil(() => purchasedObject.isMoveToSurfaceCompleted);
+        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete()); 
     }
 }
 
