@@ -14,7 +14,7 @@ public class PlayerData
         set
         {
             money = value;
-            EventBus.SendMessage<MoneyChangeEvent>(new MoneyChangeEvent());
+            EventBus.SendMessage<MoneyChangeEvent>(new MoneyChangeEvent(money));
         }
         
     }

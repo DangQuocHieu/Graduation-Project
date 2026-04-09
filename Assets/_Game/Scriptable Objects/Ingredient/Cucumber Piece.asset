@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Cucumber Piece
   m_EditorClassIdentifier: 
   displayName: Cucumber
+  price: 0
+  ingredientType: 2
   initialAmount: 10

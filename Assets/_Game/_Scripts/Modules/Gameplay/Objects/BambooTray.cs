@@ -1,71 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using DQHieu.Framework;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class BambooTray : GrabbableObject
 {
-    private Dictionary<IngredientType, List<AnchorPoint>> anchorPointsDic = new();
+    private Dictionary<IngredientType, List<IngredientAnchor>> IngredientAnchorsDic = new(); 
     public PlaceableSurface placeableSurface;
 
     [Title("Sauce")]
     public Transform sauceAnchor;
 
     [Title("Tofu")]
-    public Transform tofuAnchorParent;
-    public List<AnchorPoint> tofuAnchorPoints = new();
+    public List<IngredientAnchor> tofuIngredientAnchors = new();
 
     [Title("Rice Noodle")]
-    public Transform riceNoodleAnchorParent;
-    public List<AnchorPoint> riceNoodleAnchorPoints = new();
+    public List<IngredientAnchor> riceNoodleIngredientAnchors = new();
 
     [Title("Cucumber")]
-    public Transform cucumberAnchorParent;
-    public List<AnchorPoint> cucumberAnchorPoints = new();
+    public List<IngredientAnchor> cucumberIngredientAnchors = new();
 
     [Title("Herb")]
-    public Transform herbAnchor;
-    public List<AnchorPoint> herbAnchorPoints = new();
+    public List<IngredientAnchor> herbIngredientAnchors = new();
 
     protected override void Awake()
     {
         base.Awake();
-        InitializeAnchorPoints();
-        anchorPointsDic.Add(IngredientType.Tofu, tofuAnchorPoints);
-        anchorPointsDic.Add(IngredientType.RiceNoodle, riceNoodleAnchorPoints);
-        anchorPointsDic.Add(IngredientType.Cucumber, cucumberAnchorPoints);
-        anchorPointsDic.Add(IngredientType.Herb, herbAnchorPoints);
+        IngredientAnchorsDic.Add(IngredientType.Tofu, tofuIngredientAnchors);
+        IngredientAnchorsDic.Add(IngredientType.RiceNoodle, riceNoodleIngredientAnchors);
+        IngredientAnchorsDic.Add(IngredientType.Cucumber, cucumberIngredientAnchors);
+        IngredientAnchorsDic.Add(IngredientType.Herb, herbIngredientAnchors);
 
     }
 
-    private void InitializeAnchorPoints()
+   
+    public IngredientAnchor GetIngredientAnchor(IngredientType ingredientType)
     {
-        for (int i = 0; i < tofuAnchorParent.childCount; i++)
-        {
-            var anchorPoint = new AnchorPoint() { anchor = tofuAnchorParent.GetChild(i), isEmpty = true };
-            tofuAnchorPoints.Add(anchorPoint);
-        }
-        for (int i = 0; i < riceNoodleAnchorParent.childCount; i++)
-        {
-            var anchorPoint = new AnchorPoint() { anchor = riceNoodleAnchorParent.GetChild(i), isEmpty = true };
-            riceNoodleAnchorPoints.Add(anchorPoint);
-        }
-        for (int i = 0; i < cucumberAnchorParent.childCount; i++)
-        {
-            var anchorPoint = new AnchorPoint() { anchor = cucumberAnchorParent.GetChild(i), isEmpty = true };
-            cucumberAnchorPoints.Add(anchorPoint);
-        }
-        for (int i = 0; i < herbAnchor.childCount; i++)
-        {
-            var anchorPoint = new AnchorPoint() { anchor = herbAnchor.GetChild(i), isEmpty = true };
-            herbAnchorPoints.Add(anchorPoint);
-        }
-    }
-    public AnchorPoint GetAnchorPoint(IngredientType ingredientType)
-    {
-        var anchorPoint = anchorPointsDic[ingredientType];
-        return anchorPoint.Find(T => T.isEmpty);
+        var IngredientAnchor = IngredientAnchorsDic[ingredientType];
+        return IngredientAnchor.Find(T => T.isEmpty);
     }
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
@@ -74,6 +48,22 @@ public class BambooTray : GrabbableObject
         {
             var cookableObjects = placeableSurface.ingredientContainer.GetCookableList();
             StartCoroutine(fryingPan.placeableSurface.ingredientContainer.FillCoroutine(cookableObjects));
+        }
+        else if(hit.collider.TryGetComponent<Ingredient>(out var ingredient))
+        {
+            ingredient.HandleInteractWithBambooTray(this);
+        }
+        else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
+        {
+            var ingredientSO = shopItem.shopItemSO.grabbableObjectSO as IngredientSO;
+            if (ingredientSO != null)
+            {
+                if ((ingredientSO.ingredientType is IngredientType.Herb || ingredientSO.ingredientType is IngredientType.RiceNoodle)
+                && (GetIngredientAnchor(ingredientSO.ingredientType) != null))
+                {
+                    EventBus.SendMessage<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
+                }
+            }
         }
         base.InteractWith(hit, pickupAndDropHandler);
     }
@@ -84,16 +74,9 @@ public class BambooTray : GrabbableObject
         {
             if (cookableobject.HandleInteractWithBambooTray(this))
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
 
-}
-
-[System.Serializable]
-public class AnchorPoint
-{
-    public Transform anchor;
-    public bool isEmpty = true;
 }

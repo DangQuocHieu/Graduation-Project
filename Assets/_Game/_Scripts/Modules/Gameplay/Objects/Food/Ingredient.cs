@@ -11,7 +11,7 @@ public enum IngredientType
 public class Ingredient : GrabbableObject
 {
     public float weight;
-    public AnchorPoint attachedAnchorPoint;
+    public IngredientAnchor attachedIngredientAnchor;
     public IngredientType ingredientType;
     public SliceableObject sliceableObject;
 
@@ -47,22 +47,28 @@ public class Ingredient : GrabbableObject
 
     public bool HandleInteractWithBambooTray(BambooTray bambooTray, PickupAndDropHandler pickupAndDropHandler = null)
     {
-        AnchorPoint anchorPoint = bambooTray.GetAnchorPoint(ingredientType);
+        if(canSlice)
+        {
+            return false;
+        }
+        IngredientAnchor anchorPoint = bambooTray.GetIngredientAnchor(ingredientType);
         if (anchorPoint == null) return false;
-        attachedAnchorPoint = anchorPoint;
-        attachedAnchorPoint.isEmpty = false;
+        attachedIngredientAnchor = anchorPoint;
+        attachedIngredientAnchor.isEmpty = false;
         pickupAndDropHandler?.DropObject();
         RemoveRigidbodyJoin();
-        MoveToPlaceableSurface(bambooTray.placeableSurface, attachedAnchorPoint.anchor.position, attachedAnchorPoint.anchor.rotation);
-
+        anchorPoint.gameObject.SetActive(true); 
+        anchorPoint.attachedIngredient = this;
+        gameObject.SetActive(false);
         return true;
     }
+
     public void RemoveAttachedAnchorPoint()
     {
-        if (attachedAnchorPoint != null)
+        if (attachedIngredientAnchor != null)
         {
-            attachedAnchorPoint.isEmpty = true;
-            attachedAnchorPoint = null;
+            attachedIngredientAnchor.isEmpty = true;
+            attachedIngredientAnchor = null;
         }
     }
 

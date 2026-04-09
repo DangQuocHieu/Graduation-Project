@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Perilla Leaf (Shop Item)
   m_EditorClassIdentifier: 
   grabbableObjectSO: {fileID: 11400000, guid: e0159e345304b1043b5e79f837df3896, type: 2}
-  itemPrefab: {fileID: 6504101390793103165, guid: c41034c61db7ea14d879304d9bd65c06, type: 3}
+  itemPrefab: {fileID: 286128867918949875, guid: 09636156148b3bd45bd92ee9bd08b46c, type: 3}
   itemType: 0

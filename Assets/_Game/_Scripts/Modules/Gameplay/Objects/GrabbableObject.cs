@@ -31,6 +31,10 @@ public class GrabbableObject : MonoBehaviour
     public PlaceableSurface targetSurface;
     public IngredientContainer attachedIngredientContainer;
 
+    [Title("Flags")]
+    public bool isPickupCompleted = false;
+    public bool isMoveToSurfaceCompleted = false;
+
 
 
     protected virtual void Awake()
@@ -58,6 +62,9 @@ public class GrabbableObject : MonoBehaviour
 
     public virtual void OnPickUp(Transform grabObjectPoint)
     {
+        isPickupCompleted = false;
+        isMoveToSurfaceCompleted = false;
+
         if (_moveCoroutine != null)
         {
             StopCoroutine(_moveCoroutine);
@@ -106,6 +113,7 @@ public class GrabbableObject : MonoBehaviour
             yield break;
         }
 
+        isPickupCompleted = true;
     }
 
     private void HandleFollowToTarget()
@@ -141,6 +149,8 @@ public class GrabbableObject : MonoBehaviour
 
     public void OnDrop()
     {
+        isPickupCompleted = false;
+
         if (_waitForPickupCompleteCoroutine != null)
         {
             StopCoroutine(_waitForPickupCompleteCoroutine);
@@ -153,33 +163,32 @@ public class GrabbableObject : MonoBehaviour
 
     public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit, Quaternion? targetRotation = null)
     {
+        isMoveToSurfaceCompleted = false;
         _grabObjectPoint = null;
-        Vector3 dropPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
-        dropPosition += Vector3.up * dropOffset;
+        Vector3 targetPosition = placeableSurface.SnapPoint == null ? hit.point : placeableSurface.SnapPoint.position;
         if (_moveCoroutine != null)
         {
             StopCoroutine(_moveCoroutine);
             _moveCoroutine = null;
         }
-        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation));
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(targetPosition, placeableSurface, targetRotation));
     }
 
     public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, Vector3 position, Quaternion? targetRotation = null)
     {
+        isMoveToSurfaceCompleted = false;
         _grabObjectPoint = null;
-        Vector3 dropPosition = position + Vector3.up * dropOffset;
         if (_moveCoroutine != null)
         {
             StopCoroutine(_moveCoroutine);
             _moveCoroutine = null;
         }
-        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation));
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(position, placeableSurface, targetRotation));
     }
 
-
-    public virtual IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
+    public virtual IEnumerator MoveToSurfaceCoroutine(Vector3 targetPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
     {
-
+        Vector3 dropPosition = targetPosition + Vector3.up * dropOffset;
         rb.isKinematic = true;
         var itemContainer = GetComponent<IngredientContainer>();
 
@@ -191,11 +200,10 @@ public class GrabbableObject : MonoBehaviour
                 item.ToggleCollider(isTrigger: true);
             }
         }
-        ToggleCollider(isTrigger: true);
 
+        ToggleCollider(isTrigger: true);
         float initialDistance = Vector3.Distance(transform.position, dropPosition);
         Quaternion startRotation = transform.rotation;
-
         while (Vector3.Distance(transform.position, dropPosition) > 0.02f)
         {
             Vector3 newPos = Vector3.MoveTowards(transform.position, dropPosition, followSpeed * Time.fixedDeltaTime);
@@ -203,7 +211,7 @@ public class GrabbableObject : MonoBehaviour
 
             if (targetRotation.HasValue && initialDistance > 0f)
             {
-                float currentDistance = Vector3.Distance(newPos, dropPosition);
+                float currentDistance = Vector3.Distance(newPos, targetPosition);
                 float progress = 1f - (currentDistance / initialDistance);
                 rb.MoveRotation(Quaternion.Slerp(startRotation, targetRotation.Value, progress));
             }
@@ -243,6 +251,7 @@ public class GrabbableObject : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         _moveCoroutine = null;
+        isMoveToSurfaceCompleted = true;
     }
 
     public virtual void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)

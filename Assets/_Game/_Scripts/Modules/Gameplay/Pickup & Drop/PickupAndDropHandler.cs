@@ -1,6 +1,4 @@
-using System;
 using DQHieu.Framework;
-using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PickupAndDropHandler : MonoBehaviour
@@ -10,7 +8,9 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Transform _grabObjectPoint;
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
-    private GrabbableObject _objectInHand;
+    public GrabbableObject _objectInHand;
+
+
 
     void Update()
     {
@@ -33,7 +33,7 @@ public class PickupAndDropHandler : MonoBehaviour
         _objectInHand = grabbableObject;
         _objectInHand.OnPickUp(_grabObjectPoint);
     }
-    
+
     private void HandlePickUpAndDropObject()
     {
         if (Input.GetMouseButtonDown(0))
@@ -42,7 +42,11 @@ public class PickupAndDropHandler : MonoBehaviour
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
                 {
-                    if (hit.collider.attachedRigidbody!=null && hit.collider.attachedRigidbody.TryGetComponent<GrabbableObject>(out var grabbableObject))
+                    if (hit.collider.TryGetComponent<IngredientAnchor>(out var ingredientAnchor))
+                    {
+                        ingredientAnchor.OnInteract(this);
+                    }
+                    else if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<GrabbableObject>(out var grabbableObject))
                     {
                         _objectInHand = grabbableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint);
@@ -51,11 +55,11 @@ public class PickupAndDropHandler : MonoBehaviour
                     {
                         stoveSwitch.OnInteract();
                     }
-                    else if(hit.collider.TryGetComponent<HingedObject>(out var hingedObject))
+                    else if (hit.collider.TryGetComponent<HingedObject>(out var hingedObject))
                     {
                         hingedObject.Toggle();
                     }
-                    else if(hit.collider.TryGetComponent<ShopItem>(out var shopItem))
+                    else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
                     {
                         EventBus.SendMessage<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
                     }
@@ -75,7 +79,7 @@ public class PickupAndDropHandler : MonoBehaviour
                     else
                     {
                         _objectInHand.InteractWith(hit, this);
-                        return; 
+                        return;
                     }
                 }
             }
@@ -102,7 +106,24 @@ public class PickupAndDropHandler : MonoBehaviour
 
     public void HandlePurchaseShopItemSuccessEvent(PurchaseShopItemSucess evt)
     {
-        _objectInHand = evt.purchasedObject;
-        evt.purchasedObject.OnPickUp(_grabObjectPoint);
+
+        if (_objectInHand == null)
+        {
+            _objectInHand = evt.purchasedObject;
+            evt.purchasedObject.OnPickUp(_grabObjectPoint);
+
+        }
+        else
+        {
+            if (_objectInHand is BambooTray bambooTray)
+            {
+                if (evt.purchasedObject is Ingredient ingredient)
+                {
+                    ingredient.HandleInteractWithBambooTray(bambooTray);
+
+                }
+            }
+        }
     }
 }
+

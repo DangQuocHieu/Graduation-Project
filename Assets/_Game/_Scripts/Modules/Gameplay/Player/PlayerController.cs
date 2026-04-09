@@ -1,44 +1,39 @@
+using CoreGame.Movement;
 using DQHieu.Framework;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerEventHandler : MonoBehaviour
 {
     public PickupAndDropHandler pickupAndDropHandler;
-    
+    public KCCManager kccManager;
+
 
     void OnEnable()
     {
         EventBus.Subcribe<PourLiquid>(HandlePourLiquidMessage);
         EventBus.Subcribe<PourLiquidComplete>(HandlePourLiquidComplete);
+
     }
 
     void OnDisable()
     {
         EventBus.UnSubcribe<PourLiquid>(HandlePourLiquidMessage);
         EventBus.UnSubcribe<PourLiquidComplete>(HandlePourLiquidComplete);
+
     }
 
     public void HandlePourLiquidMessage(PourLiquid message)
     {
-        DisableMovement();
+        kccManager.BlockInput();
         DisablePickup();
     }
 
     public void HandlePourLiquidComplete(PourLiquidComplete evt)
     {
-        EnableMovement();
+        kccManager.UnblockInput();
         EnablePickup();
     }
 
-    public void DisableMovement()
-    {
-        
-    }
-
-    public void EnableMovement()
-    {
-        
-    }
 
     public void DisablePickup()
     {
@@ -49,4 +44,6 @@ public class PlayerController : MonoBehaviour
     {
         pickupAndDropHandler.enabled = true;
     }
+
+
 }
