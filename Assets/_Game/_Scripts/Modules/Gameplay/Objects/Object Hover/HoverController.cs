@@ -26,7 +26,7 @@ public class HoverController : MonoBehaviour
         {
             Debug.Log(hit.collider.name);
             ObjectHover objectHover = null;
-            if(hit.collider.attachedRigidbody == null)
+            if (hit.collider.attachedRigidbody == null)
             {
                 objectHover = hit.collider.GetComponent<ObjectHover>();
             }
@@ -34,7 +34,7 @@ public class HoverController : MonoBehaviour
             {
                 objectHover = hit.collider.attachedRigidbody.GetComponent<ObjectHover>();
             }
-        
+
             if (objectHover != null && hit.distance < minDistance)
             {
                 minDistance = hit.distance;
@@ -42,35 +42,40 @@ public class HoverController : MonoBehaviour
             }
         }
 
-        // Xử lý logic nếu tìm thấy ít nhất 1 object hợp lệ
         if (closestObjectHover != null)
         {
-            // Nếu vẫn đang nhìn vào object hiện tại thì không làm gì cả
             if (currentHoveredObject == closestObjectHover)
             {
                 return;
             }
 
-            if (closestObjectHover.attachedObject != null) 
-            {
-                objectHoverPanel.SetUpUI(closestObjectHover.attachedObject.grabbableObjectSO);
-            }
-
             currentHoveredObject?.OnHoverExit();
             currentHoveredObject = closestObjectHover;
             currentHoveredObject?.OnHoverEnter();
-            objectHoverPanel.ShowPanel(closestObjectHover.transform.position); 
+            objectHoverPanel.ShowPanel(closestObjectHover.transform.position);
+
+            if (closestObjectHover.attachedObject != null)
+            {
+                objectHoverPanel.SetUpUI(closestObjectHover.attachedObject.grabbableObjectSO);
+            }
+            else if (closestObjectHover.TryGetComponent<ShopItem>(out var shopItem))
+            {
+                if(shopItem.shopItemSO != null)
+                objectHoverPanel.SetUpUI(shopItem.shopItemSO.grabbableObjectSO, displayPrice: true);
+            }
+            else
+            {
+                objectHoverPanel.HidePanel();
+            }
         }
         else
         {
-            // Nếu không quét trúng vật nào hoặc không có vật nào có component ObjectHover
             if (currentHoveredObject != null)
             {
                 currentHoveredObject.OnHoverExit();
                 currentHoveredObject = null;
             }
-            
-            // Luôn ẩn panel khi không nhìn vào object nào
+
             objectHoverPanel.HidePanel();
         }
     }

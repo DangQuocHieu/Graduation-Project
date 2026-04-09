@@ -9,6 +9,8 @@ public class ObjectHoverPanel : MonoBehaviour
     public TextMeshProUGUI displayNameText;
     public TextMeshProUGUI weightText;
     public RectTransform weightRect;
+    public RectTransform priceRect;
+    public TextMeshProUGUI priceText;
     public CanvasGroup canvasGroup;
     private bool isPanelVisible;
 
@@ -30,7 +32,7 @@ public class ObjectHoverPanel : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        
+
         // Đảm bảo khởi tạo trong trạng thái ẩn hoàn toàn
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
@@ -59,17 +61,45 @@ public class ObjectHoverPanel : MonoBehaviour
         }
     }
 
-    public void SetUpUI(GrabbableObjectSO grabbableObjectSO)
+    // public void SetUpUI(ShopItemSO shopItemSO)
+    // {
+    //     if (shopItemSO != null)
+    //     {
+    //         priceRect.gameObject.SetActive(true);
+    //         priceText.text = CurrencyFormatter.ToGameCurrency(shopItemSO.grabbableObjectSO.price);
+    //         if (shopItemSO.grabbableObjectSO is IngredientSO ingredientSO)
+    //         {
+    //             weightRect.gameObject.SetActive(true);
+    //             weightText.text = $"{ingredientSO.initialAmount}g";
+    //         }
+    //         else
+    //         {
+    //             weightRect.gameObject.SetActive(false);
+    //             weightText.text = "";
+    //         }
+    //     }
+    // }
+
+    public void SetUpUI(GrabbableObjectSO grabbableObjectSO, bool displayPrice = false)
     {
-        if(grabbableObjectSO == null)
+        if (grabbableObjectSO == null)
         {
             displayNameText.text = "";
             weightText.text = "";
             return;
         }
-        
+        if(displayPrice)
+        {
+            priceText.text = CurrencyFormatter.ToGameCurrency(grabbableObjectSO.price);
+            priceRect.gameObject.SetActive(true);
+        }
+        else
+        {
+            priceText.text = "";
+            priceRect.gameObject.SetActive(false);
+        }
         displayNameText.text = grabbableObjectSO.displayName;
-        if(grabbableObjectSO is IngredientSO ingredientSO)
+        if (grabbableObjectSO is IngredientSO ingredientSO)
         {
             weightRect.gameObject.SetActive(true);
             weightText.text = $"{ingredientSO.initialAmount}g";
@@ -96,16 +126,16 @@ public class ObjectHoverPanel : MonoBehaviour
         }
         else
         {
-            currentTargetPosition = position; 
+            currentTargetPosition = position;
             UpdatePositionAndScale();
         }
     }
 
     public void HidePanel()
     {
-        if(!isPanelVisible) return;
+        if (!isPanelVisible) return;
         isPanelVisible = false;
-        
+
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
 
@@ -114,7 +144,7 @@ public class ObjectHoverPanel : MonoBehaviour
         // Mờ dần đi
         fadeTween = canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.InQuad);
     }
-    
+
     private void OnDestroy()
     {
         fadeTween?.Kill();

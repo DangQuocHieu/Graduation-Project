@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bun_la
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a96e00323c5ca044e9ad58ae666a92fd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -65,6 +69,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a96e00323c5ca044e9ad58ae666a92fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2814046689594467737}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a96e00323c5ca044e9ad58ae666a92fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5689480977343796332}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a96e00323c5ca044e9ad58ae666a92fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9113887181394896653}
   m_SourcePrefab: {fileID: 100100000, guid: a96e00323c5ca044e9ad58ae666a92fd, type: 3}
 --- !u!1 &7641326578945519605 stripped
 GameObject:
@@ -90,8 +100,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.042413406, y: 0.030499283, z: 0.08295376}
-  m_Center: {x: -0.00000028777868, y: -0.00026184553, z: 0}
+  m_Size: {x: 0.028826416, y: 0.023775645, z: 0.067253046}
+  m_Center: {x: -0.000054233242, y: -0.0000035697594, z: 0}
 --- !u!54 &2026383753359973725
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -131,18 +141,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8222c26442ca7f4f953edbeec2a4e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grabbableObjectSO: {fileID: 11400000, guid: f14809e91cad5bd40902da5f9be055a3, type: 2}
+  fixedJoint: {fileID: 0}
   rb: {fileID: 0}
   objectColliders:
   - {fileID: 4683264996344636683}
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
-  fixedJoint: {fileID: 0}
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
-  attachedItemContainer: {fileID: 0}
+  attachedIngredientContainer: {fileID: 0}
   weight: 0.025
   attachedAnchorPoint:
     anchor: {fileID: 0}
     isEmpty: 1
   ingredientType: 1
+  sliceableObject: {fileID: 0}
+--- !u!114 &5689480977343796332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641326578945519605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdf8ea794939fe49b7fc2b4879f252a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectOutline: {fileID: 9113887181394896653}
+  attachedObject: {fileID: 2814046689594467737}
+--- !u!114 &9113887181394896653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641326578945519605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

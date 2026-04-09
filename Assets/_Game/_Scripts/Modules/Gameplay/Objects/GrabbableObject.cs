@@ -147,6 +147,7 @@ public class GrabbableObject : MonoBehaviour
             _waitForPickupCompleteCoroutine = null;
         }
         _grabObjectPoint = null;
+        rb.constraints = RigidbodyConstraints.None;
         rb.isKinematic = false;
     }
 

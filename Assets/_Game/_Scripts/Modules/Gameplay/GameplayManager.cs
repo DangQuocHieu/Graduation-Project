@@ -8,9 +8,13 @@ public class GameplayManager : MonoBehaviour
     public DataManager dataManager;
     public EconomySystem economySystem;
 
+    [Title("GUI")]
+    public MoneyUIPanel moneyUIPanel;
+
     void Awake()
     {
         dataManager.LoadData();
         economySystem.Initialize(dataManager);
+        moneyUIPanel.Initialize(dataManager);
     }
 }
