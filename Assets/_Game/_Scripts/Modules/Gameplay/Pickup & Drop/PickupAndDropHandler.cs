@@ -18,6 +18,7 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         HandlePickUpAndDropObject();
         HandleAutoDropObject();
+        HandleInteractObject();
     }
 
     void OnEnable()
@@ -36,6 +37,30 @@ public class PickupAndDropHandler : MonoBehaviour
         _objectInHand.OnPickUp(_grabObjectPoint);
     }
 
+    private void HandleInteractObject()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
+            {
+                if(hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
+                {
+                    stoveSwitch.OnInteract();
+                }
+                else if(hit.collider.TryGetComponent<HingedObject>(out var hingedObject))
+                {
+                    hingedObject.Toggle();
+                }
+                else if(hit.collider.TryGetComponent<TakeOrderButton>(out var takeOrderButton))
+                {
+                    takeOrderButton.OnClick();
+                }
+                
+            }
+            
+            
+        }
+    }
     private void HandlePickUpAndDropObject()
     {
         if (Input.GetMouseButtonDown(0))
@@ -52,14 +77,6 @@ public class PickupAndDropHandler : MonoBehaviour
                     {
                         _objectInHand = grabbableObject;
                         _objectInHand.OnPickUp(_grabObjectPoint);
-                    }
-                    else if (hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
-                    {
-                        stoveSwitch.OnInteract();
-                    }
-                    else if (hit.collider.TryGetComponent<HingedObject>(out var hingedObject))
-                    {
-                        hingedObject.Toggle();
                     }
                     else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
                     {

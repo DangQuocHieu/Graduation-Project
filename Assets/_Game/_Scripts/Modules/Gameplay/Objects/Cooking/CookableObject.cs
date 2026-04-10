@@ -39,6 +39,12 @@ public class CookableObject : MonoBehaviour
         cookingTween = null;
     }
 
+    public void ApplyCookableObject(CookableObject cookableObject)
+    {
+        cookProgress = cookableObject.cookProgress;
+        UpdateFoodColor();
+    }
+
     private void UpdateFoodColor()
     {
         float percentage = cookProgress / maxBurnLevel;

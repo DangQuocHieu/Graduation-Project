@@ -14,6 +14,7 @@ public class Ingredient : GrabbableObject
     public IngredientAnchor attachedIngredientAnchor;
     public IngredientType ingredientType;
     public SliceableObject sliceableObject;
+    public CookableObject cookableObject;
 
     public bool canSlice => sliceableObject != null;
 
@@ -21,6 +22,7 @@ public class Ingredient : GrabbableObject
     {
         base.Awake();
         sliceableObject = GetComponent<SliceableObject>();
+        cookableObject = GetComponent<CookableObject>();
     }
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
@@ -89,6 +91,7 @@ public class Ingredient : GrabbableObject
         RemoveAttachedAnchorPoint();
         RemoveAttachedIngredientContainer();
     }
+
 
 
 }

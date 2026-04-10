@@ -78,6 +78,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8049149258468821351}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4195032510305819801}
   m_SourcePrefab: {fileID: 100100000, guid: 9f28dbd2fae1e514195a22a6706389cb, type: 3}
 --- !u!1 &1897026875271249581 stripped
 GameObject:
@@ -155,11 +158,12 @@ MonoBehaviour:
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  isPickupCompleted: 0
+  isMoveToSurfaceCompleted: 0
   weight: 0
-  attachedAnchorPoint:
-    anchor: {fileID: 0}
-    isEmpty: 0
+  attachedIngredientAnchor: {fileID: 0}
   ingredientType: 0
+  sliceableObject: {fileID: 0}
 --- !u!114 &7438299991417878759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,3 +210,50 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &4195032510305819801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897026875271249581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375a4650fd5a2714e8d9d0cc5d0f9c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 0}
+  cookProgress: 0
+  perfectCookLevel: 100
+  maxBurnLevel: 200
+  totalTimeToBurn: 60
+  cookingColors:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 0.75686276, b: 0.14509805, a: 1}
+    key2: {r: 0.54509807, g: 0.27058825, b: 0.07450981, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2

@@ -14,9 +14,9 @@ public class ObjectHover : MonoBehaviour
     {
         if (objectOutline != null)
         {
-            objectOutline.OutlineMode = Outline.Mode.OutlineAll;
+            objectOutline.OutlineMode = Outline.Mode.OutlineVisible;
             objectOutline.OutlineColor = Color.yellow;
-            objectOutline.OutlineWidth = 5f;
+            objectOutline.OutlineWidth = 2f;
             
             // Tắt component mặc định để tiết kiệm hiệu năng render
             objectOutline.enabled = false; 

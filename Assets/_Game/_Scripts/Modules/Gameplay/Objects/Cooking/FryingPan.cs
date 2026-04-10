@@ -8,6 +8,7 @@ public class FryingPan : GrabbableObject
     public CookingZone attachedCookingZone;
     public LiquidContainer oilContainer;
     public PlaceableSurface placeableSurface;
+    public bool containCookingOil = false;
 
     protected override void Awake()
     {
@@ -58,6 +59,7 @@ public class FryingPan : GrabbableObject
 
     public Tween FillCookingOil()
     {
+        containCookingOil = true;
         Transform cookingOil = oilContainer.liquid;
         cookingOil.localScale = new Vector3(0.1f, 0f, 0.1f);
         Sequence oilSequence = DOTween.Sequence();
