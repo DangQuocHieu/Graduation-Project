@@ -71,6 +71,10 @@ public class BambooTray : GrabbableObject
                 }
             }
         }
+        else if(hit.collider.TryGetComponent<Customer>(out var customer))
+        {
+            customer.HandleFoodServed();
+        }
         base.InteractWith(hit, pickupAndDropHandler);
     }
 

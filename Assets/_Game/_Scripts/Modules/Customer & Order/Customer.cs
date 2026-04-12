@@ -12,7 +12,7 @@ public class Customer : MonoBehaviour
     [TabGroup("References")] public CustomerState currentState;
     [TabGroup("References")] public CustomerManager customerManager;
 
-    [TabGroup("GUI")] public TakeOrderButton takeOrderButton;
+    [TabGroup("References")] public CustomerOrderController orderController;
 
     void Start()
     {
@@ -57,10 +57,6 @@ public class Customer : MonoBehaviour
         switch (state)
         {
             case CustomerState.Coming:
-
-                break;
-            case CustomerState.Ordering:
-
                 break;
         }
     }
@@ -71,7 +67,7 @@ public class Customer : MonoBehaviour
         {
             return;
         }
-        ExitState(state);
+        ExitState(currentState);
         currentState = state;
         EnterState(currentState);
     }
@@ -98,12 +94,13 @@ public class Customer : MonoBehaviour
     {
         customerMovement.StartRotating(customerManager.orderPoint.rotation);
         customerAnim.SetBool(GameConstant.WALKING, false);
-        takeOrderButton.gameObject.SetActive(true);
+        orderController.takeOrderButton.gameObject.SetActive(true);
+
     }
 
     private void UpdateOrderingState()
     {
-        if(takeOrderButton.orderAccepted)
+        if (orderController.orderAccepted)
         {
             ChangeState(CustomerState.WaitingForFood);
         }
@@ -117,23 +114,30 @@ public class Customer : MonoBehaviour
         var availableChair = customerManager.GetAvailableChair();
         customerAnim.SetBool(GameConstant.WALKING, true);
         customerMovement.MoveToPosition(availableChair.transform.position);
-        StartCoroutine(WaitForSittingOnChairCoroutine(availableChair));        
+        StartCoroutine(WaitForSittingOnChairCoroutine(availableChair));
     }
 
     private IEnumerator WaitForSittingOnChairCoroutine(ChairObject chairObject)
     {
-        yield return new WaitUntil(()=> customerMovement.HasReachedDestination());
+        yield return new WaitUntil(() => customerMovement.HasReachedDestination());
         SittingOnChair(chairObject);
     }
-    
+
     private void SittingOnChair(ChairObject chairObject)
     {
         customerMovement.DisableMovement();
         customerMovement.MoveToPositionImmediately(chairObject.sittingPoint.position);
         customerMovement.RotateToTargetImmediately(Quaternion.Euler(chairObject.sittingRotation));
         customerAnim.Play(GameConstant.SITTING_IDLE);
-        
-    }
 
+    }
     #endregion
+
+    public void HandleFoodServed()
+    {
+        if(orderController.orderAccepted)
+        {
+            ChangeState(CustomerState.Eating);
+        }
+    }
 }

@@ -51,9 +51,9 @@ public class PickupAndDropHandler : MonoBehaviour
                 {
                     hingedObject.Toggle();
                 }
-                else if(hit.collider.TryGetComponent<TakeOrderButton>(out var takeOrderButton))
+                else if(hit.collider.TryGetComponent<CustomerOrderController>(out var orderController))
                 {
-                    takeOrderButton.OnClick();
+                    orderController.HandleOrderAccepted();
                 }
                 
             }
