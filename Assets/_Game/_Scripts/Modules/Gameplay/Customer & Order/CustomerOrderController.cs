@@ -1,9 +1,14 @@
 using UnityEngine;
 
-public class CustomerOrderController : MonoBehaviour
+public class CustomerOrderController : MonoBehaviour, IInteractable
 {
     public bool orderAccepted = false;
     public GameObject takeOrderButton;
+
+    public void OnInteract()
+    {
+        HandleOrderAccepted();
+    }
 
     public void HandleOrderAccepted()
     {

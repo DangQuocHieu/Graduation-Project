@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -161,7 +162,7 @@ public class GrabbableObject : MonoBehaviour
         rb.isKinematic = false;
     }
 
-    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit, Quaternion? targetRotation = null)
+    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, RaycastHit hit, Quaternion? targetRotation = null, Action onComplete = null)
     {
         isMoveToSurfaceCompleted = false;
         _grabObjectPoint = null;
@@ -174,7 +175,7 @@ public class GrabbableObject : MonoBehaviour
         _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(targetPosition, placeableSurface, targetRotation));
     }
 
-    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, Vector3 position, Quaternion? targetRotation = null)
+    public void MoveToPlaceableSurface(PlaceableSurface placeableSurface, Vector3 position, Quaternion? targetRotation = null, Action onComplete = null)
     {
         isMoveToSurfaceCompleted = false;
         _grabObjectPoint = null;
@@ -183,10 +184,10 @@ public class GrabbableObject : MonoBehaviour
             StopCoroutine(_moveCoroutine);
             _moveCoroutine = null;
         }
-        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(position, placeableSurface, targetRotation));
+        _moveCoroutine = StartCoroutine(MoveToSurfaceCoroutine(position, placeableSurface, targetRotation, onComplete));
     }
 
-    public virtual IEnumerator MoveToSurfaceCoroutine(Vector3 targetPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
+    public virtual IEnumerator MoveToSurfaceCoroutine(Vector3 targetPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null, Action onComplete = null)
     {
         Vector3 dropPosition = targetPosition + Vector3.up * dropOffset;
         rb.isKinematic = true;
@@ -252,6 +253,8 @@ public class GrabbableObject : MonoBehaviour
 
         _moveCoroutine = null;
         isMoveToSurfaceCompleted = true;
+
+        onComplete?.Invoke();
     }
 
     public virtual void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -72,10 +73,10 @@ public class Ingredient : GrabbableObject
         }
     }
 
-    public override IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null)
+    public override IEnumerator MoveToSurfaceCoroutine(Vector3 dropPosition, PlaceableSurface placeableSurface, Quaternion? targetRotation = null, Action onComplete = null)
     {
         RemoveAttachedIngredientContainer();
-        yield return base.MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation);
+        yield return base.MoveToSurfaceCoroutine(dropPosition, placeableSurface, targetRotation, onComplete);
     }
     public void RemoveAttachedIngredientContainer()
     {

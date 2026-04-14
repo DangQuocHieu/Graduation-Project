@@ -1,4 +1,5 @@
 using DQHieu.Framework;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class EconomySystem : MonoBehaviour
@@ -8,17 +9,20 @@ public class EconomySystem : MonoBehaviour
     void OnEnable()
     {
         EventBus.Subcribe<InteractWithShopItemEvent>(HandleInteractWithShopItemEvent);
+        EventBus.Subcribe<CustomerPaymentReceived>(HandleCustomerPaymentReceivedEvent);
     }
 
     void OnDisable()
     {
         EventBus.UnSubcribe<InteractWithShopItemEvent>(HandleInteractWithShopItemEvent);
+        EventBus.UnSubcribe<CustomerPaymentReceived>(HandleCustomerPaymentReceivedEvent);
     }
 
     public void Initialize(DataManager dataManager)
     {
         this.dataManager = dataManager;
     }
+
     public bool TrySpendMoney(int money)
     {
         if(dataManager.playerData.Money >= money)
@@ -44,5 +48,11 @@ public class EconomySystem : MonoBehaviour
     public void HandleInteractWithShopItemEvent(InteractWithShopItemEvent evt)
     {
         TryPurchaseItem(evt.shopItem);
+    }
+
+    public void HandleCustomerPaymentReceivedEvent(CustomerPaymentReceived evt)
+    {
+        int amount = evt.amount;
+        dataManager.playerData.Money += amount;
     }
 }

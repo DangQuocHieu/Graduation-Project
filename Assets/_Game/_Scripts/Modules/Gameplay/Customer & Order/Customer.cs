@@ -7,12 +7,19 @@ using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
-    [TabGroup("References")] public Animator customerAnim;
+    [TabGroup("References")] public CustomerAnimator customerAnim;
     [TabGroup("References")] public CustomerMovement customerMovement;
     [TabGroup("References")] public CustomerState currentState;
     [TabGroup("References")] public CustomerManager customerManager;
 
     [TabGroup("References")] public CustomerOrderController orderController;
+    [TabGroup("References")] public Transform chopstickVisual;
+    [TabGroup("References")] public ChairObject attachedChairObject;
+    [TabGroup("References")] public Transform paymentVisual;
+
+    [TabGroup("AI Behaviour")] public float currentStateDuration;
+    [TabGroup("AI Behaviour")] public float eatingStateDuration;
+    [TabGroup("AI Behaviour")] public float stateTimer;
 
     void Start()
     {
@@ -36,6 +43,16 @@ public class Customer : MonoBehaviour
             case CustomerState.WaitingForFood:
                 EnterWaitingForFoodState();
                 break;
+            case CustomerState.Eating:
+                EnterEatingState();
+                break;
+            case CustomerState.Paying:
+                EnterPayingState();
+                break;
+            case CustomerState.Leaving:
+                EnterLeavingState();
+                break;
+
         }
     }
 
@@ -49,6 +66,9 @@ public class Customer : MonoBehaviour
             case CustomerState.Ordering:
                 UpdateOrderingState();
                 break;
+            case CustomerState.Eating:
+                UpdateEatingState();
+                break;
         }
     }
 
@@ -56,7 +76,8 @@ public class Customer : MonoBehaviour
     {
         switch (state)
         {
-            case CustomerState.Coming:
+            case CustomerState.Paying:
+                ExitPayingState();
                 break;
         }
     }
@@ -75,8 +96,9 @@ public class Customer : MonoBehaviour
     #region Methods for Coming State
     private void EnterComingState()
     {
-        customerAnim.SetBool(GameConstant.WALKING, true);
+        customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(customerManager.orderPoint.position);
+
     }
 
     private void UpdateComingState()
@@ -93,7 +115,7 @@ public class Customer : MonoBehaviour
     private void EnterOrderingState()
     {
         customerMovement.StartRotating(customerManager.orderPoint.rotation);
-        customerAnim.SetBool(GameConstant.WALKING, false);
+        customerAnim.SetWalking(false);
         orderController.takeOrderButton.gameObject.SetActive(true);
 
     }
@@ -112,7 +134,7 @@ public class Customer : MonoBehaviour
     private void EnterWaitingForFoodState()
     {
         var availableChair = customerManager.GetAvailableChair();
-        customerAnim.SetBool(GameConstant.WALKING, true);
+        customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(availableChair.transform.position);
         StartCoroutine(WaitForSittingOnChairCoroutine(availableChair));
     }
@@ -128,16 +150,79 @@ public class Customer : MonoBehaviour
         customerMovement.DisableMovement();
         customerMovement.MoveToPositionImmediately(chairObject.sittingPoint.position);
         customerMovement.RotateToTargetImmediately(Quaternion.Euler(chairObject.sittingRotation));
-        customerAnim.Play(GameConstant.SITTING_IDLE);
+        customerAnim.SetWalking(false);
+        customerAnim.SetSittingIdle();
+        attachedChairObject = chairObject;
 
     }
-    #endregion
+
+    private void LeaveChair()
+    {
+        if (attachedChairObject != null)
+        {
+            customerMovement.MoveToPositionImmediately(attachedChairObject.leavePoint.position);
+            customerMovement.EnableMovement();
+            attachedChairObject = null;
+        }
+    }
 
     public void HandleFoodServed()
     {
-        if(orderController.orderAccepted)
+        if (orderController.orderAccepted)
         {
             ChangeState(CustomerState.Eating);
         }
     }
+    #endregion
+
+    #region methods for EatingState
+    private void EnterEatingState()
+    {
+        customerAnim.SetEating(true);
+        chopstickVisual.gameObject.SetActive(true);
+        currentStateDuration = eatingStateDuration;
+        stateTimer = 0f;
+    }
+
+    private void UpdateEatingState()
+    {
+        stateTimer += Time.deltaTime;
+        if (stateTimer >= currentStateDuration)
+        {
+            LeaveChair();
+            chopstickVisual.gameObject.SetActive(false);
+            customerAnim.SetWalking(true);
+            customerMovement.MoveToPosition(customerManager.payPoint.position);
+            if (customerMovement.HasReachedDestination())
+            {
+                customerMovement.StartRotating(customerManager.payPoint.rotation);
+                ChangeState(CustomerState.Paying);
+            }
+        }
+
+    }
+
+    #endregion
+
+    #region methods for paying state
+    private void EnterPayingState()
+    {
+        paymentVisual.gameObject.SetActive(true);
+        customerAnim.SetPaying(true);
+    }
+
+    private void ExitPayingState()
+    {
+        customerAnim.SetPaying(false);   
+    }
+
+    #endregion
+
+    #region methods for leaving state
+    private void EnterLeavingState()
+    {
+        customerAnim.SetWalking(true);
+        customerMovement.MoveToPosition(customerManager.GetRandomLeavePoint().position);
+    }
+    #endregion
 }

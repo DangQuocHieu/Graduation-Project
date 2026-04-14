@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class HingedObject : MonoBehaviour
+public class HingedObject : MonoBehaviour, IInteractable
 {
     public bool isOpened = false;
     public Vector3 localRotationWhenOpen;
@@ -30,5 +30,10 @@ public class HingedObject : MonoBehaviour
     public Tween Close()
     {
         return transform.DOLocalRotate(localRotationWhenClose, 0.3f).SetEase(Ease.InQuad).SetLink(gameObject);
+    }
+
+    public void OnInteract()
+    {
+        Toggle();
     }
 }

@@ -18,6 +18,7 @@ public class CustomerMovement : MonoBehaviour
 
     public bool HasReachedDestination()
     {
+        if(!agent.enabled) return false;
         if (!agent.pathPending)
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
@@ -64,6 +65,11 @@ public class CustomerMovement : MonoBehaviour
     {
         agent.ResetPath();
         agent.enabled = false;
+    }
+    
+    public void EnableMovement()
+    {
+        agent.enabled = true;
     }
 
     public void MoveToPositionImmediately(Vector3 position)

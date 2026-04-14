@@ -43,19 +43,10 @@ public class PickupAndDropHandler : MonoBehaviour
         {
             if(Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
             {
-                if(hit.collider.TryGetComponent<StoveSwitch>(out var stoveSwitch))
+                if(hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    stoveSwitch.OnInteract();
+                    interactable.OnInteract();
                 }
-                else if(hit.collider.TryGetComponent<HingedObject>(out var hingedObject))
-                {
-                    hingedObject.Toggle();
-                }
-                else if(hit.collider.TryGetComponent<CustomerOrderController>(out var orderController))
-                {
-                    orderController.HandleOrderAccepted();
-                }
-                
             }
             
             

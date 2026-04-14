@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class BambooTray : GrabbableObject
 {
-    private Dictionary<IngredientType, List<IngredientAnchor>> IngredientAnchorsDic = new(); 
+    private Dictionary<IngredientType, List<IngredientAnchor>> IngredientAnchorsDic = new();
     public PlaceableSurface placeableSurface;
 
     [Title("Sauce")]
@@ -35,7 +35,7 @@ public class BambooTray : GrabbableObject
 
     }
 
-   
+
     public IngredientAnchor GetIngredientAnchor(IngredientType ingredientType)
     {
         var IngredientAnchor = IngredientAnchorsDic[ingredientType];
@@ -49,15 +49,15 @@ public class BambooTray : GrabbableObject
             var cookableObjects = placeableSurface.ingredientContainer.GetCookableList();
             StartCoroutine(fryingPan.placeableSurface.ingredientContainer.FillCoroutine(cookableObjects));
         }
-        else if(hit.collider.TryGetComponent<Ingredient>(out var ingredient))
+        else if (hit.collider.TryGetComponent<Ingredient>(out var ingredient))
         {
-            if(ingredient.HandleInteractWithBambooTray(this))
+            if (ingredient.HandleInteractWithBambooTray(this))
             {
                 Debug.Log("HAHA");
                 EventBus.SendMessage<PickUpIngredientByTray>(new PickUpIngredientByTray());
                 StartCoroutine(WaitForIngredientPickedUpByTray(ingredient));
             }
-            
+
         }
         else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
         {
@@ -71,9 +71,14 @@ public class BambooTray : GrabbableObject
                 }
             }
         }
-        else if(hit.collider.TryGetComponent<Customer>(out var customer))
+        else if (hit.collider.TryGetComponent<Customer>(out var customer))
         {
-            customer.HandleFoodServed();
+            pickupAndDropHandler.DropObject();
+            ChairObject chairObject = customer.attachedChairObject;
+            MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+            {
+                customer.HandleFoodServed();
+            });
         }
         base.InteractWith(hit, pickupAndDropHandler);
     }
