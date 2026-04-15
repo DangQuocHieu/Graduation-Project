@@ -186,20 +186,25 @@ public class Customer : MonoBehaviour
 
     private void UpdateEatingState()
     {
-        stateTimer += Time.deltaTime;
         if (stateTimer >= currentStateDuration)
         {
             LeaveChair();
             chopstickVisual.gameObject.SetActive(false);
             customerAnim.SetWalking(true);
             customerMovement.MoveToPosition(customerManager.payPoint.position);
-            if (customerMovement.HasReachedDestination())
-            {
-                customerMovement.StartRotating(customerManager.payPoint.rotation);
-                ChangeState(CustomerState.Paying);
-            }
+            StartCoroutine(WaitForReachPayPointCoroutine());
         }
+        else
+        {
+            stateTimer += Time.deltaTime;
+        }
+    }
 
+    private IEnumerator WaitForReachPayPointCoroutine()
+    {
+        yield return new WaitUntil(() => customerMovement.HasReachedDestination());
+        customerMovement.StartRotating(customerManager.payPoint.rotation);
+        ChangeState(CustomerState.Paying);
     }
 
     #endregion
@@ -213,7 +218,7 @@ public class Customer : MonoBehaviour
 
     private void ExitPayingState()
     {
-        customerAnim.SetPaying(false);   
+        customerAnim.SetPaying(false);
     }
 
     #endregion
