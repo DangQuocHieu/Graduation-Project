@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color Palette
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: RedCup.001
     second: {fileID: 2100000, guid: 1e22f22909207fa4b84079a1a4ebbe87, type: 2}
   - first:
@@ -14,6 +19,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: White_
     second: {fileID: 2100000, guid: 0c465524d161512479410b41bffeab61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: trash_can
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

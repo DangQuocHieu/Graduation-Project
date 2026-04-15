@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color Palette
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: oil bottle
     second: {fileID: 2100000, guid: df7ba64532d69ff46b004f115f417231, type: 2}
   - first:

@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color Palette
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Red Ice Bucket
     second: {fileID: 2100000, guid: b3a487f3d5d1fe748b16b62dd3fc1d20, type: 2}
   - first:

@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color Palette
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: blue
     second: {fileID: 2100000, guid: d353f0e3acaa39040892388e4ab23e29, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: blue_stool
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

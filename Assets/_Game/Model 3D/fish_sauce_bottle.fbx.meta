@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color Palette
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: fish_sauce_bottle
     second: {fileID: 2100000, guid: 0be67b7e9ec741c46a11b6fdf3945806, type: 2}
   - first:

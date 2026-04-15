@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: BlueCup
     second: {fileID: 2100000, guid: 898110d75b078944bbb2e2f7b95d76c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color Palette
+    second: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

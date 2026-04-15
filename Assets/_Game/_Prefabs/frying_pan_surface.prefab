@@ -768,10 +768,13 @@ MonoBehaviour:
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  isPickupCompleted: 0
+  isMoveToSurfaceCompleted: 0
   isHot: 0
   attachedCookingZone: {fileID: 0}
   oilContainer: {fileID: 8962190255705925896}
   placeableSurface: {fileID: 2695547458227793203}
+  containCookingOil: 0
 --- !u!114 &8962190255705925896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,7 +921,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5034db7948fb6d649b1263f9f8f12880, type: 2}
+  - {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
