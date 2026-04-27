@@ -3,7 +3,17 @@ guid: a8efa4d309e9dc043abfee31bc4675cd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: color_palette_building.001
+    second: {fileID: 2100000, guid: 760a5ce29c709a242b154a2ea089204b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: color_palette_building.002
+    second: {fileID: 2100000, guid: 760a5ce29c709a242b154a2ea089204b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
