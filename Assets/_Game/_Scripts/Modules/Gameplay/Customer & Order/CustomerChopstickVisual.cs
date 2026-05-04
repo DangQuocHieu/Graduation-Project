@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CustomerChopstickVisual : SerializedMonoBehaviour
 {
+    public GameObject visualObject;
     public Dictionary<IngredientType, IngredientVisual> ingredientVisualDict = new();
     public IngredientType[] ingredientTypes;
     public IngredientVisual displayIngredient;

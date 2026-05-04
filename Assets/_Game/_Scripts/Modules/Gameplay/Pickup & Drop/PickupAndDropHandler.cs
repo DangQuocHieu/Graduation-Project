@@ -18,7 +18,7 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         HandlePickUpAndDropObject();
         HandleAutoDropObject();
-        HandleInteractObject();
+        HandleInteractObject(); 
     }
 
     void OnEnable()

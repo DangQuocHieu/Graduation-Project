@@ -77,7 +77,7 @@ public class BambooTray : GrabbableObject
             ChairObject chairObject = customer.attachedChairObject;
             MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
             {
-                customer.HandleFoodServed();
+                customer.HandleFoodServed(this);
             });
         }
         base.InteractWith(hit, pickupAndDropHandler);

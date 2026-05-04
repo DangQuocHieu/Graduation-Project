@@ -13,7 +13,7 @@ public class Customer : MonoBehaviour
     [TabGroup("References")] public CustomerManager customerManager;
 
     [TabGroup("References")] public CustomerOrderController orderController;
-    [TabGroup("References")] public Transform chopstickVisual;
+    [TabGroup("References")] public CustomerChopstickVisual chopstickVisual;
     [TabGroup("References")] public ChairObject attachedChairObject;
     [TabGroup("References")] public Transform paymentVisual;
 
@@ -166,10 +166,11 @@ public class Customer : MonoBehaviour
         }
     }
 
-    public void HandleFoodServed()
+    public void HandleFoodServed(BambooTray dish)
     {
         if (orderController.orderAccepted)
         {
+            chopstickVisual.attachedDish = dish;
             ChangeState(CustomerState.Eating);
         }
     }
@@ -179,7 +180,7 @@ public class Customer : MonoBehaviour
     private void EnterEatingState()
     {
         customerAnim.SetEating(true);
-        chopstickVisual.gameObject.SetActive(true);
+        chopstickVisual.visualObject.gameObject.SetActive(true);
         currentStateDuration = eatingStateDuration;
         stateTimer = 0f;
     }
@@ -189,7 +190,7 @@ public class Customer : MonoBehaviour
         if (stateTimer >= currentStateDuration)
         {
             LeaveChair();
-            chopstickVisual.gameObject.SetActive(false);
+            chopstickVisual.visualObject.gameObject.SetActive(false);
             customerAnim.SetWalking(true);
             customerMovement.MoveToPosition(customerManager.payPoint.position);
             StartCoroutine(WaitForReachPayPointCoroutine());
