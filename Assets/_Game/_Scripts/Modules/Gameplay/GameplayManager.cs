@@ -7,6 +7,8 @@ public class GameplayManager : MonoBehaviour
     [Title("References")]
     public DataManager dataManager;
     public EconomySystem economySystem;
+    public OrderManager orderManager;
+    public GameLoopManager gameLoopManager;
 
     [Title("GUI")]
     public MoneyUIPanel moneyUIPanel;
@@ -16,5 +18,7 @@ public class GameplayManager : MonoBehaviour
         dataManager.LoadData();
         economySystem.Initialize(dataManager);
         moneyUIPanel.Initialize(dataManager);
+        gameLoopManager.Initialize(orderManager);
+
     }
 }

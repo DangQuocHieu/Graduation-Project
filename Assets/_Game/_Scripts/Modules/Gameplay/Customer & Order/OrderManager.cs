@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class CustomerManager : MonoBehaviour
+public class OrderManager : MonoBehaviour
 {
+    [Title("Customer & Order")]
     public List<Customer> allCustomers = new();
     public Transform orderPoint;
     public Transform payPoint;
     public Transform[] leavePoints;
-
     public List<ChairObject> chairObjects = new();
 
+    
     void OnDrawGizmos()
     {
         DrawBoxGizmo(orderPoint.position, Color.red);

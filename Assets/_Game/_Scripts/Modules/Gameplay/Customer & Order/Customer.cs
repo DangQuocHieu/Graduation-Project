@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using DQHieu.Framework;
 using KinematicCharacterController;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -10,9 +12,8 @@ public class Customer : MonoBehaviour
     [TabGroup("References")] public CustomerAnimator customerAnim;
     [TabGroup("References")] public CustomerMovement customerMovement;
     [TabGroup("References")] public CustomerState currentState;
-    [TabGroup("References")] public CustomerManager customerManager;
+    [TabGroup("References")] public OrderManager orderManager;
 
-    [TabGroup("References")] public CustomerOrderController orderController;
     [TabGroup("References")] public CustomerChopstickVisual chopstickVisual;
     [TabGroup("References")] public ChairObject attachedChairObject;
     [TabGroup("References")] public Transform paymentVisual;
@@ -20,6 +21,7 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public float currentStateDuration;
     [TabGroup("AI Behaviour")] public float eatingStateDuration;
     [TabGroup("AI Behaviour")] public float stateTimer;
+    [TabGroup("AI Behaviour")] public List<IngredientType> orderIngredients;
 
     void Start()
     {
@@ -30,6 +32,7 @@ public class Customer : MonoBehaviour
     {
         UpdateState(currentState);
     }
+
     private void EnterState(CustomerState state)
     {
         switch (state)
@@ -97,7 +100,7 @@ public class Customer : MonoBehaviour
     private void EnterComingState()
     {
         customerAnim.SetWalking(true);
-        customerMovement.MoveToPosition(customerManager.orderPoint.position);
+        customerMovement.MoveToPosition(orderManager.orderPoint.position);
 
     }
 
@@ -114,26 +117,28 @@ public class Customer : MonoBehaviour
     #region methods for ordering state
     private void EnterOrderingState()
     {
-        customerMovement.StartRotating(customerManager.orderPoint.rotation);
+        stateTimer = 0f;
+        customerMovement.StartRotating(orderManager.orderPoint.rotation);
         customerAnim.SetWalking(false);
-        orderController.takeOrderButton.gameObject.SetActive(true);
-
+        EventBus.SendMessage<CustomerOrderComplete>(new CustomerOrderComplete(orderIngredients));
     }
 
     private void UpdateOrderingState()
     {
-        if (orderController.orderAccepted)
+        stateTimer += Time.deltaTime;
+        if (stateTimer > 2f)
         {
             ChangeState(CustomerState.WaitingForFood);
         }
     }
+
 
     #endregion
 
     #region methods for waiting for food state
     private void EnterWaitingForFoodState()
     {
-        var availableChair = customerManager.GetAvailableChair();
+        var availableChair = orderManager.GetAvailableChair();
         customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(availableChair.transform.position);
         StartCoroutine(WaitForSittingOnChairCoroutine(availableChair));
@@ -168,11 +173,8 @@ public class Customer : MonoBehaviour
 
     public void HandleFoodServed(BambooTray dish)
     {
-        if (orderController.orderAccepted)
-        {
-            chopstickVisual.attachedDish = dish;
-            ChangeState(CustomerState.Eating);
-        }
+        chopstickVisual.attachedDish = dish;
+        ChangeState(CustomerState.Eating);
     }
     #endregion
 
@@ -192,7 +194,7 @@ public class Customer : MonoBehaviour
             LeaveChair();
             chopstickVisual.visualObject.gameObject.SetActive(false);
             customerAnim.SetWalking(true);
-            customerMovement.MoveToPosition(customerManager.payPoint.position);
+            customerMovement.MoveToPosition(orderManager.payPoint.position);
             StartCoroutine(WaitForReachPayPointCoroutine());
         }
         else
@@ -204,7 +206,7 @@ public class Customer : MonoBehaviour
     private IEnumerator WaitForReachPayPointCoroutine()
     {
         yield return new WaitUntil(() => customerMovement.HasReachedDestination());
-        customerMovement.StartRotating(customerManager.payPoint.rotation);
+        customerMovement.StartRotating(orderManager.payPoint.rotation);
         ChangeState(CustomerState.Paying);
     }
 
@@ -228,7 +230,7 @@ public class Customer : MonoBehaviour
     private void EnterLeavingState()
     {
         customerAnim.SetWalking(true);
-        customerMovement.MoveToPosition(customerManager.GetRandomLeavePoint().position);
+        customerMovement.MoveToPosition(orderManager.GetRandomLeavePoint().position);
     }
     #endregion
 }
