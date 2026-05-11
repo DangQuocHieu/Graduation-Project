@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: 
   customerArrivalConfigs:
-  - customerPrefab: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
+  - customerPrefab: {fileID: 6408027025894718258, guid: ecc6970dc065a0b4aa8535c588b265f2, type: 3}
     order: 000000000200000003000000
     spawnTime: 2

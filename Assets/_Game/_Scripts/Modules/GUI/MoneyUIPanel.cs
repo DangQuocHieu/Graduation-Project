@@ -27,6 +27,6 @@ public class MoneyUIPanel : MonoBehaviour
 
     public void UpdateUI(int money)
     {
-        moneyText.text = CurrencyFormatter.ToGameCurrency(money);
+        moneyText.text = CurrencyFormatter.ToVNDCurrency(money);
     }
 }

@@ -18,10 +18,12 @@ public class Customer : MonoBehaviour
     [TabGroup("References")] public ChairObject attachedChairObject;
     [TabGroup("References")] public Transform paymentVisual;
 
+    [TabGroup("AI Behaviour")] public CustomerSO customerSO;
     [TabGroup("AI Behaviour")] public float currentStateDuration;
     [TabGroup("AI Behaviour")] public float eatingStateDuration;
     [TabGroup("AI Behaviour")] public float stateTimer;
     [TabGroup("AI Behaviour")] public List<IngredientType> orderIngredients;
+    [TabGroup("AI Behaviour")] public DishScore dishScore;
 
     void Start()
     {

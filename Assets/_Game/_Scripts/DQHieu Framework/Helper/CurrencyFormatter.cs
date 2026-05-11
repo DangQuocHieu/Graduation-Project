@@ -1,6 +1,6 @@
 public static class CurrencyFormatter
 {
-    public static string ToGameCurrency(this int amount)
+    public static string ToVNDCurrency(this int amount)
     {
         if (amount < 1000) 
             return amount.ToString();

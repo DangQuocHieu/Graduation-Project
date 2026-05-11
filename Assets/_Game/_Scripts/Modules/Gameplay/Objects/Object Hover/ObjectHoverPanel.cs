@@ -90,7 +90,7 @@ public class ObjectHoverPanel : MonoBehaviour
         }
         if(displayPrice)
         {
-            priceText.text = CurrencyFormatter.ToGameCurrency(grabbableObjectSO.price);
+            priceText.text = CurrencyFormatter.ToVNDCurrency(grabbableObjectSO.price);
             priceRect.gameObject.SetActive(true);
         }
         else
