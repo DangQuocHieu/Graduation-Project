@@ -22,8 +22,10 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public float currentStateDuration;
     [TabGroup("AI Behaviour")] public float eatingStateDuration;
     [TabGroup("AI Behaviour")] public float stateTimer;
-    [TabGroup("AI Behaviour")] public List<IngredientType> orderIngredients;
+    [TabGroup("AI Behaviour")] public CustomerOrder customerOrder;
     [TabGroup("AI Behaviour")] public DishScore dishScore;
+    [TabGroup("AI Behaviour")] public bool isLastCustomer;
+
 
     void Start()
     {
@@ -125,7 +127,7 @@ public class Customer : MonoBehaviour
         stateTimer = 0f;
         customerMovement.StartRotating(orderManager.orderPoint.rotation);
         customerAnim.SetWalking(false);
-        EventBus.SendMessage<CustomerOrderComplete>(new CustomerOrderComplete(orderIngredients));
+        EventBus.SendMessage<CustomerOrderComplete>(new CustomerOrderComplete(customerOrder));
     }
 
     private void UpdateOrderingState()
@@ -179,6 +181,9 @@ public class Customer : MonoBehaviour
     public void HandleFoodServed(BambooTray dish)
     {
         chopstickVisual.attachedDish = dish;
+        //Calculate Score Here
+        dishScore.CalculateScore();
+        EventBus.SendMessage<FoodServedEvent>(new FoodServedEvent(dishScore));
         ChangeState(CustomerState.Eating);
     }
     #endregion
@@ -200,7 +205,7 @@ public class Customer : MonoBehaviour
             chopstickVisual.visualObject.gameObject.SetActive(false);
             customerAnim.SetWalking(true);
             customerMovement.MoveToPosition(orderManager.payPoint.position);
-            if(chopstickVisual.attachedDish != null)
+            if (chopstickVisual.attachedDish != null)
             {
                 chopstickVisual.attachedDish.ReleseDish();
             }

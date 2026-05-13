@@ -28,15 +28,23 @@ public class GrabbableObject : MonoBehaviour
 
 
     [Title("Runtime Tracking")]
+    public float currentCrouchOffset = 0f;
     public bool isWaitingForSurfaceImpact = false;
     public PlaceableSurface targetSurface;
     public IngredientContainer attachedIngredientContainer;
+    public float minClampPositionY = 3f;
+    public float maxClampPositionY = 4f;
 
     [Title("Flags")]
     public bool isPickupCompleted = false;
     public bool isMoveToSurfaceCompleted = false;
     public bool canBePickedUp = true;
 
+
+    public void SetCrouchOffset(float offset)
+    {
+        currentCrouchOffset = offset;
+    }
 
     protected virtual void Awake()
     {
@@ -120,7 +128,7 @@ public class GrabbableObject : MonoBehaviour
         if (_grabObjectPoint == null) return;
 
         Vector3 targetPosition = _grabObjectPoint.position;
-        targetPosition.y = Mathf.Clamp(targetPosition.y, 3f, 4f);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minClampPositionY + currentCrouchOffset, maxClampPositionY + currentCrouchOffset);
 
         Vector3 directionToTarget = targetPosition - transform.position;
 
@@ -149,6 +157,7 @@ public class GrabbableObject : MonoBehaviour
     public void OnDrop()
     {
         isPickupCompleted = false;
+        currentCrouchOffset = 0f;
 
         if (_waitForPickupCompleteCoroutine != null)
         {

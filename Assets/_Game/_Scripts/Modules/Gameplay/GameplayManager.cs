@@ -9,16 +9,22 @@ public class GameplayManager : MonoBehaviour
     public EconomySystem economySystem;
     public OrderManager orderManager;
     public GameLoopManager gameLoopManager;
+    public LevelStatisticsManager levelStatisticsManager;
+
 
     [Title("GUI")]
     public MoneyUIPanel moneyUIPanel;
+    public SummaryScreen summaryScreen;
 
     void Awake()
     {
+        CursorHelper.HideCursor();
         dataManager.LoadData();
         economySystem.Initialize(dataManager);
         moneyUIPanel.Initialize(dataManager);
         gameLoopManager.Initialize(orderManager);
+        levelStatisticsManager.Initialize(gameLoopManager.currentLevel);
+        summaryScreen.Initialize(levelStatisticsManager);
 
     }
 }

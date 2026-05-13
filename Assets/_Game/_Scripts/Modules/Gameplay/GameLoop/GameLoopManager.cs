@@ -105,11 +105,18 @@ public class GameLoopManager : MonoBehaviour
         timer += Time.deltaTime;
         if(customerSpawned < currentLevel.customerArrivalConfigs.Count && timer > currentLevel.customerArrivalConfigs[customerSpawned].spawnTime)
         {
+        
             var currentConfig = currentLevel.customerArrivalConfigs[customerSpawned];
             Vector3 spawnPos = customerSpawnPoint[UnityEngine.Random.Range(0, customerSpawnPoint.Length)].position;
             Customer spawnedCustomer = Instantiate(currentConfig.customerPrefab, spawnPos, Quaternion.identity, null);
-            spawnedCustomer.orderIngredients = currentConfig.order;
+            spawnedCustomer.customerOrder = currentConfig.customerOrder;
             spawnedCustomer.orderManager = orderManager;
+
+            if(customerSpawned == currentLevel.customerArrivalConfigs.Count - 1)
+            {
+                spawnedCustomer.isLastCustomer = true;
+            }
+
             ++customerSpawned;
         }
 

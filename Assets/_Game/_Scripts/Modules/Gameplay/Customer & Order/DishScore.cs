@@ -13,4 +13,9 @@ public class DishScore : MonoBehaviour
         float totalScore = (waitingScore + tasteScore) / 2;
         return Mathf.RoundToInt(totalScore);
     }
+
+    public void CalculateScore()
+    {
+        
+    }
 }

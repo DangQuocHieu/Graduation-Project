@@ -28,6 +28,7 @@ public class EconomySystem : MonoBehaviour
         if(dataManager.playerData.Money >= money)
         {
             dataManager.playerData.Money -= money;
+            EventBus.SendMessage<SpendMoneyEvent>(new SpendMoneyEvent(money));
             return true;
         }
         return false;

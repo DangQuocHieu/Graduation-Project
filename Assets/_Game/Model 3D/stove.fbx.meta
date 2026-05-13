@@ -3,7 +3,22 @@ guid: f55f99ca7509557408a050030a81427f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black Stove
+    second: {fileID: 2100000, guid: ee92107ef33b8a747ad121240906de63, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table Surface
+    second: {fileID: 2100000, guid: 0752a253151ff9747afd7ae6b834cf01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Kitchen
+    second: {fileID: 2100000, guid: 44375467c1da5b340b0486fcb389ca08, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

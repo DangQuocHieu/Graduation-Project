@@ -50,7 +50,7 @@ public class Ingredient : GrabbableObject
 
     public bool HandleInteractWithBambooTray(BambooTray bambooTray, PickupAndDropHandler pickupAndDropHandler = null)
     {
-        if(canSlice)
+        if (canSlice)
         {
             return false;
         }
@@ -69,9 +69,9 @@ public class Ingredient : GrabbableObject
     {
         if (attachedIngredientAnchor != null)
         {
+            attachedIngredientAnchor.attachedIngredient = null;
             attachedIngredientAnchor.isEmpty = true;
             attachedIngredientAnchor = null;
-            attachedIngredientAnchor.attachedIngredient = null;
         }
     }
 

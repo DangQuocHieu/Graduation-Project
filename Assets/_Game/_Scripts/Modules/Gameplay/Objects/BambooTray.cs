@@ -9,6 +9,7 @@ public class BambooTray : GrabbableObject
 {
     private Dictionary<IngredientType, List<IngredientAnchor>> IngredientAnchorsDic = new();
     public PlaceableSurface placeableSurface;
+    public bool applyFullPortionCheck = true;
 
     [Title("Sauce")]
     public Transform sauceAnchor;
@@ -54,7 +55,7 @@ public class BambooTray : GrabbableObject
         {
             if (ingredient.HandleInteractWithBambooTray(this))
             {
-                Debug.Log("HAHA");
+
                 EventBus.SendMessage<PickUpIngredientByTray>(new PickUpIngredientByTray());
                 StartCoroutine(WaitForIngredientPickedUpByTray(ingredient));
             }
@@ -74,8 +75,17 @@ public class BambooTray : GrabbableObject
         }
         else if (hit.collider.TryGetComponent<Customer>(out var customer))
         {
-            List<IngredientType> order = customer.orderIngredients;
-            if (IsFullPortion(order))
+            if (!applyFullPortionCheck)
+            {
+                OnServed();
+                pickupAndDropHandler.DropObject();
+                ChairObject chairObject = customer.attachedChairObject;
+                MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+                {
+                    customer.HandleFoodServed(this);
+                });
+            }
+            else if (IsFullPortion(customer.customerOrder.ingredientTypes))
             {
                 OnServed();
                 pickupAndDropHandler.DropObject();
@@ -153,11 +163,11 @@ public class BambooTray : GrabbableObject
     public void OnServed()
     {
         canBePickedUp = false;
-        foreach(var anchors in IngredientAnchorsDic.Values)
+        foreach (var anchors in IngredientAnchorsDic.Values)
         {
-            foreach(var anchor in anchors)
+            foreach (var anchor in anchors)
             {
-                if(anchor.attachedIngredient != null)
+                if (anchor.attachedIngredient != null)
                 {
                     anchor.attachedIngredient.canBePickedUp = false;
                 }

@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
+using DQHieu.Framework;
 
 namespace CoreGame.Movement
 {
+    public struct PlayerCrouchEvent : IGameEvent
+    {
+        public bool IsCrouching;
+        public float CrouchOffset;
+    }
+
     public enum CharacterState
     {
         Default,
@@ -70,6 +77,9 @@ namespace CoreGame.Movement
         public Transform MeshRoot;
         public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 1f;
+        [Header("Crouch Tween")]
+        public float CrouchCameraYOffset = -0.5f;
+        public float CrouchSpeed = 10f;
 
         public CharacterState CurrentCharacterState { get; private set; }
 
@@ -89,6 +99,8 @@ namespace CoreGame.Movement
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
+        private Vector3 _defaultCameraFollowLocalPos;
+
         private void Awake()
         {
             // Handle initial state
@@ -96,6 +108,28 @@ namespace CoreGame.Movement
 
             // Assign the characterController to the motor
             Motor.CharacterController = this;
+
+            if (CameraFollowPoint != null)
+            {
+                _defaultCameraFollowLocalPos = CameraFollowPoint.localPosition;
+            }
+        }
+
+        private void Update()
+        {
+            // Tween MeshRoot scale and CameraFollowPoint position for crouching
+            // We check MeshRoot != transform to prevent modifying the scale of the root object (KinematicCharacterMotor restricts its scale to 1,1,1)
+            if (MeshRoot != null && MeshRoot != transform)
+            {
+                Vector3 targetScale = _isCrouching ? new Vector3(1f, 0.5f, 1f) : Vector3.one;
+                MeshRoot.localScale = Vector3.Lerp(MeshRoot.localScale, targetScale, Time.deltaTime * CrouchSpeed);
+            }
+
+            if (CameraFollowPoint != null)
+            {
+                Vector3 targetCameraPos = _defaultCameraFollowLocalPos + (_isCrouching ? new Vector3(0, CrouchCameraYOffset, 0) : Vector3.zero);
+                CameraFollowPoint.localPosition = Vector3.Lerp(CameraFollowPoint.localPosition, targetCameraPos, Time.deltaTime * CrouchSpeed);
+            }
         }
 
         /// <summary>
@@ -186,7 +220,7 @@ namespace CoreGame.Movement
                             {
                                 _isCrouching = true;
                                 Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
-                                MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
+                                EventBus.SendMessage(new PlayerCrouchEvent { IsCrouching = true, CrouchOffset = CrouchCameraYOffset });
                             }
                         }
                         else if (inputs.CrouchUp)
@@ -440,8 +474,8 @@ namespace CoreGame.Movement
                             else
                             {
                                 // If no obstructions, uncrouch
-                                MeshRoot.localScale = new Vector3(1f, 1f, 1f);
                                 _isCrouching = false;
+                                EventBus.SendMessage(new PlayerCrouchEvent { IsCrouching = false, CrouchOffset = CrouchCameraYOffset });
                             }
                         }
                         break;

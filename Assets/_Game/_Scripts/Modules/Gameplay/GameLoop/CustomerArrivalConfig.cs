@@ -5,6 +5,6 @@ using UnityEngine;
 public class CustomerArrivalConfig
 {
     public Customer customerPrefab;
-    public List<IngredientType> order = new();
+    public CustomerOrder customerOrder;
     public float spawnTime;
 }

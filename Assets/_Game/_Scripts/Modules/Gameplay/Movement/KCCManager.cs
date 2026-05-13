@@ -22,9 +22,6 @@ namespace CoreGame.Movement
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-
-            // Tell camera to follow transform
             CharacterCamera.SetFollowTransform(Character.CameraFollowPoint);
 
             // Ignore the character's collider(s) for camera obstruction checks
@@ -34,12 +31,6 @@ namespace CoreGame.Movement
 
         private void Update()
         {
-            // Vẫn cho phép click chuột để lock trỏ chuột kể cả khi bị chặn input (tùy chọn)
-            if (Input.GetMouseButtonDown(0))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-
             HandleCharacterInput();
         }
 
@@ -77,12 +68,6 @@ namespace CoreGame.Movement
             // Create the look input vector for the camera
             Vector3 lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f);
 
-            // Prevent moving the camera while the cursor isn't locked
-            if (Cursor.lockState != CursorLockMode.Locked)
-            {
-                lookInputVector = Vector3.zero;
-            }
-
 #if UNITY_WEBGL
             scrollInput = 0f;
 #endif
@@ -104,8 +89,8 @@ namespace CoreGame.Movement
                 characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
                 characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
                 characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Space);
-                characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
-                characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
+                characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.LeftShift);
+                characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.LeftShift);
             }
             else
             {

@@ -1,6 +1,8 @@
 using System.Collections;
 using DQHieu.Framework;
 using UnityEngine;
+using CoreGame.Movement;
+using UnityEngine.EventSystems;
 
 public class PickupAndDropHandler : MonoBehaviour
 {
@@ -11,8 +13,7 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private float _autoDropDistance = 8f;
     public GrabbableObject _objectInHand;
     private Coroutine waitForPurchasedObjectPickedUpCoroutine;
-
-
+    private float _currentCrouchOffset = 0f;
 
     void Update()
     {
@@ -24,23 +25,37 @@ public class PickupAndDropHandler : MonoBehaviour
     void OnEnable()
     {
         EventBus.Subcribe<PurchaseShopItemSucess>(HandlePurchaseShopItemSuccessEvent);
+        EventBus.Subcribe<PlayerCrouchEvent>(HandlePlayerCrouchEvent);
     }
 
     void OnDisable()
     {
         EventBus.UnSubcribe<PurchaseShopItemSucess>(HandlePurchaseShopItemSuccessEvent);
+        EventBus.UnSubcribe<PlayerCrouchEvent>(HandlePlayerCrouchEvent);
+    }
+
+    private void HandlePlayerCrouchEvent(PlayerCrouchEvent evt)
+    {
+        _currentCrouchOffset = evt.IsCrouching ? evt.CrouchOffset : 0f;
+        if (_objectInHand != null)
+        {
+            _objectInHand.SetCrouchOffset(_currentCrouchOffset);
+        }
     }
 
     public void PickupObject(GrabbableObject grabbableObject)
     {
         _objectInHand = grabbableObject;
         _objectInHand.OnPickUp(_grabObjectPoint);
+        _objectInHand.SetCrouchOffset(_currentCrouchOffset);
     }
 
     private void HandleInteractObject()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
             if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
             {
                 if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
@@ -56,6 +71,8 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
             if (_objectInHand == null)
             {
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
@@ -70,6 +87,7 @@ public class PickupAndDropHandler : MonoBehaviour
                         {
                             _objectInHand = grabbableObject;
                             _objectInHand.OnPickUp(_grabObjectPoint);
+                            _objectInHand.SetCrouchOffset(_currentCrouchOffset);
                         }
                     }
                     else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
@@ -124,6 +142,7 @@ public class PickupAndDropHandler : MonoBehaviour
         {
             _objectInHand = evt.purchasedObject;
             evt.purchasedObject.OnPickUp(_grabObjectPoint);
+            _objectInHand.SetCrouchOffset(_currentCrouchOffset);
             waitForPurchasedObjectPickedUpCoroutine = StartCoroutine(WaitForPurchasedObjectPickedUpByHand(evt.purchasedObject));
         }
         else

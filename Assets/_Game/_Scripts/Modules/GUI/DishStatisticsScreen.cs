@@ -1,3 +1,4 @@
+using CoreGame.Movement;
 using DG.Tweening;
 using DQHieu.Framework;
 using Sirenix.OdinInspector;
@@ -25,6 +26,7 @@ public class DishStatisticsScreen : MonoBehaviour
 
     private Sequence showScreenTween;
     public Customer currentCustomer;
+    public KCCManager kccManager;
 
     void OnEnable()
     {
@@ -40,11 +42,14 @@ public class DishStatisticsScreen : MonoBehaviour
 
     private void HandleInteractWithCashObject(InteractWithCashObject evt)
     {
+        if (kccManager != null) kccManager.BlockInput();
+
+        CursorHelper.ShowCursor();
         currentCustomer = evt.customer;
         var dishScore = currentCustomer.dishScore;
 
         waitingSlider.SetUp(dishScore.displayWatingScore);
-        tasteSlider.SetUp(dishScore.displayTasteScore);     
+        tasteSlider.SetUp(dishScore.displayTasteScore);      
         totalSlider.SetUp(dishScore.GetTotalScore());
         overlay.gameObject.SetActive(true);
         
@@ -56,28 +61,20 @@ public class DishStatisticsScreen : MonoBehaviour
         showScreenTween.Join(waitingSlider.AnimateScore());
         showScreenTween.Join(tasteSlider.AnimateScore());
         showScreenTween.Join(totalSlider.AnimateScore());
-
         showScreenTween.AppendInterval(1f);
-        showScreenTween.Append(AnimateGuestPaidAmount(dishScore.guestPaidAmount, 1f));
+        Tween moneyTween = TweenHelper.AnimateInt(
+            startValue: 0, 
+            endValue: dishScore.guestPaidAmount, 
+            duration: 1f, 
+            onUpdate: (currentValue) => 
+            {
+                guestPaidText.text = "GUEST PAID: " + currentValue.ToVNDCurrency();
+            }
+        );
+
+        showScreenTween.Append(moneyTween);
 
         showScreenTween.SetLink(gameObject).SetUpdate(true);
-    }
-
-    private Tween AnimateGuestPaidAmount(int targetAmount, float duration)
-    {
-        int currentPaid = 0;
-        UpdateGuestPaidText(0); 
-
-        return DOTween.To(() => currentPaid, x => 
-        {
-            currentPaid = x;
-            UpdateGuestPaidText(currentPaid);
-        }, targetAmount, duration).SetEase(Ease.OutQuad);
-    }
-
-    private void UpdateGuestPaidText(int amount)
-    {
-        guestPaidText.text = "GUEST PAID: " +  amount.ToVNDCurrency();
     }
 
     public void HideScreen()
@@ -88,7 +85,15 @@ public class DishStatisticsScreen : MonoBehaviour
 
     public void OnNextButtonClicked()
     {
+        if (kccManager != null) kccManager.UnblockInput();
+
         EventBus.SendMessage<CustomerPaymentReceived>(new CustomerPaymentReceived(currentCustomer.dishScore.guestPaidAmount));
         HideScreen();
+        CursorHelper.HideCursor();
+        if(currentCustomer.isLastCustomer)
+        {
+            CursorHelper.ShowCursor();
+            EventBus.SendMessage<LevelComplete>(new LevelComplete());
+        }
     }
 }
