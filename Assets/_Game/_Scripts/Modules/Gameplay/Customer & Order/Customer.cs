@@ -84,6 +84,9 @@ public class Customer : MonoBehaviour
             case CustomerState.Paying:
                 ExitPayingState();
                 break;
+            case CustomerState.Eating:
+                ExitEatingState();
+                break;
         }
     }
 
@@ -197,12 +200,20 @@ public class Customer : MonoBehaviour
             chopstickVisual.visualObject.gameObject.SetActive(false);
             customerAnim.SetWalking(true);
             customerMovement.MoveToPosition(orderManager.payPoint.position);
+            if(chopstickVisual.attachedDish != null)
+            {
+                chopstickVisual.attachedDish.ReleseDish();
+            }
             StartCoroutine(WaitForReachPayPointCoroutine());
         }
         else
         {
             stateTimer += Time.deltaTime;
         }
+    }
+
+    private void ExitEatingState()
+    {
     }
 
     private IEnumerator WaitForReachPayPointCoroutine()

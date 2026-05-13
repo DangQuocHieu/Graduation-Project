@@ -35,15 +35,13 @@ public class GrabbableObject : MonoBehaviour
     [Title("Flags")]
     public bool isPickupCompleted = false;
     public bool isMoveToSurfaceCompleted = false;
-
+    public bool canBePickedUp = true;
 
 
     protected virtual void Awake()
     {
         SetUpRigidbody();
     }
-
-
 
     private void FixedUpdate()
     {

@@ -58,6 +58,7 @@ public class Ingredient : GrabbableObject
         if (anchorPoint == null) return false;
         attachedIngredientAnchor = anchorPoint;
         attachedIngredientAnchor.isEmpty = false;
+        attachedIngredientAnchor.attachedIngredient = this;
         pickupAndDropHandler?.DropObject();
         RemoveRigidbodyJoin();
         MoveToPlaceableSurface(bambooTray.placeableSurface, anchorPoint.transform.position, anchorPoint.transform.rotation);
@@ -70,6 +71,7 @@ public class Ingredient : GrabbableObject
         {
             attachedIngredientAnchor.isEmpty = true;
             attachedIngredientAnchor = null;
+            attachedIngredientAnchor.attachedIngredient = null;
         }
     }
 

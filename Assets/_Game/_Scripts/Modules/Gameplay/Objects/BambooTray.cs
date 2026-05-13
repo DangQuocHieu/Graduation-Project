@@ -12,6 +12,7 @@ public class BambooTray : GrabbableObject
 
     [Title("Sauce")]
     public Transform sauceAnchor;
+    public SauceBowl attachedBowl;
 
     [Title("Tofu")]
     public List<IngredientAnchor> tofuIngredientAnchors = new();
@@ -73,12 +74,17 @@ public class BambooTray : GrabbableObject
         }
         else if (hit.collider.TryGetComponent<Customer>(out var customer))
         {
-            pickupAndDropHandler.DropObject();
-            ChairObject chairObject = customer.attachedChairObject;
-            MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+            List<IngredientType> order = customer.orderIngredients;
+            if (IsFullPortion(order))
             {
-                customer.HandleFoodServed(this);
-            });
+                OnServed();
+                pickupAndDropHandler.DropObject();
+                ChairObject chairObject = customer.attachedChairObject;
+                MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+                {
+                    customer.HandleFoodServed(this);
+                });
+            }
         }
         base.InteractWith(hit, pickupAndDropHandler);
     }
@@ -96,6 +102,65 @@ public class BambooTray : GrabbableObject
             if (cookableobject.HandleInteractWithBambooTray(this))
             {
                 yield return new WaitForSeconds(0.1f);
+            }
+        }
+    }
+
+    public bool IsIngredientAnchorsFull(List<IngredientAnchor> anchors)
+    {
+        foreach (var anchor in anchors)
+        {
+            if (anchor.isEmpty)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public bool IsFullPortion(List<IngredientType> ingredientTypes)
+    {
+        foreach (var type in ingredientTypes)
+        {
+            var anchors = IngredientAnchorsDic[type];
+            if (!IsIngredientAnchorsFull(anchors)) return false;
+        }
+        return attachedBowl != null && attachedBowl.fill;
+    }
+
+    public void DestroyIngredient(List<IngredientAnchor> anchors)
+    {
+        foreach (var anchor in anchors)
+        {
+            if (anchor.attachedIngredient != null)
+                Destroy(anchor.attachedIngredient.gameObject);
+        }
+    }
+
+    public void ReleseDish()
+    {
+        if (attachedBowl != null)
+        {
+            Destroy(attachedBowl.gameObject);
+        }
+        foreach (var anchor in IngredientAnchorsDic.Values)
+        {
+            DestroyIngredient(anchor);
+        }
+        Destroy(gameObject);
+    }
+
+    public void OnServed()
+    {
+        canBePickedUp = false;
+        foreach(var anchors in IngredientAnchorsDic.Values)
+        {
+            foreach(var anchor in anchors)
+            {
+                if(anchor.attachedIngredient != null)
+                {
+                    anchor.attachedIngredient.canBePickedUp = false;
+                }
             }
         }
     }

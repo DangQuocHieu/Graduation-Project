@@ -5,11 +5,16 @@ public class SauceBowl : GrabbableObject
 {
     public LiquidContainer shrimpPasteContainer;
     public LiquidContainer fishSauceContainer;
+    public BambooTray attachedBambooTray;
+    public bool fill = false;
+    public SauceType sauceType;
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
         if ( hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var tray))
         {
+            attachedBambooTray = tray;
+            tray.attachedBowl = this;
             Vector3 sauceAnchorPos = tray.sauceAnchor.position;
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(tray.placeableSurface, sauceAnchorPos);
@@ -30,9 +35,21 @@ public class SauceBowl : GrabbableObject
         }
     }
 
+    public override void OnPickUp(Transform grabObjectPoint)
+    {
+        base.OnPickUp(grabObjectPoint);
+        if(attachedBambooTray != null)
+        {
+            attachedBambooTray.attachedBowl = null;
+            attachedBambooTray = null;
+        }
+    }
+
     public Tween FillSauce(SauceType sauceType)
     {
-
+        if(fill) return null;
+        fill = true;
+        this.sauceType = sauceType;
         Transform liquid = GetLiquidBySauceType(sauceType);
         liquid.localScale = new Vector3(0.1f, 0f, 0.1f);
         Sequence fillSeq = DOTween.Sequence();

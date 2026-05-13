@@ -19,8 +19,6 @@ public class DishStatisticsScreen : MonoBehaviour
     [TabGroup("Score Slider")]
     public DishScoreSlider waitingSlider;
     [TabGroup("Score Slider")]
-    public DishScoreSlider portionSlider;
-    [TabGroup("Score Slider")]
     public DishScoreSlider tasteSlider;
     [TabGroup("Score Slider")]
     public DishScoreSlider totalSlider;
@@ -46,7 +44,6 @@ public class DishStatisticsScreen : MonoBehaviour
         var dishScore = currentCustomer.dishScore;
 
         waitingSlider.SetUp(dishScore.displayWatingScore);
-        portionSlider.SetUp(dishScore.displayPortionScore); 
         tasteSlider.SetUp(dishScore.displayTasteScore);     
         totalSlider.SetUp(dishScore.GetTotalScore());
         overlay.gameObject.SetActive(true);
@@ -57,7 +54,6 @@ public class DishStatisticsScreen : MonoBehaviour
         showScreenTween.AppendInterval(1f);
 
         showScreenTween.Join(waitingSlider.AnimateScore());
-        showScreenTween.Join(portionSlider.AnimateScore());
         showScreenTween.Join(tasteSlider.AnimateScore());
         showScreenTween.Join(totalSlider.AnimateScore());
 

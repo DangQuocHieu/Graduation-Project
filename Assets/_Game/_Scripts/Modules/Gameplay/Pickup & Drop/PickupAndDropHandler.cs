@@ -18,7 +18,7 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         HandlePickUpAndDropObject();
         HandleAutoDropObject();
-        HandleInteractObject(); 
+        HandleInteractObject();
     }
 
     void OnEnable()
@@ -39,17 +39,17 @@ public class PickupAndDropHandler : MonoBehaviour
 
     private void HandleInteractObject()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            if(Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
+            if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
             {
-                if(hit.collider.TryGetComponent<IInteractable>(out var interactable))
+                if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
                     interactable.OnInteract();
                 }
             }
-            
-            
+
+
         }
     }
     private void HandlePickUpAndDropObject()
@@ -66,8 +66,11 @@ public class PickupAndDropHandler : MonoBehaviour
                     }
                     else if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<GrabbableObject>(out var grabbableObject))
                     {
-                        _objectInHand = grabbableObject;
-                        _objectInHand.OnPickUp(_grabObjectPoint);
+                        if (grabbableObject.canBePickedUp)
+                        {
+                            _objectInHand = grabbableObject;
+                            _objectInHand.OnPickUp(_grabObjectPoint);
+                        }
                     }
                     else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
                     {
@@ -146,7 +149,7 @@ public class PickupAndDropHandler : MonoBehaviour
     private IEnumerator WaitForPurchasedObjectPickedUpByTray(GrabbableObject purchasedObject)
     {
         yield return new WaitUntil(() => purchasedObject.isMoveToSurfaceCompleted);
-        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete()); 
+        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete());
     }
 }
 
