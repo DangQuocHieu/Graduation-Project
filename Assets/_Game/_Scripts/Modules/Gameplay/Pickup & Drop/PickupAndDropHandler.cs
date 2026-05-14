@@ -94,6 +94,10 @@ public class PickupAndDropHandler : MonoBehaviour
                     {
                         EventBus.Raise<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
                     }
+                    else if(hit.collider.TryGetComponent<GrabbableObjectSpawner>(out var grabbableObjectSpawner))
+                    {
+                        grabbableObjectSpawner.OnInteract(this);
+                    }
                 }
             }
             else
