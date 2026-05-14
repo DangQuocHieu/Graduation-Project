@@ -13,7 +13,7 @@ public class ShopItem : MonoBehaviour
         {
             GrabbableObject purchasedObject = Instantiate(shopItemSO.itemPrefab, transform.position, Quaternion.identity, null);
             Debug.Log("Purchase: " + purchasedObject);
-            EventBus.SendMessage<PurchaseShopItemSucess>(new PurchaseShopItemSucess(purchasedObject));
+            EventBus.Raise<PurchaseShopItemSucess>(new PurchaseShopItemSucess(purchasedObject));
         }
         else
         {

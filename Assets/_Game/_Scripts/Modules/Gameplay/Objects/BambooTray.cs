@@ -56,7 +56,7 @@ public class BambooTray : GrabbableObject
             if (ingredient.HandleInteractWithBambooTray(this))
             {
 
-                EventBus.SendMessage<PickUpIngredientByTray>(new PickUpIngredientByTray());
+                EventBus.Raise<PickUpIngredientByTray>(new PickUpIngredientByTray());
                 StartCoroutine(WaitForIngredientPickedUpByTray(ingredient));
             }
 
@@ -69,7 +69,7 @@ public class BambooTray : GrabbableObject
                 if ((ingredientSO.ingredientType is IngredientType.Herb || ingredientSO.ingredientType is IngredientType.RiceNoodle)
                 && (GetIngredientAnchor(ingredientSO.ingredientType) != null))
                 {
-                    EventBus.SendMessage<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
+                    EventBus.Raise<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
                 }
             }
         }
@@ -102,7 +102,7 @@ public class BambooTray : GrabbableObject
     private IEnumerator WaitForIngredientPickedUpByTray(Ingredient ingredient)
     {
         yield return new WaitUntil(() => ingredient.isMoveToSurfaceCompleted);
-        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete());
+        EventBus.Raise<ItemPickedUpComplete>(new ItemPickedUpComplete());
     }
 
     public IEnumerator FillCookableObjectCoroutine(List<Ingredient> cookableObjects)

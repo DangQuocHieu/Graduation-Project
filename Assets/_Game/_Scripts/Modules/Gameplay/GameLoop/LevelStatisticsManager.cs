@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using DQHieu.Framework;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class LevelStatisticsManager : MonoBehaviour
 {
-    public int orderAmount => currentLevel.customerArrivalConfigs.Count;
-    public int finishedOrder => dishScores.Count;
+    [ShowInInspector] public int orderAmount => currentLevel.customerArrivalConfigs.Count;
+    [ShowInInspector] public int finishedOrder => dishScores.Count;
     public int expense;
     public int mealIncome;
 

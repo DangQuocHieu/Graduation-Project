@@ -92,7 +92,7 @@ public class PickupAndDropHandler : MonoBehaviour
                     }
                     else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
                     {
-                        EventBus.SendMessage<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
+                        EventBus.Raise<InteractWithShopItemEvent>(new InteractWithShopItemEvent(shopItem));
                     }
                 }
             }
@@ -162,13 +162,13 @@ public class PickupAndDropHandler : MonoBehaviour
     private IEnumerator WaitForPurchasedObjectPickedUpByHand(GrabbableObject purchasedObject)
     {
         yield return new WaitUntil(() => purchasedObject.isPickupCompleted);
-        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete());
+        EventBus.Raise<ItemPickedUpComplete>(new ItemPickedUpComplete());
     }
 
     private IEnumerator WaitForPurchasedObjectPickedUpByTray(GrabbableObject purchasedObject)
     {
         yield return new WaitUntil(() => purchasedObject.isMoveToSurfaceCompleted);
-        EventBus.SendMessage<ItemPickedUpComplete>(new ItemPickedUpComplete());
+        EventBus.Raise<ItemPickedUpComplete>(new ItemPickedUpComplete());
     }
 }
 

@@ -220,7 +220,7 @@ namespace CoreGame.Movement
                             {
                                 _isCrouching = true;
                                 Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
-                                EventBus.SendMessage(new PlayerCrouchEvent { IsCrouching = true, CrouchOffset = CrouchCameraYOffset });
+                                EventBus.Raise(new PlayerCrouchEvent { IsCrouching = true, CrouchOffset = CrouchCameraYOffset });
                             }
                         }
                         else if (inputs.CrouchUp)
@@ -475,7 +475,7 @@ namespace CoreGame.Movement
                             {
                                 // If no obstructions, uncrouch
                                 _isCrouching = false;
-                                EventBus.SendMessage(new PlayerCrouchEvent { IsCrouching = false, CrouchOffset = CrouchCameraYOffset });
+                                EventBus.Raise(new PlayerCrouchEvent { IsCrouching = false, CrouchOffset = CrouchCameraYOffset });
                             }
                         }
                         break;

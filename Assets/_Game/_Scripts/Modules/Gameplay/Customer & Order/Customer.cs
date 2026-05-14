@@ -24,7 +24,6 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public float stateTimer;
     [TabGroup("AI Behaviour")] public CustomerOrder customerOrder;
     [TabGroup("AI Behaviour")] public DishScore dishScore;
-    [TabGroup("AI Behaviour")] public bool isLastCustomer;
 
 
     void Start()
@@ -127,7 +126,7 @@ public class Customer : MonoBehaviour
         stateTimer = 0f;
         customerMovement.StartRotating(orderManager.orderPoint.rotation);
         customerAnim.SetWalking(false);
-        EventBus.SendMessage<CustomerOrderComplete>(new CustomerOrderComplete(customerOrder));
+        EventBus.Raise<CustomerOrderComplete>(new CustomerOrderComplete(customerOrder));
     }
 
     private void UpdateOrderingState()
@@ -183,7 +182,7 @@ public class Customer : MonoBehaviour
         chopstickVisual.attachedDish = dish;
         //Calculate Score Here
         dishScore.CalculateScore();
-        EventBus.SendMessage<FoodServedEvent>(new FoodServedEvent(dishScore));
+        EventBus.Raise<FoodServedEvent>(new FoodServedEvent(dishScore));
         ChangeState(CustomerState.Eating);
     }
     #endregion
@@ -247,6 +246,7 @@ public class Customer : MonoBehaviour
     #region methods for leaving state
     private void EnterLeavingState()
     {
+        EventBus.Raise<CustomerLeaveEvent>(new CustomerLeaveEvent(this));
         customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(orderManager.GetRandomLeavePoint().position);
     }

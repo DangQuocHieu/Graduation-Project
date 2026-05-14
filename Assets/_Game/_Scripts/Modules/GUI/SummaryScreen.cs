@@ -11,6 +11,8 @@ public class SummaryScreen : MonoBehaviour
     [TabGroup("UI Ref")] public RectTransform overlay;
     [TabGroup("UI Ref")] public UISlideTween popup;
     [TabGroup("UI Ref")] public Button nextButton;
+    [TabGroup("UI Ref")] public Button homeButton;
+
 
     [TabGroup("Text")] public TextMeshProUGUI ordersAmountText;
     [TabGroup("Text")] public TextMeshProUGUI finishedOrdersAmountText;
@@ -30,12 +32,14 @@ public class SummaryScreen : MonoBehaviour
     {
         EventBus.Subcribe<LevelComplete>(HandleLevelCompleteEvent);
         nextButton.onClick.AddListener(OnNextButtonClicked);
+        homeButton.onClick.AddListener(OnHomeButtonClicked);
     }
 
     void OnDisable()
     {
         EventBus.UnSubcribe<LevelComplete>(HandleLevelCompleteEvent);
         nextButton.onClick.RemoveListener(OnNextButtonClicked);
+        homeButton.onClick.RemoveListener(OnHomeButtonClicked);
     }
 
     public void Initialize(LevelStatisticsManager levelStatisticsManager)
@@ -45,8 +49,10 @@ public class SummaryScreen : MonoBehaviour
 
     private void HandleLevelCompleteEvent(LevelComplete evt)
     {
+        CursorHelper.ShowCursor();
         showScreenSeq?.Kill();
         showScreenSeq = DOTween.Sequence();
+        showScreenSeq.AppendCallback(() => overlay.gameObject.SetActive(true));
         showScreenSeq.Append(popup.SlideIn());
 
         showScreenSeq.AppendInterval(1f);
@@ -129,6 +135,11 @@ public class SummaryScreen : MonoBehaviour
     }
     private void OnNextButtonClicked()
     {
+        SceneTransitionManager.Instance.LoadScene("GameplayScene");
+    }
 
+    private void OnHomeButtonClicked()
+    {
+        SceneTransitionManager.Instance.LoadScene("HomeScene");
     }
 }

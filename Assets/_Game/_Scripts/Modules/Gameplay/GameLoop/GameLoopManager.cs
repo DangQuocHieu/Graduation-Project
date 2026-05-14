@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Linq;
+
+using System.Collections.Generic;
+using DQHieu.Framework;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum GameplayState
@@ -25,21 +24,36 @@ public class GameLoopManager : MonoBehaviour
     public LevelData currentLevel;
     public int customerSpawned = 0;
     public Transform[] customerSpawnPoint;
+    public HashSet<Customer> leavedCustomer = new();
 
     [Title("References")]
     public OrderManager orderManager;
 
+    
+
     void Start()
     {
         EnterState(GameplayState.Preparation);
+    }
+
+    void OnEnable()
+    {
+        EventBus.Subcribe<CustomerLeaveEvent>(HanldeCustomerLeaveEvent);
+    }
+
+    void OnDisable()
+    {
+        EventBus.UnSubcribe<CustomerLeaveEvent>(HanldeCustomerLeaveEvent);
     }
     void Update()
     {
         UpdateState();
     }
 
-    public void Initialize(OrderManager orderManager)
+
+    public void Initialize(OrderManager orderManager, DataManager dataManager)
     {
+        currentLevel = levelDatas[dataManager.playerData.CurrentLevelIndex];
         this.orderManager = orderManager;
     }
 
@@ -111,12 +125,6 @@ public class GameLoopManager : MonoBehaviour
             Customer spawnedCustomer = Instantiate(currentConfig.customerPrefab, spawnPos, Quaternion.identity, null);
             spawnedCustomer.customerOrder = currentConfig.customerOrder;
             spawnedCustomer.orderManager = orderManager;
-
-            if(customerSpawned == currentLevel.customerArrivalConfigs.Count - 1)
-            {
-                spawnedCustomer.isLastCustomer = true;
-            }
-
             ++customerSpawned;
         }
 
@@ -145,5 +153,15 @@ public class GameLoopManager : MonoBehaviour
     private void ResetTimer()
     {
         timer = 0f;
+    }
+
+    private void HanldeCustomerLeaveEvent(CustomerLeaveEvent evt)
+    {
+        leavedCustomer.Add(evt.customer);
+    }
+
+    public bool AllCustomerLeave()
+    {
+        return leavedCustomer.Count == currentLevel.customerArrivalConfigs.Count;
     }
 }

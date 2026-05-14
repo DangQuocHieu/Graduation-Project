@@ -10,11 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba94fa92d8a9bcc45b78d58cf3d6c737, type: 3}
-  m_Name: Level 1
+  m_Name: Level 2
   m_EditorClassIdentifier: 
   customerArrivalConfigs:
-  - customerPrefab: {fileID: 6408027025894718258, guid: ecc6970dc065a0b4aa8535c588b265f2, type: 3}
+  - customerPrefab: {fileID: 4681516225093614145, guid: e1dcf98291f95634aa8ed115324c2de5, type: 3}
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 1
     spawnTime: 2
+  - customerPrefab: {fileID: 6408027025894718258, guid: ecc6970dc065a0b4aa8535c588b265f2, type: 3}
+    customerOrder:
+      ingredientTypes: 000000000200000003000000
+      sauceType: 0
+    spawnTime: 10

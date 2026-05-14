@@ -44,7 +44,7 @@ public class LadleObject : GrabbableObject
         Vector3 originalRotation = transform.eulerAngles;
         pickupAndDropHandler.DropObject();
         rb.isKinematic = true;
-        EventBus.SendMessage<PourLiquid>(new PourLiquid());
+        EventBus.Raise<PourLiquid>(new PourLiquid());
         pourSeq = DOTween.Sequence().SetLink(gameObject);
         pourSeq.Append(transform.DOMove(bowl.shrimpPasteContainer.pourPoint.position + Vector3.up * 0.2f, 0.2f).SetEase(Ease.Linear));
         pourSeq.Append(transform.DORotate(new Vector3(60f, originalRotation.y, originalRotation.z), 0.2f).SetEase(Ease.Linear));
@@ -58,7 +58,7 @@ public class LadleObject : GrabbableObject
         pourSeq.OnComplete(() =>
         {
             pickupAndDropHandler.PickupObject(this);
-            EventBus.SendMessage<PourLiquidComplete>(new PourLiquidComplete());
+            EventBus.Raise<PourLiquidComplete>(new PourLiquidComplete());
         });
     }
 

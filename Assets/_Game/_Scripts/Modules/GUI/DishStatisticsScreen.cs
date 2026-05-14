@@ -27,6 +27,7 @@ public class DishStatisticsScreen : MonoBehaviour
     private Sequence showScreenTween;
     public Customer currentCustomer;
     public KCCManager kccManager;
+    public GameLoopManager gameLoopManager;
 
     void OnEnable()
     {
@@ -38,6 +39,11 @@ public class DishStatisticsScreen : MonoBehaviour
     {
         EventBus.UnSubcribe<InteractWithCashObject>(HandleInteractWithCashObject);
         nextButton.onClick.RemoveListener(OnNextButtonClicked);
+    }
+
+    public void Initialize(GameLoopManager gameLoopManager)
+    {
+        this.gameLoopManager = gameLoopManager;
     }
 
     private void HandleInteractWithCashObject(InteractWithCashObject evt)
@@ -87,13 +93,16 @@ public class DishStatisticsScreen : MonoBehaviour
     {
         if (kccManager != null) kccManager.UnblockInput();
 
-        EventBus.SendMessage<CustomerPaymentReceived>(new CustomerPaymentReceived(currentCustomer.dishScore.guestPaidAmount));
+        EventBus.Raise<CustomerPaymentReceived>(new CustomerPaymentReceived(currentCustomer.dishScore.guestPaidAmount));
         HideScreen();
         CursorHelper.HideCursor();
-        if(currentCustomer.isLastCustomer)
+
+        
+        if(gameLoopManager.AllCustomerLeave())
         {
             CursorHelper.ShowCursor();
-            EventBus.SendMessage<LevelComplete>(new LevelComplete());
+            EventBus.Raise<LevelComplete>(new LevelComplete());
         }
+        
     }
 }

@@ -15,6 +15,8 @@ public class GameplayManager : MonoBehaviour
     [Title("GUI")]
     public MoneyUIPanel moneyUIPanel;
     public SummaryScreen summaryScreen;
+    public DishStatisticsScreen dishStatisticsScreen;
+
 
     void Awake()
     {
@@ -22,9 +24,10 @@ public class GameplayManager : MonoBehaviour
         dataManager.LoadData();
         economySystem.Initialize(dataManager);
         moneyUIPanel.Initialize(dataManager);
-        gameLoopManager.Initialize(orderManager);
+        gameLoopManager.Initialize(orderManager, dataManager);
         levelStatisticsManager.Initialize(gameLoopManager.currentLevel);
         summaryScreen.Initialize(levelStatisticsManager);
+        dishStatisticsScreen.Initialize(gameLoopManager);
 
     }
 }

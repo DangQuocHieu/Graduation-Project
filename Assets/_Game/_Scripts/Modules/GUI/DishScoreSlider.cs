@@ -21,7 +21,7 @@ public class DishScoreSlider : MonoBehaviour
     public Tween AnimateScore()
     {
         slider.DOKill();
-        return slider.DOValue(displayValue, 2f)
+        return slider.DOValue(displayValue, 1f)
             .SetEase(Ease.OutQuad)
             .OnUpdate(() =>
             {

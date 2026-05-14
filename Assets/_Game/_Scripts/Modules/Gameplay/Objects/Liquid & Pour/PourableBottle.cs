@@ -13,7 +13,7 @@ public abstract class PourableBottle : GrabbableObject
 
     protected IEnumerator PourRoutine(LiquidContainer liquidContainer, PickupAndDropHandler pickupAndDropHandler, Func<Tween> fillLiquidTween)
     {
-        EventBus.SendMessage<PourLiquid>(new PourLiquid());
+        EventBus.Raise<PourLiquid>(new PourLiquid());
         rb.isKinematic = true;
         yield return OpenCap().WaitForCompletion();
         transform.DORotate(new Vector3(0, 0f, 180f), 0.3f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutSine).SetLink(gameObject);
@@ -28,7 +28,7 @@ public abstract class PourableBottle : GrabbableObject
         StopWaitForPickupCompleteCoroutine();
         yield return WaitForPickupComplete();
         yield return CloseCap().WaitForCompletion();
-        EventBus.SendMessage<PourLiquidComplete>(new PourLiquidComplete());
+        EventBus.Raise<PourLiquidComplete>(new PourLiquidComplete());
 
     }
 

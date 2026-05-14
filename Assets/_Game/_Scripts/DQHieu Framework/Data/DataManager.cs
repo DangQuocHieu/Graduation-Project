@@ -10,8 +10,16 @@ namespace DQHieu.Framework
 
         private const string PLAYER_DATA_KEY = "DQH_PlayerData";
         private const string SETTING_DATA_KEY = "DQH_SettingData";
+        void OnEnable()
+        {
+            EventBus.Subcribe<LevelComplete>(HandleLevelCompleteEvent);
+        }
 
-        
+        void OnDisable()
+        {
+            EventBus.UnSubcribe<LevelComplete>(HandleLevelCompleteEvent);
+        }
+
         public void SavePlayerData()
         {
             string jsonData = JsonUtility.ToJson(playerData);
@@ -80,6 +88,13 @@ namespace DQHieu.Framework
         void OnApplicationQuit()
         {
             SaveData();
+        }
+
+        private void HandleLevelCompleteEvent(LevelComplete evt)
+        {
+            ++playerData.CurrentLevelIndex;
+            SaveData();
+            
         }
     }
 }

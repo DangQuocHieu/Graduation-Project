@@ -32,7 +32,7 @@ namespace DQHieu.Framework
             }
         }
 
-        public static void SendMessage<T>(T message) where T : IGameEvent
+        public static void Raise<T>(T message) where T : IGameEvent
         {
             var type = typeof(T);
             if (_messageHandlers.ContainsKey(type))
