@@ -3570,6 +3570,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bun_la (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145761003660103200, guid: 139adcdda593f5b458a0b056c81b3a7d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 99fd06007588f5f428a45e45765d2baa, type: 2}
     m_RemovedComponents:
     - {fileID: 4683264996344636683, guid: 139adcdda593f5b458a0b056c81b3a7d, type: 3}
     - {fileID: 2814046689594467737, guid: 139adcdda593f5b458a0b056c81b3a7d, type: 3}
