@@ -3,7 +3,8 @@ using UnityEngine;
 public class ObjectHover : MonoBehaviour
 {
     public Outline objectOutline;
-    public GrabbableObject attachedObject;
+    public GrabbableObjectSO grabbableObjectSO;
+    // public Outline.Mode outlineMode = Outline.Mode.OutlineVisible;
 
     void Awake()
     {
@@ -14,7 +15,7 @@ public class ObjectHover : MonoBehaviour
     {
         if (objectOutline != null)
         {
-            objectOutline.OutlineMode = Outline.Mode.OutlineVisible;
+            objectOutline.OutlineMode = Outline.Mode.OutlineAll;
             objectOutline.OutlineColor = Color.yellow;
             objectOutline.OutlineWidth = 2f;
             

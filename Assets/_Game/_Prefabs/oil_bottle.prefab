@@ -151,7 +151,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9c90b1f8ac5b4c14cb7513891a3f6125, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 69f257d2f8c03884d8d1846b1e5f5992, type: 2}
+      objectReference: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
     - target: {fileID: 919132149155446097, guid: 9c90b1f8ac5b4c14cb7513891a3f6125, type: 3}
       propertyPath: m_Name
       value: oil_bottle_nap_bottom
@@ -188,15 +188,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.009
+      value: -7.279
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.664
+      value: 2.662
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.704
+      value: -5.23
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -229,7 +229,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 56e242c5015626f4b91a41ebe9100021, type: 2}
+      objectReference: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
     - target: {fileID: 919132149155446097, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_Name
       value: oil_bottle
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 926f4d7855b295546a205be0898a4624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 0}
+  grabbableObjectSO: {fileID: 11400000, guid: a01d929fdb22f9141b0c72e40eb89e7e, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 41350864183368073}
   objectColliders:
@@ -342,9 +342,15 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 1
+  currentCrouchOffset: 0
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  minClampPositionY: 3
+  maxClampPositionY: 4
+  isPickupCompleted: 0
+  isMoveToSurfaceCompleted: 0
+  canBePickedUp: 1
   pourEffect: {fileID: 2331832270262343205}
   topNap: {fileID: 7381748490363208774}
 --- !u!114 &635275683131300752
@@ -378,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 635275683131300752}
-  attachedObject: {fileID: 924848090829686965}
+  grabbableObjectSO: {fileID: 11400000, guid: a01d929fdb22f9141b0c72e40eb89e7e, type: 2}
 --- !u!1001 &7060382359490487213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -430,7 +436,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 4b756afde3fa37e4d8dcba045c201cda, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 69f257d2f8c03884d8d1846b1e5f5992, type: 2}
+      objectReference: {fileID: 2100000, guid: cebc401fc04403f47b39311402fe3012, type: 2}
     - target: {fileID: 919132149155446097, guid: 4b756afde3fa37e4d8dcba045c201cda, type: 3}
       propertyPath: m_Name
       value: oil_bottle_nap_top

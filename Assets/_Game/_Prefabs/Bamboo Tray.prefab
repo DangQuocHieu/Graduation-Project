@@ -2021,7 +2021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f640ae8a95b4148869913941e02511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: e35abaafbdd73ec4ca0ec758f02ccea4, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 4524507837095235493}
   objectColliders:
@@ -2055,19 +2054,23 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
+  currentCrouchOffset: 0
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  minClampPositionY: 3
+  maxClampPositionY: 4
+  isPickupCompleted: 0
+  isMoveToSurfaceCompleted: 0
+  canBePickedUp: 1
   placeableSurface: {fileID: 3976280260409323052}
+  applyFullPortionCheck: 1
   sauceAnchor: {fileID: 489990009013168799}
-  tofuAnchorParent: {fileID: 1827499011218202272}
-  tofuAnchorPoints: []
-  riceNoodleAnchorParent: {fileID: 9063418819796687402}
-  riceNoodleAnchorPoints: []
-  cucumberAnchorParent: {fileID: 5250681125328013848}
-  cucumberAnchorPoints: []
-  herbAnchor: {fileID: 36085354876819860}
-  herbAnchorPoints: []
+  attachedBowl: {fileID: 0}
+  tofuIngredientAnchors: []
+  riceNoodleIngredientAnchors: []
+  cucumberIngredientAnchors: []
+  herbIngredientAnchors: []
 --- !u!54 &4524507837095235493
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2157,7 +2160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 7417555057640133002}
-  attachedObject: {fileID: 7720587891663808602}
+  grabbableObjectSO: {fileID: 11400000, guid: e35abaafbdd73ec4ca0ec758f02ccea4, type: 2}
 --- !u!4 &2009378978045882449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}

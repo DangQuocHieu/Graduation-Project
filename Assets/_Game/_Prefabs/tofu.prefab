@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8222c26442ca7f4f953edbeec2a4e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: 84f20fc7521e2f84c9ea790915238207, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 0}
   objectColliders:
@@ -155,15 +154,20 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
+  currentCrouchOffset: 0
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  minClampPositionY: 3
+  maxClampPositionY: 4
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
+  canBePickedUp: 1
   weight: 0
   attachedIngredientAnchor: {fileID: 0}
   ingredientType: 0
   sliceableObject: {fileID: 0}
+  cookableObject: {fileID: 0}
 --- !u!114 &7438299991417878759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabbaleObject: {fileID: 6807298243486476670}
   slicePiecesPrefab: {fileID: 2504748691699478818, guid: 6958946996cc6a0499f7814393c974a0, type: 3}
+  cookableObject: {fileID: 0}
 --- !u!114 &1947623006019193904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 8049149258468821351}
-  attachedObject: {fileID: 6807298243486476670}
+  grabbableObjectSO: {fileID: 11400000, guid: 84f20fc7521e2f84c9ea790915238207, type: 2}
 --- !u!114 &8049149258468821351
 MonoBehaviour:
   m_ObjectHideFlags: 0

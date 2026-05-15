@@ -183,7 +183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e678afe2d15b2ea4486ae868b0021d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: 57dadd110fc3c87419e675a696ae6312, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 0}
   objectColliders:
@@ -191,11 +190,20 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
+  currentCrouchOffset: 0
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  minClampPositionY: 3
+  maxClampPositionY: 4
+  isPickupCompleted: 0
+  isMoveToSurfaceCompleted: 0
+  canBePickedUp: 1
   shrimpPasteContainer: {fileID: 6681809201100264502}
   fishSauceContainer: {fileID: 4748757538461141241}
+  attachedBambooTray: {fileID: 0}
+  fill: 0
+  sauceType: 0
 --- !u!114 &6681809201100264502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 1700573892020631681}
-  attachedObject: {fileID: 4372198760309648195}
+  grabbableObjectSO: {fileID: 11400000, guid: 57dadd110fc3c87419e675a696ae6312, type: 2}
 --- !u!114 &1700573892020631681
 MonoBehaviour:
   m_ObjectHideFlags: 0

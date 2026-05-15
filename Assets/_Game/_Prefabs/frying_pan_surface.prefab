@@ -726,7 +726,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987d69fe4b5b91e43aff05ad0916054f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: e3e61ae548a7d5e4e8098c81bbd36458, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 452133697615575842}
   objectColliders:
@@ -765,11 +764,15 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
+  currentCrouchOffset: 0
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  minClampPositionY: 3
+  maxClampPositionY: 4
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
+  canBePickedUp: 1
   isHot: 0
   attachedCookingZone: {fileID: 0}
   oilContainer: {fileID: 8962190255705925896}
@@ -855,7 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 6832611198124660629}
-  attachedObject: {fileID: 9197000069142543204}
+  grabbableObjectSO: {fileID: 11400000, guid: e3e61ae548a7d5e4e8098c81bbd36458, type: 2}
 --- !u!1 &1686105166972788172
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,10 +8,6 @@ using UnityEngine;
 [RequireComponent(typeof(ObjectHover))]
 public class GrabbableObject : MonoBehaviour
 {
-
-    [Title("Object Info")]
-    public GrabbableObjectSO grabbableObjectSO;
-
     [Title("Base References")]
     // Đã đổi từ FixedJoint sang ConfigurableJoint
     public FixedJoint fixedJoint;
@@ -60,7 +56,7 @@ public class GrabbableObject : MonoBehaviour
         }
     }
 
-    private void SetUpRigidbody()
+    protected virtual void SetUpRigidbody()
     {
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -261,6 +257,67 @@ public class GrabbableObject : MonoBehaviour
         _moveCoroutine = null;
         isMoveToSurfaceCompleted = true;
 
+        onComplete?.Invoke();
+    }
+
+    public void MoveToPositionAndRotation(Vector3 position, Quaternion targetRotation, bool keepKinematic = false, Action onComplete = null)
+    {
+        _grabObjectPoint = null;
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
+        _moveCoroutine = StartCoroutine(MoveToPositionAndRotationCoroutine(position, targetRotation, keepKinematic, onComplete));
+    }
+
+    public virtual IEnumerator MoveToPositionAndRotationCoroutine(Vector3 targetPosition, Quaternion targetRotation, bool keepKinematic = false, Action onComplete = null)
+    {
+        rb.isKinematic = true;
+        var itemContainer = GetComponent<IngredientContainer>();
+
+        if (itemContainer != null)
+        {
+            foreach (var item in itemContainer.containedItems)
+            {
+                item.ToggleCollider(isTrigger: true);
+            }
+        }
+
+        ToggleCollider(isTrigger: true);
+
+        rb.MovePosition(targetPosition);
+        rb.MoveRotation(targetRotation);
+        
+        yield return new WaitForFixedUpdate();
+        
+        if (!keepKinematic)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+        }
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        ToggleCollider(isTrigger: false);
+        
+        if (itemContainer != null)
+        {
+            foreach (var item in itemContainer.containedItems)
+            {
+                if (!keepKinematic)
+                {
+                    item.rb.linearVelocity = Vector3.zero;
+                    item.rb.angularVelocity = Vector3.zero;
+                }
+                item.ToggleCollider(isTrigger: false);
+            }
+        }
+        
+        yield return new WaitForFixedUpdate();
+
+        _moveCoroutine = null;
+        
         onComplete?.Invoke();
     }
 

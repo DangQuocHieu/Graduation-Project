@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 7253421448770564919}
-  attachedObject: {fileID: 286128867918949875}
+  grabbableObjectSO: {fileID: 11400000, guid: e0159e345304b1043b5e79f837df3896, type: 2}
 --- !u!114 &7253421448770564919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8222c26442ca7f4f953edbeec2a4e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: e0159e345304b1043b5e79f837df3896, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 491286961050651091}
   objectColliders:
@@ -316,15 +315,20 @@ MonoBehaviour:
   followSpeed: 20
   rotationSpeed: 10
   dropOffset: 0.5
+  currentCrouchOffset: 0
   isWaitingForSurfaceImpact: 0
   targetSurface: {fileID: 0}
   attachedIngredientContainer: {fileID: 0}
+  minClampPositionY: 3
+  maxClampPositionY: 4
+  isPickupCompleted: 0
+  isMoveToSurfaceCompleted: 0
+  canBePickedUp: 1
   weight: 0
-  attachedAnchorPoint:
-    anchor: {fileID: 0}
-    isEmpty: 1
+  attachedIngredientAnchor: {fileID: 0}
   ingredientType: 3
   sliceableObject: {fileID: 0}
+  cookableObject: {fileID: 0}
 --- !u!1 &5940103110509219775
 GameObject:
   m_ObjectHideFlags: 0
