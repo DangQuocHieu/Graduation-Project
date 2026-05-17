@@ -5,6 +5,7 @@ public enum CustomerState
     WaitingForFood, 
     Eating,
     Paying,
-    Leaving
+    Leaving, 
+    ServiceDelayed
 
 }

@@ -24,8 +24,12 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public float stateTimer;
     [TabGroup("AI Behaviour")] public CustomerOrder customerOrder;
     [TabGroup("AI Behaviour")] public DishScore dishScore;
+    [TabGroup("AI Behaviour")] public bool serviceDelayed = false;
 
-
+    void Awake()
+    {
+        dishScore.attachedCustomer = this;
+    }
     void Start()
     {
         EnterState(currentState);
@@ -58,6 +62,9 @@ public class Customer : MonoBehaviour
             case CustomerState.Leaving:
                 EnterLeavingState();
                 break;
+            case CustomerState.ServiceDelayed:
+                EnterServiceDelayedState();
+                break;
 
         }
     }
@@ -72,8 +79,14 @@ public class Customer : MonoBehaviour
             case CustomerState.Ordering:
                 UpdateOrderingState();
                 break;
+            case CustomerState.WaitingForFood:
+                UpdateWaitingForFoodState();
+                break;
             case CustomerState.Eating:
                 UpdateEatingState();
+                break;
+            case CustomerState.ServiceDelayed:
+                UpdateServiceDelayedState();
                 break;
         }
     }
@@ -87,6 +100,12 @@ public class Customer : MonoBehaviour
                 break;
             case CustomerState.Eating:
                 ExitEatingState();
+                break;
+            case CustomerState.WaitingForFood:
+                ExitWaitingForFoodState();
+                break;
+            case CustomerState.ServiceDelayed:
+                ExitServiceDelayedState();
                 break;
         }
     }
@@ -126,7 +145,7 @@ public class Customer : MonoBehaviour
         stateTimer = 0f;
         customerMovement.StartRotating(orderManager.orderPoint.rotation);
         customerAnim.SetWalking(false);
-        EventBus.Raise<CustomerOrderComplete>(new CustomerOrderComplete(customerOrder));
+        EventBus.Raise<CustomerOrderComplete>(new CustomerOrderComplete(this));
     }
 
     private void UpdateOrderingState()
@@ -142,12 +161,28 @@ public class Customer : MonoBehaviour
     #endregion
 
     #region methods for waiting for food state
+
     private void EnterWaitingForFoodState()
     {
         var availableChair = orderManager.GetAvailableChair();
         customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(availableChair.transform.position);
+        stateTimer = customerOrder.serveDuration;
         StartCoroutine(WaitForSittingOnChairCoroutine(availableChair));
+    }
+
+    private void UpdateWaitingForFoodState()
+    {
+        stateTimer -= Time.deltaTime;
+        if(stateTimer <= 0f)
+        {
+            ChangeState(CustomerState.ServiceDelayed);
+        }
+    }
+
+    private void ExitWaitingForFoodState()
+    {
+        stateTimer = 0f;
     }
 
     private IEnumerator WaitForSittingOnChairCoroutine(ChairObject chairObject)
@@ -182,7 +217,7 @@ public class Customer : MonoBehaviour
         chopstickVisual.attachedDish = dish;
         //Calculate Score Here
         dishScore.CalculateScore();
-        EventBus.Raise<FoodServedEvent>(new FoodServedEvent(dishScore));
+        EventBus.Raise<FoodServedEvent>(new FoodServedEvent(this));
         ChangeState(CustomerState.Eating);
     }
     #endregion
@@ -249,6 +284,29 @@ public class Customer : MonoBehaviour
         EventBus.Raise<CustomerLeaveEvent>(new CustomerLeaveEvent(this));
         customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(orderManager.GetRandomLeavePoint().position);
+    }
+    #endregion
+
+    #region  methods for service delayed state
+
+    private void EnterServiceDelayedState()
+    {
+        serviceDelayed = true;
+        stateTimer = customerOrder.gracePeriodDuration;
+    }
+
+    private void UpdateServiceDelayedState()
+    {
+        stateTimer -= Time.deltaTime;
+        if(stateTimer <= 0f)
+        {
+            ChangeState(CustomerState.Leaving);
+        }
+    }
+
+    private void ExitServiceDelayedState()
+    {
+        
     }
     #endregion
 }

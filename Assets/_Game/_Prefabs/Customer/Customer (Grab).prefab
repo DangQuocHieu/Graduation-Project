@@ -137,6 +137,10 @@ PrefabInstance:
       value: Customer (Grab)
       objectReference: {fileID: 0}
     - target: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
+      propertyPath: customerSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e30e43f37eeda04796d7daefeaf2561, type: 2}
+    - target: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
       propertyPath: paymentVisual
       value: 
       objectReference: {fileID: 3075329941848009299}

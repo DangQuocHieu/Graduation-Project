@@ -13,6 +13,10 @@ PrefabInstance:
       value: "Customer H\u1ECDc SInh"
       objectReference: {fileID: 0}
     - target: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
+      propertyPath: customerSO
+      value: 
+      objectReference: {fileID: 11400000, guid: c3d01d8de22b9fc40973be6916c9c1b2, type: 2}
+    - target: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
       propertyPath: paymentVisual
       value: 
       objectReference: {fileID: 7542468279550920081}

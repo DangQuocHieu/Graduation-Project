@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class DishScore : MonoBehaviour
 {
+    public Customer attachedCustomer;
     public float waitingScore;
     public float tasteScore;
     public int guestPaidAmount;
@@ -15,6 +16,24 @@ public class DishScore : MonoBehaviour
     }
 
     public void CalculateScore()
+    {
+        CalculateWaitingScore();
+        CalculateTasteScore();
+    }
+
+    private void CalculateWaitingScore()
+    {
+        if(attachedCustomer.serviceDelayed)
+        {
+            waitingScore = (attachedCustomer.stateTimer / attachedCustomer.customerOrder.gracePeriodDuration) * 100f;
+        }
+        else
+        {
+            waitingScore = 100f;
+        }
+    }
+
+    private void CalculateTasteScore()
     {
         
     }

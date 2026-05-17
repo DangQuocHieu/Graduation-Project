@@ -23,7 +23,6 @@ public class HoverController : MonoBehaviour
         // Physics.Raycast sẽ chỉ trả về vật thể ĐẦU TIÊN bị bắn trúng
         if (Physics.Raycast(ray, out hit, hoverDistance, hoverableLayer))
         {
-            Debug.Log(hit.collider.gameObject.name);
             ObjectHover objectHover = null;
 
             // Kiểm tra script ObjectHover trên vật thể hoặc Rigidbody của nó

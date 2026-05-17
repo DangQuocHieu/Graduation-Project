@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class FoodServedEvent : IGameEvent
 {
-    public DishScore dishScore;
+    public Customer customer;
 
-    public FoodServedEvent(DishScore dishScore)
+    public FoodServedEvent(Customer customer)
     {
-        this.dishScore = dishScore;
+        this.customer = customer;
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public struct CustomerOrderComplete : IGameEvent
 {
-    public CustomerOrderComplete(CustomerOrder order)
+    public CustomerOrderComplete(Customer customer)
     {
-        this.order = order;
+        this.customer = customer;
     }
-    public CustomerOrder order;
+    public Customer customer;
 }

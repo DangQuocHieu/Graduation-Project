@@ -627,6 +627,10 @@ PrefabInstance:
       value: "Customer (\xC1o ba l\u1ED7 & m\u0169 c\u1ED1i)"
       objectReference: {fileID: 0}
     - target: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
+      propertyPath: customerSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a91d7d127cbdfac46bcf7872228f0886, type: 2}
+    - target: {fileID: 5214034839487257409, guid: 031596c31329739479312baea146ec9b, type: 3}
       propertyPath: paymentVisual
       value: 
       objectReference: {fileID: 3626313439978580265}

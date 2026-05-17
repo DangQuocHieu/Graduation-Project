@@ -82,7 +82,7 @@ public class LevelStatisticsManager : MonoBehaviour
 
     private void HandleFoodServedEvent(FoodServedEvent evt)
     {
-        dishScores.Add(evt.dishScore);
+        dishScores.Add(evt.customer.dishScore);
     }
 
 

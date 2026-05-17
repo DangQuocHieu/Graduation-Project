@@ -5,4 +5,6 @@ public class CustomerOrder
 {
     public List<IngredientType> ingredientTypes = new();
     public SauceType sauceType;
+    public float serveDuration;
+    public float gracePeriodDuration;
 }
