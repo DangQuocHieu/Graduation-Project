@@ -7,7 +7,7 @@ using UnityEngine;
 public class LevelStatisticsManager : MonoBehaviour
 {
     [ShowInInspector] public int orderAmount => currentLevel.customerArrivalConfigs.Count;
-    [ShowInInspector] public int finishedOrder => dishScores.Count;
+    public int finishedOrder;
     public int expense;
     public int mealIncome;
 
@@ -22,6 +22,7 @@ public class LevelStatisticsManager : MonoBehaviour
         EventBus.Subcribe<SpendMoneyEvent>(HandleSpendMoneyEvent);
         EventBus.Subcribe<CustomerPaymentReceived>(HandleCustomerPaymentReceivedEvent);
         EventBus.Subcribe<FoodServedEvent>(HandleFoodServedEvent);
+        EventBus.Subcribe<CustomerLeaveEvent>(HandleCustomerLeaveEvent);
     }
 
     void OnDisable()
@@ -29,6 +30,7 @@ public class LevelStatisticsManager : MonoBehaviour
         EventBus.UnSubcribe<SpendMoneyEvent>(HandleSpendMoneyEvent);
         EventBus.UnSubcribe<CustomerPaymentReceived>(HandleCustomerPaymentReceivedEvent);
         EventBus.UnSubcribe<FoodServedEvent>(HandleFoodServedEvent);
+        EventBus.UnSubcribe<CustomerLeaveEvent>(HandleCustomerLeaveEvent);
     }
 
     public void Initialize(LevelData currentLevel)
@@ -77,12 +79,33 @@ public class LevelStatisticsManager : MonoBehaviour
 
     public int GetOverallScore()
     {
+        GetTotalTasteScore();
+        GetTotalWaitingScore();
         return Mathf.RoundToInt(((float)totalWaitingScore + (float)totalTasteScore)/ 2); 
     }
 
     private void HandleFoodServedEvent(FoodServedEvent evt)
     {
-        dishScores.Add(evt.customer.dishScore);
+        ++finishedOrder;
+    }
+
+    private void HandleCustomerLeaveEvent(CustomerLeaveEvent evt)
+    {
+        var customer = evt.customer;
+        if(!customer.foodServed)
+        {
+            customer.dishScore.ResetScore();
+            dishScores.Add(customer.dishScore);
+        }
+        else
+        {
+            dishScores.Add(customer.dishScore);
+        }
+
+        if(dishScores.Count == orderAmount)
+        {
+            EventBus.Raise<LevelComplete>(new LevelComplete(GetOverallScore()));
+        }
     }
 
 

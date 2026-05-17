@@ -75,26 +75,30 @@ public class BambooTray : GrabbableObject
         }
         else if (hit.collider.TryGetComponent<Customer>(out var customer))
         {
-            if (!applyFullPortionCheck)
+            if (customer.currentState is CustomerState.WaitingForFood || customer.currentState is CustomerState.ServiceDelayed)
             {
-                OnServed();
-                pickupAndDropHandler.DropObject();
-                ChairObject chairObject = customer.attachedChairObject;
-                MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+                if (!applyFullPortionCheck)
                 {
-                    customer.HandleFoodServed(this);
-                });
-            }
-            else if (IsFullPortion(customer.customerOrder.ingredientTypes))
-            {
-                OnServed();
-                pickupAndDropHandler.DropObject();
-                ChairObject chairObject = customer.attachedChairObject;
-                MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+                    OnServed();
+                    pickupAndDropHandler.DropObject();
+                    ChairObject chairObject = customer.attachedChairObject;
+                    MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+                    {
+                        customer.HandleFoodServed(this);
+                    });
+                }
+                else if (IsFullPortion(customer.customerOrder.ingredientTypes))
                 {
-                    customer.HandleFoodServed(this);
-                });
+                    OnServed();
+                    pickupAndDropHandler.DropObject();
+                    ChairObject chairObject = customer.attachedChairObject;
+                    MoveToPlaceableSurface(chairObject.attachedTableSurface, chairObject.dishPlacePoint.position, onComplete: () =>
+                    {
+                        customer.HandleFoodServed(this);
+                    });
+                }
             }
+
         }
         base.InteractWith(hit, pickupAndDropHandler);
     }

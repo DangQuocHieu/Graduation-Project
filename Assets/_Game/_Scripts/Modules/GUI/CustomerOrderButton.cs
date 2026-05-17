@@ -10,6 +10,8 @@ public class CustomerOrderButton : MonoBehaviour, IInteractable
     public Customer attachedCustomer;
     public OrderTicketUI orderTicketUI;
     public TextMeshProUGUI timerText;
+    public OrderScreen orderScreen;
+    public RectTransform selectedOutline;
 
     void OnEnable()
     {
@@ -34,14 +36,17 @@ public class CustomerOrderButton : MonoBehaviour, IInteractable
     public void OnInteract()
     {
         orderTicketUI.ShowIngredients(attachedCustomer.customerOrder);
+        orderTicketUI.gameObject.SetActive(true);
+        orderScreen.OnCustomerOrderButtonClicked(this);
     }
 
-    public void Initialize(Customer customer, OrderTicketUI orderTicketUI)
+    public void Initialize(Customer customer, OrderTicketUI orderTicketUI, OrderScreen orderScreen)
     {
         customerImage.sprite = customer.customerSO.avatarSprite;
         attachedCustomer = customer;
         this.orderTicketUI = orderTicketUI;
         timerText.text = attachedCustomer.stateTimer.ToMMSS();
+        this.orderScreen = orderScreen;
     }
 
     private void HandleFoodServedEvent(FoodServedEvent evt)

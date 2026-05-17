@@ -54,7 +54,6 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
             if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
             {

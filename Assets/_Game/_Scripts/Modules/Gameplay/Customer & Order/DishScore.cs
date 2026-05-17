@@ -37,4 +37,11 @@ public class DishScore : MonoBehaviour
     {
         
     }
+
+    public void ResetScore()
+    {
+        waitingScore = 0;
+        tasteScore = 0;
+        guestPaidAmount = 0;
+    }
 }

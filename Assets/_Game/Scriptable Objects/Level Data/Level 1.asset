@@ -17,6 +17,6 @@ MonoBehaviour:
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 1
-      serveDuration: 240
-      gracePeriodDuration: 60
+      serveDuration: 30
+      gracePeriodDuration: 10
     spawnTime: 2

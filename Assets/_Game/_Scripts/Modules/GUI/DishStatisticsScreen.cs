@@ -32,12 +32,14 @@ public class DishStatisticsScreen : MonoBehaviour
     void OnEnable()
     {
         EventBus.Subcribe<InteractWithCashObject>(HandleInteractWithCashObject);
+        EventBus.Subcribe<LevelComplete>(HandleLevelCompleteEvent);
         nextButton.onClick.AddListener(OnNextButtonClicked);
     }
 
     void OnDisable()
     {
         EventBus.UnSubcribe<InteractWithCashObject>(HandleInteractWithCashObject);
+        EventBus.UnSubcribe<LevelComplete>(HandleLevelCompleteEvent);
         nextButton.onClick.RemoveListener(OnNextButtonClicked);
     }
 
@@ -96,13 +98,10 @@ public class DishStatisticsScreen : MonoBehaviour
         EventBus.Raise<CustomerPaymentReceived>(new CustomerPaymentReceived(currentCustomer.dishScore.guestPaidAmount));
         HideScreen();
         CursorHelper.HideCursor();
+    }
 
-        
-        if(gameLoopManager.AllCustomerLeave())
-        {
-            CursorHelper.ShowCursor();
-            EventBus.Raise<LevelComplete>(new LevelComplete());
-        }
-        
+    private void HandleLevelCompleteEvent(LevelComplete evt)
+    {
+        nextButton.gameObject.SetActive(false);
     }
 }

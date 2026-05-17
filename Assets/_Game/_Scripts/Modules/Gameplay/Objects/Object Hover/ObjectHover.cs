@@ -4,7 +4,7 @@ public class ObjectHover : MonoBehaviour
 {
     public Outline objectOutline;
     public GrabbableObjectSO grabbableObjectSO;
-    // public Outline.Mode outlineMode = Outline.Mode.OutlineVisible;
+
 
     void Awake()
     {

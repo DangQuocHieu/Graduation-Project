@@ -30,6 +30,7 @@ public class CustomerAnimator : MonoBehaviour
         animator.Play(SITTING_IDLE);
     }
 
+
     public void SetPaying(bool isPaying)
     {
         animator.SetBool(PAYING, isPaying);

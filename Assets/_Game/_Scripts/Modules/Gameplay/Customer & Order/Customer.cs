@@ -24,7 +24,8 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public float stateTimer;
     [TabGroup("AI Behaviour")] public CustomerOrder customerOrder;
     [TabGroup("AI Behaviour")] public DishScore dishScore;
-    [TabGroup("AI Behaviour")] public bool serviceDelayed = false;
+    [TabGroup("AI Behaviour")] public bool serviceDelayed = false;  
+    [TabGroup("AI Behaviour")] public bool foodServed = false;
 
     void Awake()
     {
@@ -214,6 +215,7 @@ public class Customer : MonoBehaviour
 
     public void HandleFoodServed(BambooTray dish)
     {
+        foodServed = true;
         chopstickVisual.attachedDish = dish;
         //Calculate Score Here
         dishScore.CalculateScore();
@@ -281,6 +283,11 @@ public class Customer : MonoBehaviour
     #region methods for leaving state
     private void EnterLeavingState()
     {
+        if(attachedChairObject != null)
+        {
+            LeaveChair();
+        }
+        customerMovement.EnableMovement();
         EventBus.Raise<CustomerLeaveEvent>(new CustomerLeaveEvent(this));
         customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(orderManager.GetRandomLeavePoint().position);

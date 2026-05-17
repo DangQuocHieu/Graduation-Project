@@ -72,8 +72,8 @@ namespace DQHieu.Framework
         {
             PlayerPrefs.DeleteKey(PLAYER_DATA_KEY);
             PlayerPrefs.DeleteKey(SETTING_DATA_KEY);
-            LoadData(); 
-            SaveData(); 
+            LoadData();
+            SaveData();
             Debug.Log("Data has been reset.");
         }
 
@@ -92,9 +92,12 @@ namespace DQHieu.Framework
 
         private void HandleLevelCompleteEvent(LevelComplete evt)
         {
-            ++playerData.CurrentLevelIndex;
+            if (evt.overallScore >= 50)
+            {
+                ++playerData.CurrentLevelIndex;
+            }
             SaveData();
-            
+
         }
     }
 }
