@@ -26,10 +26,10 @@ public class FryingPan : GrabbableObject
             pickupAndDropHandler.DropObject();
             MoveToPlaceableSurface(cookingZone.placeableSurface, hit);
         }
-        else if(hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
+        else if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
         {
             StartCoroutine(bambooTray.FillCookableObjectCoroutine(placeableSurface.ingredientContainer.GetCookableList()));
-            
+
         }
         else
         {
@@ -37,18 +37,17 @@ public class FryingPan : GrabbableObject
         }
     }
 
-    protected override void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        base.OnCollisionEnter(collision);
-        if (collision.gameObject.TryGetComponent<CookingZone>(out var cookingZone))
+        if (other.TryGetComponent<CookingZone>(out var cookingZone))
         {
             attachedCookingZone = cookingZone;
         }
     }
 
-    void OnCollisionExit(Collision collision)
+    void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<CookingZone>(out var cookingZone))
+        if (other.TryGetComponent<CookingZone>(out var cookingZone))
         {
             if (attachedCookingZone != null && attachedCookingZone == cookingZone)
             {
@@ -56,7 +55,6 @@ public class FryingPan : GrabbableObject
             }
         }
     }
-
     public Tween FillCookingOil()
     {
         containCookingOil = true;

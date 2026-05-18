@@ -26,6 +26,7 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public DishScore dishScore;
     [TabGroup("AI Behaviour")] public bool serviceDelayed = false;  
     [TabGroup("AI Behaviour")] public bool foodServed = false;
+    [TabGroup("AI Behaviour")] public BambooTray attachedDish;
 
     void Awake()
     {
@@ -217,6 +218,7 @@ public class Customer : MonoBehaviour
     {
         foodServed = true;
         chopstickVisual.attachedDish = dish;
+        attachedDish = dish;
         //Calculate Score Here
         dishScore.CalculateScore();
         EventBus.Raise<FoodServedEvent>(new FoodServedEvent(this));

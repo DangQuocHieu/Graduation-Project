@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class BambooTray : GrabbableObject
 {
-    private Dictionary<IngredientType, List<IngredientAnchor>> IngredientAnchorsDic = new();
+    public Dictionary<IngredientType, List<IngredientAnchor>> IngredientAnchorsDic = new();
     public PlaceableSurface placeableSurface;
     public bool applyFullPortionCheck = true;
 

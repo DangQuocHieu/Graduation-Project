@@ -23,7 +23,7 @@ public class DishScore : MonoBehaviour
 
     private void CalculateWaitingScore()
     {
-        if(attachedCustomer.serviceDelayed)
+        if (attachedCustomer.serviceDelayed)
         {
             waitingScore = (attachedCustomer.stateTimer / attachedCustomer.customerOrder.gracePeriodDuration) * 100f;
         }
@@ -35,7 +35,36 @@ public class DishScore : MonoBehaviour
 
     private void CalculateTasteScore()
     {
-        
+        var dish = attachedCustomer.attachedDish;
+        int count = 0;
+        foreach (var anchors in dish.IngredientAnchorsDic.Values)
+        {
+            foreach (var anchor in anchors)
+            {
+                if (anchor.attachedIngredient != null && anchor.attachedIngredient.TryGetComponent<CookableObject>(out var cookableObject))
+                {
+                    tasteScore += cookableObject.GetTasteScore();
+                    ++count;
+                }
+            }
+        }
+        if (count > 0)
+        {
+            tasteScore /= count;
+        }
+        else
+        {
+            tasteScore = 0f;
+        }
+
+        var sauceType = attachedCustomer.customerOrder.sauceType;
+        if(dish.attachedBowl == null || dish.attachedBowl.sauceType != sauceType)
+        {
+            tasteScore -= 0.2f; //wrong sauce type penalty
+        }
+
+        tasteScore = Mathf.Max(0f, tasteScore);
+
     }
 
     public void ResetScore()

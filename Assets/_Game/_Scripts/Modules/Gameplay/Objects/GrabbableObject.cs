@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,7 +14,7 @@ public class GrabbableObject : MonoBehaviour
     // Đã đổi từ FixedJoint sang ConfigurableJoint
     public FixedJoint fixedJoint;
     public Rigidbody rb;
-    public Collider[] objectColliders;
+    public List<Collider> objectColliders = new();
     private Transform _grabObjectPoint;
 
     [Title("Physics Configurations")]
@@ -45,6 +47,9 @@ public class GrabbableObject : MonoBehaviour
     protected virtual void Awake()
     {
         SetUpRigidbody();
+        objectColliders.Clear();
+        objectColliders = GetComponentsInChildren<Collider>().ToList();
+        
     }
 
     private void FixedUpdate()

@@ -11,15 +11,19 @@ public class PickupAndDropHandler : MonoBehaviour
     [SerializeField] private Transform _grabObjectPoint;
     [SerializeField] private Collider _collider;
     [SerializeField] private float _autoDropDistance = 8f;
+    public Material validGhostMaterial;
+    public Material invalidGhostMaterial;
     public GrabbableObject _objectInHand;
     private Coroutine waitForPurchasedObjectPickedUpCoroutine;
     private float _currentCrouchOffset = 0f;
+    private GhostObjectHandler _ghostObjectHandler = new GhostObjectHandler();
 
     void Update()
     {
         HandlePickUpAndDropObject();
         HandleAutoDropObject();
         HandleInteractObject();
+        _ghostObjectHandler.UpdateGhostPosition(_objectInHand, _camera, _pickUpRange);
     }
 
     void OnEnable()
@@ -48,6 +52,7 @@ public class PickupAndDropHandler : MonoBehaviour
         _objectInHand = grabbableObject;
         _objectInHand.OnPickUp(_grabObjectPoint);
         _objectInHand.SetCrouchOffset(_currentCrouchOffset);
+        _ghostObjectHandler.CreateGhostObject(grabbableObject, validGhostMaterial, invalidGhostMaterial);
     }
 
     private void HandleInteractObject()
@@ -84,9 +89,10 @@ public class PickupAndDropHandler : MonoBehaviour
                     {
                         if (grabbableObject.canBePickedUp)
                         {
-                            _objectInHand = grabbableObject;
-                            _objectInHand.OnPickUp(_grabObjectPoint);
-                            _objectInHand.SetCrouchOffset(_currentCrouchOffset);
+                            // _objectInHand = grabbableObject;
+                            // _objectInHand.OnPickUp(_grabObjectPoint);
+                            // _objectInHand.SetCrouchOffset(_currentCrouchOffset);
+                            PickupObject(grabbableObject);
                         }
                     }
                     else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
@@ -112,6 +118,14 @@ public class PickupAndDropHandler : MonoBehaviour
                     }
                     else
                     {
+                        if (hit.collider.TryGetComponent<KitchenArea>(out var kitchenArea))
+                        {
+                            if (!_ghostObjectHandler.IsPlacementValid)
+                            {
+                                return; // Block drop
+                            }
+                        }
+                        
                         _objectInHand.InteractWith(hit, this);
                         return;
                     }
@@ -124,6 +138,7 @@ public class PickupAndDropHandler : MonoBehaviour
     {
         _objectInHand.OnDrop();
         _objectInHand = null;
+        _ghostObjectHandler.DestroyGhostObject();
     }
 
     private void HandleAutoDropObject()
@@ -146,6 +161,7 @@ public class PickupAndDropHandler : MonoBehaviour
             _objectInHand = evt.purchasedObject;
             evt.purchasedObject.OnPickUp(_grabObjectPoint);
             _objectInHand.SetCrouchOffset(_currentCrouchOffset);
+            _ghostObjectHandler.CreateGhostObject(evt.purchasedObject, validGhostMaterial, invalidGhostMaterial);
             waitForPurchasedObjectPickedUpCoroutine = StartCoroutine(WaitForPurchasedObjectPickedUpByHand(evt.purchasedObject));
         }
         else
@@ -174,4 +190,3 @@ public class PickupAndDropHandler : MonoBehaviour
         EventBus.Raise<ItemPickedUpComplete>(new ItemPickedUpComplete());
     }
 }
-

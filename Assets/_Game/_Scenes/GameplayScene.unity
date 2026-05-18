@@ -7204,6 +7204,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 469459783699956638, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052707726979173414, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2461309775297147486, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_Size.y
+      value: 2.3660784
+      objectReference: {fileID: 0}
+    - target: {fileID: 2461309775297147486, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_Center.y
+      value: 0.68303925
+      objectReference: {fileID: 0}
+    - target: {fileID: 2461309775297147486, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2464914592980777042, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7220,9 +7240,45 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.175
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.998
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027480583524596323, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3479076824148406295, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_Name
       value: quan_bun_dau
+      objectReference: {fileID: 0}
+    - target: {fileID: 3769709008506174333, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.885
       objectReference: {fileID: 0}
     - target: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7296,9 +7352,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5020152957150626691, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8421051528612497710, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -832.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036384027995652395, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19191,6 +19255,8 @@ MonoBehaviour:
   _grabObjectPoint: {fileID: 3243401389088630230}
   _collider: {fileID: 8680968074169872575}
   _autoDropDistance: 8
+  validGhostMaterial: {fileID: 2100000, guid: 60ee3f999cf203149b093e34019db5cf, type: 2}
+  invalidGhostMaterial: {fileID: 2100000, guid: 84d209d55e5bc9f4f9f134e624177575, type: 2}
   _objectInHand: {fileID: 0}
 --- !u!1001 &9061952006802198919
 PrefabInstance:

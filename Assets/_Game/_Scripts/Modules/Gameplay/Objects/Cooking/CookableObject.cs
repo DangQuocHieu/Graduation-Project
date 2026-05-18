@@ -11,6 +11,7 @@ public class CookableObject : MonoBehaviour
     public float perfectCookLevel = 100f;
     public float maxBurnLevel = 200f;
     public float totalTimeToBurn = 10f;
+    public float perfectCookOffset = 10f;
 
     [Header("Visual")]
     public Gradient cookingColors;
@@ -78,10 +79,32 @@ public class CookableObject : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if(other.TryGetComponent<CookingOil>(out var cookingOil))
+        if (other.TryGetComponent<CookingOil>(out var cookingOil))
         {
             PauseCooking();
         }
+    }
+
+    public float GetTasteScore()
+    {
+        float perfectMin = perfectCookLevel - perfectCookOffset;
+        float perfectMax = perfectCookLevel + perfectCookOffset;
+        if (cookProgress >= perfectMin && cookProgress <= perfectMax)
+        {
+            return 1f; 
+        }
+
+        if (cookProgress < perfectMin)
+        {
+            return Mathf.InverseLerp(0f, perfectMin, cookProgress);
+        }
+
+        if (cookProgress > perfectMax)
+        {
+            return Mathf.InverseLerp(maxBurnLevel, perfectMax, cookProgress);
+        }
+
+        return 0f; // Đề phòng lỗi logic (Fallback)
     }
 
 }
