@@ -37,6 +37,7 @@ public class GrabbableObject : MonoBehaviour
     public bool isPickupCompleted = false;
     public bool isMoveToSurfaceCompleted = false;
     public bool canBePickedUp = true;
+    public bool canSliced => GetComponent<SliceableObject>() != null;
 
 
     public void SetCrouchOffset(float offset)

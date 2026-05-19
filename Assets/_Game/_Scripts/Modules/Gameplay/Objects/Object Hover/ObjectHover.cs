@@ -4,10 +4,12 @@ public class ObjectHover : MonoBehaviour
 {
     public Outline objectOutline;
     public GrabbableObjectSO grabbableObjectSO;
+    public GrabbableObject attachedGrabbableObject;
 
 
     void Awake()
     {
+        attachedGrabbableObject = GetComponent<GrabbableObject>();
         SetUpOutline();
     }
 
