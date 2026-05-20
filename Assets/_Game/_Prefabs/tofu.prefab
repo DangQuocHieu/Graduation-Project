@@ -167,7 +167,7 @@ MonoBehaviour:
   attachedIngredientAnchor: {fileID: 0}
   ingredientType: 0
   sliceableObject: {fileID: 0}
-  cookableObject: {fileID: 0}
+  cookableObject: {fileID: 4195032510305819801}
 --- !u!114 &7438299991417878759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 8049149258468821351}
   grabbableObjectSO: {fileID: 11400000, guid: 84f20fc7521e2f84c9ea790915238207, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!114 &8049149258468821351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +233,7 @@ MonoBehaviour:
   perfectCookLevel: 100
   maxBurnLevel: 200
   totalTimeToBurn: 60
+  perfectCookOffset: 10
   cookingColors:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}

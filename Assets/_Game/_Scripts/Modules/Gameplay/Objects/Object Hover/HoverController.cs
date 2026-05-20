@@ -9,10 +9,20 @@ public class HoverController : MonoBehaviour
     public ObjectHoverPanel objectHoverPanel;
     public ObjectHover currentHoveredObject;
     public GrabbableObject currentGrabbableObject;
-
+    public CookableObject currentCookableObject;
     void Update()
     {
         HandleHover();
+        if(currentCookableObject != null)
+        {
+            objectHoverPanel.cookProgressSlider.gameObject.SetActive(true);
+            objectHoverPanel.cookProgressSlider.Display(currentCookableObject);
+        }
+        else
+        {
+            objectHoverPanel.cookProgressSlider.gameObject.SetActive(false);
+        }
+        
     }
 
     private void HandleHover()
@@ -45,6 +55,10 @@ public class HoverController : MonoBehaviour
 
                 currentHoveredObject = objectHover;
                 currentGrabbableObject = objectHover.attachedGrabbableObject;
+                if(currentGrabbableObject != null && currentGrabbableObject is Ingredient ingredient)
+                {
+                    currentCookableObject = ingredient.cookableObject;
+                }
                 currentHoveredObject.OnHoverEnter();
 
                 objectHoverPanel.ShowPanel(currentHoveredObject.transform.position);
@@ -82,6 +96,7 @@ public class HoverController : MonoBehaviour
         {
             currentHoveredObject.OnHoverExit();
             currentGrabbableObject = null;
+            currentCookableObject = null;
         }
     }
 
@@ -92,6 +107,7 @@ public class HoverController : MonoBehaviour
             currentHoveredObject.OnHoverExit();
             currentHoveredObject = null;
             currentGrabbableObject = null;
+            currentCookableObject = null;
         }
         objectHoverPanel.HidePanel();
     }

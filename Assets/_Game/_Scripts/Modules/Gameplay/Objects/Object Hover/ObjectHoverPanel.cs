@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class ObjectHoverPanel : MonoBehaviour
@@ -28,6 +29,8 @@ public class ObjectHoverPanel : MonoBehaviour
     private Vector3 currentTargetPosition;
     private Tween fadeTween;
     private Tween moveTween;
+
+    public CookProgressSlider cookProgressSlider;
 
     private void Start()
     {
@@ -60,25 +63,6 @@ public class ObjectHoverPanel : MonoBehaviour
             transform.localScale = Vector3.one * currentScale;
         }
     }
-
-    // public void SetUpUI(ShopItemSO shopItemSO)
-    // {
-    //     if (shopItemSO != null)
-    //     {
-    //         priceRect.gameObject.SetActive(true);
-    //         priceText.text = CurrencyFormatter.ToGameCurrency(shopItemSO.grabbableObjectSO.price);
-    //         if (shopItemSO.grabbableObjectSO is IngredientSO ingredientSO)
-    //         {
-    //             weightRect.gameObject.SetActive(true);
-    //             weightText.text = $"{ingredientSO.initialAmount}g";
-    //         }
-    //         else
-    //         {
-    //             weightRect.gameObject.SetActive(false);
-    //             weightText.text = "";
-    //         }
-    //     }
-    // }
 
     public void SetUpUI(GrabbableObjectSO grabbableObjectSO, bool displayPrice = false)
     {
@@ -150,4 +134,5 @@ public class ObjectHoverPanel : MonoBehaviour
         fadeTween?.Kill();
         moveTween?.Kill();
     }
+
 }

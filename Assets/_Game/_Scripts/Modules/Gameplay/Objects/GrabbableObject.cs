@@ -48,9 +48,11 @@ public class GrabbableObject : MonoBehaviour
     protected virtual void Awake()
     {
         SetUpRigidbody();
-        objectColliders.Clear();
-        objectColliders = GetComponentsInChildren<Collider>().ToList();
-        
+        if (objectColliders.Count == 0)
+        {
+            objectColliders = GetComponentsInChildren<Collider>().ToList();
+        }
+
     }
 
     private void FixedUpdate()
@@ -294,9 +296,9 @@ public class GrabbableObject : MonoBehaviour
 
         rb.MovePosition(targetPosition);
         rb.MoveRotation(targetRotation);
-        
+
         yield return new WaitForFixedUpdate();
-        
+
         if (!keepKinematic)
         {
             rb.isKinematic = false;
@@ -306,7 +308,7 @@ public class GrabbableObject : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         ToggleCollider(isTrigger: false);
-        
+
         if (itemContainer != null)
         {
             foreach (var item in itemContainer.containedItems)
@@ -319,11 +321,11 @@ public class GrabbableObject : MonoBehaviour
                 item.ToggleCollider(isTrigger: false);
             }
         }
-        
+
         yield return new WaitForFixedUpdate();
 
         _moveCoroutine = null;
-        
+
         onComplete?.Invoke();
     }
 

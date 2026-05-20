@@ -46,7 +46,11 @@ public class CrosshairManager : SerializedMonoBehaviour
                     {
                         DisplayCrosshair(CrosshairType.Place);
                     }
-
+                
+                    else if(objectInHand is SauceBottle && grabbableObject is BambooTray)
+                    {
+                        DisplayCrosshair(CrosshairType.Place);
+                    }
                     else if(objectInHand is KnifeObject && grabbableObject.canSliced)
                     {
                         DisplayCrosshair(CrosshairType.Knife);
@@ -79,10 +83,24 @@ public class CrosshairManager : SerializedMonoBehaviour
                     DisplayCrosshair(CrosshairType.Dot);
                 }
             }
+            else if(hit.collider.TryGetComponent<GrabbableObjectSpawner>(out var spawner))
+            {
+                if(objectInHand == null)
+                DisplayCrosshair(CrosshairType.Pickup);
+            }
+            else if(hit.collider.TryGetComponent<CookingZone>(out var cookingZone))
+            {
+                if(objectInHand != null && objectInHand is FryingPan)
+                {
+                    DisplayCrosshair(CrosshairType.Place);
+                }
+            }
             else
             {
                 DisplayCrosshair(CrosshairType.Dot);
             }
+
+          
         }
     
 

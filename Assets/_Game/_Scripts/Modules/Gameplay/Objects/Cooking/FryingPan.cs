@@ -37,9 +37,9 @@ public class FryingPan : GrabbableObject
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent<CookingZone>(out var cookingZone))
+        if (attachedCookingZone == null && other.TryGetComponent<CookingZone>(out var cookingZone))
         {
             attachedCookingZone = cookingZone;
         }

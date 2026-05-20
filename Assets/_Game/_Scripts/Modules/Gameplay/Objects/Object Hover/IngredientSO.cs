@@ -4,5 +4,5 @@ using UnityEngine;
 public class IngredientSO : GrabbableObjectSO
 {
     public IngredientType ingredientType;
-    public float initialAmount; //g
+    public float initialAmount; 
 }

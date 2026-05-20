@@ -17,6 +17,8 @@ public class CookableObject : MonoBehaviour
     public Gradient cookingColors;
     public Tween cookingTween;
 
+    public float welldoneProgress => cookProgress / perfectCookLevel; 
+    public float burnProgress => cookProgress / maxBurnLevel;
     void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
@@ -64,6 +66,7 @@ public class CookableObject : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
+        Debug.Log("TRIGGER WITH:" + other.name);
         if (other.TryGetComponent<CookingOil>(out var cookingOil))
         {
             if (cookingOil.isHot)

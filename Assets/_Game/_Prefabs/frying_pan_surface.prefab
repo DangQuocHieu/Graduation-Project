@@ -859,6 +859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 6832611198124660629}
   grabbableObjectSO: {fileID: 11400000, guid: e3e61ae548a7d5e4e8098c81bbd36458, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!1 &1686105166972788172
 GameObject:
   m_ObjectHideFlags: 0
