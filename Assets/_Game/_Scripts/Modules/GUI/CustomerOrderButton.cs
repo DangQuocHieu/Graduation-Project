@@ -57,6 +57,7 @@ public class CustomerOrderButton : MonoBehaviour, IInteractable
             {
                 orderTicketUI.Hide();
                 orderTicketUI.currentOrder = null;
+                orderScreen.customerOrderButtons.Remove(this);
             }
             Destroy(gameObject);
         }

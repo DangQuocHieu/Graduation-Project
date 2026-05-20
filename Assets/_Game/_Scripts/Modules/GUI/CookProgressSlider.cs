@@ -14,8 +14,8 @@ public class CookProgressSlider : MonoBehaviour
     }
     public void Display(CookableObject cookableObject)
     {
-        welldoneSlider.value = cookableObject.welldoneProgress;
-        burnSlider.value = cookableObject.burnProgress;
+        welldoneSlider.value = cookableObject.cookProgressSliderValue;
+        burnSlider.value = cookableObject.cookProgressSliderValue;
 
     }
 

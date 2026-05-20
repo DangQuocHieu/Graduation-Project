@@ -7,7 +7,8 @@ public class SauceBowl : GrabbableObject
     public LiquidContainer fishSauceContainer;
     public BambooTray attachedBambooTray;
     public bool fill = false;
-    public SauceType sauceType;
+    public SauceType sauceType = SauceType.None;
+    public bool containSauce = false;
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {

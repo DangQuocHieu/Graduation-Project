@@ -19,13 +19,15 @@ public class BambooTray : GrabbableObject
     public List<IngredientAnchor> tofuIngredientAnchors = new();
 
     [Title("Rice Noodle")]
-    public List<IngredientAnchor> riceNoodleIngredientAnchors = new();
+    public List<IngredientAnchor> riceNoodleIngredientAnchors = new(); 
 
     [Title("Cucumber")]
     public List<IngredientAnchor> cucumberIngredientAnchors = new();
 
     [Title("Herb")]
     public List<IngredientAnchor> herbIngredientAnchors = new();
+
+    public Dictionary<IngredientType, int> CurrentIngredientsCount { get; private set; } = new();
 
     protected override void Awake()
     {
@@ -35,6 +37,18 @@ public class BambooTray : GrabbableObject
         IngredientAnchorsDic.Add(IngredientType.Cucumber, cucumberIngredientAnchors);
         IngredientAnchorsDic.Add(IngredientType.Herb, herbIngredientAnchors);
 
+        foreach (var kvp in IngredientAnchorsDic)
+        {
+            int count = 0;
+            foreach (var anchor in kvp.Value)
+            {
+                if (anchor.attachedIngredient != null)
+                {
+                    count++;
+                }
+            }
+            CurrentIngredientsCount.Add(kvp.Key, count);
+        }
     }
 
 
@@ -42,6 +56,22 @@ public class BambooTray : GrabbableObject
     {
         var IngredientAnchor = IngredientAnchorsDic[ingredientType];
         return IngredientAnchor.Find(T => T.isEmpty);
+    }
+
+    public void AddIngredientCount(IngredientType ingredientType)
+    {
+        if (CurrentIngredientsCount.ContainsKey(ingredientType))
+        {
+            CurrentIngredientsCount[ingredientType]++;
+        }
+    }
+
+    public void RemoveIngredientCount(IngredientType ingredientType)
+    {
+        if (CurrentIngredientsCount.ContainsKey(ingredientType) && CurrentIngredientsCount[ingredientType] > 0)
+        {
+            CurrentIngredientsCount[ingredientType]--;
+        }
     }
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)

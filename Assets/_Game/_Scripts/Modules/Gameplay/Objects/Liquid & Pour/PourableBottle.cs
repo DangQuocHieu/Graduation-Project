@@ -21,7 +21,7 @@ public abstract class PourableBottle : GrabbableObject
         pourEffect.Play();
         yield return new WaitForSeconds(0.3f);
 
-        yield return fillLiquidTween.Invoke().WaitForCompletion();
+        yield return fillLiquidTween?.Invoke().WaitForCompletion();
 
         pourEffect.Stop();
         pickupAndDropHandler.PickupObject(this);

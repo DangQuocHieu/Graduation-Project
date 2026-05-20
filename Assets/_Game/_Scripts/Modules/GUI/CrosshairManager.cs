@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using DG.Tweening.Core;
+using DQHieu.Framework;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+
 public enum CrosshairType
 {
     Dot,
@@ -10,109 +11,201 @@ public enum CrosshairType
     Place,
     Knife,
     Served,
-    Buy
+    Buy,
+    Error,
+    Pour
 }
+
 public class CrosshairManager : SerializedMonoBehaviour
 {
     public Dictionary<CrosshairType, Image> crossHairImageDic = new();
     public PickupAndDropHandler pickupAndDropHandler;
-    private Camera mainCam;
     public float rayDistance;
+    public bool isPouring = false;
 
     [ShowInInspector] public GrabbableObject objectInHand => pickupAndDropHandler._objectInHand;
 
+    private Camera mainCam;
+    private CrosshairType currentCrosshairType = CrosshairType.Dot; // Lưu trạng thái hiện tại để tránh lặp UI liên tục
 
     void Awake()
     {
         mainCam = Camera.main;
-    } 
- 
+        ResetAllCrosshairs();
+    }
+
+    void OnEnable()
+    {
+        EventBus.Subcribe<PourLiquid>(HandlePourLiquidEvent);
+        EventBus.Subcribe<PourLiquidComplete>(HandlePourLiquidCompleteEvent);
+    }
+
+    void OnDisable()
+    {
+        EventBus.UnSubcribe<PourLiquid>(HandlePourLiquidEvent);
+        EventBus.UnSubcribe<PourLiquidComplete>(HandlePourLiquidCompleteEvent);
+    }
     void Update()
     {
-        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, rayDistance))
+        // Mặc định ban đầu nếu không bắn trúng gì là Dot
+        CrosshairType targetCrosshair = CrosshairType.Dot;
+
+        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
-            if (hit.collider.TryGetComponent<GrabbableObject>(out var grabbableObject))
+            targetCrosshair = EvaluateCrosshairTarget(hit);
+        }
+
+        // Chỉ cập nhật giao diện khi trạng thái crosshair thực sự thay đổi
+        if (targetCrosshair != currentCrosshairType)
+        {
+            SetCrosshairActive(targetCrosshair);
+        }
+    }
+
+    // Tách riêng logic xử lý Raycast để code dễ đọc, dễ bảo trì
+    private CrosshairType EvaluateCrosshairTarget(RaycastHit hit)
+    {
+        if (isPouring)
+        {
+            return CrosshairType.Pour;
+        }
+        Collider hitCollider = hit.collider;
+
+        // 1. Kiểm tra GrabbableObject
+        if (hitCollider.TryGetComponent<GrabbableObject>(out var grabbableObject) ||
+            (hitCollider.attachedRigidbody != null && hitCollider.attachedRigidbody.TryGetComponent(out grabbableObject)))
+        {
+            if (objectInHand == null)
+                return CrosshairType.Pickup;
+
+            if (objectInHand is Ingredient ingredient)
             {
-                if(objectInHand == null)
+                if (grabbableObject is CuttingBoard)
+                    return CrosshairType.Place;
+                if(ingredient.cookableObject == null && grabbableObject is FryingPan)
                 {
-                    DisplayCrosshair(CrosshairType.Pickup);
+                    return CrosshairType.Error;
                 }
-                else
+                if (ingredient.cookableObject != null && grabbableObject is FryingPan fryingPan)
                 {
-                    if(objectInHand is Ingredient && (grabbableObject is CuttingBoard or BambooTray))
+                    if (fryingPan.containCookingOil)
                     {
-                        DisplayCrosshair(CrosshairType.Place);
-                    }
-                
-                    else if(objectInHand is SauceBottle && grabbableObject is BambooTray)
-                    {
-                        DisplayCrosshair(CrosshairType.Place);
-                    }
-                    else if(objectInHand is KnifeObject && grabbableObject.canSliced)
-                    {
-                        DisplayCrosshair(CrosshairType.Knife);
+                        return CrosshairType.Place;
                     }
                     else
                     {
-                        DisplayCrosshair(CrosshairType.Dot);
+                        return CrosshairType.Error;
+                    }
+                }
+
+                return CrosshairType.Dot;
+            }
+
+            if (objectInHand is SauceBottle && grabbableObject is BambooTray)
+                return CrosshairType.Place;
+
+            if (objectInHand is KnifeObject && grabbableObject.canSliced)
+                return CrosshairType.Knife;
+
+            if (objectInHand is CookingOilBottle)
+            {
+                if (grabbableObject is FryingPan fryingPan)
+                {
+                    if (!fryingPan.containCookingOil)
+                    {
+                        return CrosshairType.Pour;
+                    }
+                    else
+                    {
+                        return CrosshairType.Error;
                     }
                 }
             }
-            else if (hit.collider.TryGetComponent<ShopItem>(out var shopItem))
+
+            if (objectInHand is SauceBottle)
             {
-                if(objectInHand == null)
+                if (grabbableObject is SauceBowl sauceBowl)
                 {
-                    DisplayCrosshair(CrosshairType.Buy);
+                    if (!sauceBowl.containSauce)
+                    {
+                        return CrosshairType.Pour;
+                    }
+                    else
+                    {
+                        return CrosshairType.Error;
+                    }
                 }
-                else
-                {
-                    DisplayCrosshair(CrosshairType.Dot);
-                }
-            }
-            else if(hit.collider.TryGetComponent<Customer>(out var customer))
-            {
-                if(objectInHand != null && objectInHand is BambooTray)
-                {
-                    DisplayCrosshair(CrosshairType.Served);
-                }
-                else
-                {
-                    DisplayCrosshair(CrosshairType.Dot);
-                }
-            }
-            else if(hit.collider.TryGetComponent<GrabbableObjectSpawner>(out var spawner))
-            {
-                if(objectInHand == null)
-                DisplayCrosshair(CrosshairType.Pickup);
-            }
-            else if(hit.collider.TryGetComponent<CookingZone>(out var cookingZone))
-            {
-                if(objectInHand != null && objectInHand is FryingPan)
-                {
-                    DisplayCrosshair(CrosshairType.Place);
-                }
-            }
-            else
-            {
-                DisplayCrosshair(CrosshairType.Dot);
             }
 
-          
+            return CrosshairType.Dot;
         }
-    
+
+        // 2. Kiểm tra ShopItem
+        if (hitCollider.TryGetComponent<ShopItem>(out _))
+        {
+            return objectInHand == null ? CrosshairType.Buy : CrosshairType.Dot;
+        }
+
+        // 3. Kiểm tra Customer
+        if (hitCollider.TryGetComponent<Customer>(out _))
+        {
+            return (objectInHand != null && objectInHand is BambooTray) ? CrosshairType.Served : CrosshairType.Dot;
+        }
+
+        // 4. Kiểm tra Spawner
+        if (hitCollider.TryGetComponent<GrabbableObjectSpawner>(out _))
+        {
+            if (objectInHand == null)
+                return CrosshairType.Pickup;
+        }
+
+        // 5. Kiểm tra CookingZone
+        if (hitCollider.TryGetComponent<CookingZone>(out _))
+        {
+            if (objectInHand != null && objectInHand is FryingPan)
+                return CrosshairType.Place;
+        }
 
 
+        return CrosshairType.Dot;
     }
 
-    private void DisplayCrosshair(CrosshairType crosshairType)
+    private void SetCrosshairActive(CrosshairType crosshairType)
     {
-        foreach (var image in crossHairImageDic.Values)
+        // Tắt crosshair cũ
+        if (crossHairImageDic.TryGetValue(currentCrosshairType, out var oldImage) && oldImage != null)
         {
-            image.gameObject.SetActive(false);
+            oldImage.gameObject.SetActive(false);
         }
-        crossHairImageDic[crosshairType].gameObject.SetActive(true);
+
+        // Bật crosshair mới
+        if (crossHairImageDic.TryGetValue(crosshairType, out var newImage) && newImage != null)
+        {
+            newImage.gameObject.SetActive(true);
+        }
+
+        currentCrosshairType = crosshairType;
+    }
+
+    private void ResetAllCrosshairs()
+    {
+        foreach (var pair in crossHairImageDic)
+        {
+            if (pair.Value != null)
+                pair.Value.gameObject.SetActive(pair.Key == currentCrosshairType);
+        }
+    }
+
+    private void HandlePourLiquidEvent(PourLiquid evt)
+    {
+        isPouring = true;
+    }
+
+    private void HandlePourLiquidCompleteEvent(PourLiquidComplete evt)
+    {
+        isPouring = false;
     }
 }

@@ -22,6 +22,15 @@ public class HoverController : MonoBehaviour
         {
             objectHoverPanel.cookProgressSlider.gameObject.SetActive(false);
         }
+
+        if(currentGrabbableObject is BambooTray tray)
+        {
+            objectHoverPanel.DisplayIngredientAmount(tray);
+        }
+        else
+        {
+            objectHoverPanel.HideIngredientAmount();
+        }
         
     }
 

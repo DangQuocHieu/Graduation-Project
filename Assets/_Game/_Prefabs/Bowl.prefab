@@ -203,7 +203,7 @@ MonoBehaviour:
   fishSauceContainer: {fileID: 4748757538461141241}
   attachedBambooTray: {fileID: 0}
   fill: 0
-  sauceType: 0
+  sauceType: 2
 --- !u!114 &6681809201100264502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 1700573892020631681}
   grabbableObjectSO: {fileID: 11400000, guid: 57dadd110fc3c87419e675a696ae6312, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!114 &1700573892020631681
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,17 +3,22 @@ using UnityEngine;
 
 public enum SauceType
 {
-    FishSauce, ShrimpPaste
+    FishSauce, ShrimpPaste, None
 }
 public class SauceBottle : PourableBottle
 {
     public SauceType sauceType;
+
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
         if (hit.collider.TryGetComponent<SauceBowl>(out var bowl))
         {
-            pickupAndDropHandler.DropObject();
-            StartCoroutine(PourRoutine(bowl.shrimpPasteContainer, pickupAndDropHandler, () => bowl.FillSauce(sauceType)));
+            if (!bowl.containSauce)
+            {
+                pickupAndDropHandler.DropObject();
+                StartCoroutine(PourRoutine(bowl.shrimpPasteContainer, pickupAndDropHandler, () => bowl.FillSauce(sauceType)));
+                bowl.containSauce = true;
+            }
         }
         else
         {

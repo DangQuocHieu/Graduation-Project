@@ -167,6 +167,7 @@ public class Customer : MonoBehaviour
     private void EnterWaitingForFoodState()
     {
         var availableChair = orderManager.GetAvailableChair();
+        availableChair.isEmpty = false;
         customerAnim.SetWalking(true);
         customerMovement.MoveToPosition(availableChair.transform.position);
         stateTimer = customerOrder.serveDuration;

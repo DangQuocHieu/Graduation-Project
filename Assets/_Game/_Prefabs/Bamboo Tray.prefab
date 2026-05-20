@@ -2289,7 +2289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 7417555057640133002}
-  grabbableObjectSO: {fileID: 0}
+  grabbableObjectSO: {fileID: 11400000, guid: e35abaafbdd73ec4ca0ec758f02ccea4, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!4 &2009378978045882449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f091426bc8f8f0c44b8676024b25791a, type: 3}

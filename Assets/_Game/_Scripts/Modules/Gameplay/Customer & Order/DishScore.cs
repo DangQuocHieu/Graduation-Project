@@ -9,6 +9,11 @@ public class DishScore : MonoBehaviour
 
     public int displayWatingScore => Mathf.RoundToInt(waitingScore);
     public int displayTasteScore => Mathf.RoundToInt(tasteScore);
+
+    void Awake()
+    {
+        ResetScore();
+    }
     public int GetTotalScore()
     {
         float totalScore = (waitingScore + tasteScore) / 2;
@@ -41,9 +46,10 @@ public class DishScore : MonoBehaviour
         {
             foreach (var anchor in anchors)
             {
-                if (anchor.attachedIngredient != null && anchor.attachedIngredient.TryGetComponent<CookableObject>(out var cookableObject))
+                if (anchor.attachedIngredient != null && anchor.attachedIngredient.cookableObject != null)
                 {
-                    tasteScore += cookableObject.GetTasteScore();
+                    
+                    tasteScore += anchor.attachedIngredient.cookableObject.GetTasteScore();
                     ++count;
                 }
             }
@@ -63,7 +69,7 @@ public class DishScore : MonoBehaviour
             tasteScore -= 0.2f; //wrong sauce type penalty
         }
 
-        tasteScore = Mathf.Max(0f, tasteScore);
+        tasteScore = Mathf.Max(0f, tasteScore) * 100f;
 
     }
 

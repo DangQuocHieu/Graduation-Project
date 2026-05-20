@@ -30,8 +30,11 @@ public class Ingredient : GrabbableObject
     {
         if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
         {
-            pickupAndDropHandler.DropObject();
-            MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
+            if (fryingPan.containCookingOil)
+            {
+                pickupAndDropHandler.DropObject();
+                MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
+            }
         }
         else if (hit.collider.TryGetComponent<CuttingBoard>(out var cuttingBoard))
         {
@@ -59,6 +62,7 @@ public class Ingredient : GrabbableObject
         attachedIngredientAnchor = anchorPoint;
         attachedIngredientAnchor.isEmpty = false;
         attachedIngredientAnchor.attachedIngredient = this;
+        bambooTray.AddIngredientCount(ingredientType);
         pickupAndDropHandler?.DropObject();
         RemoveRigidbodyJoin();
         MoveToPlaceableSurface(bambooTray.placeableSurface, anchorPoint.transform.position, anchorPoint.transform.rotation);
@@ -69,6 +73,11 @@ public class Ingredient : GrabbableObject
     {
         if (attachedIngredientAnchor != null)
         {
+            var bambooTray = attachedIngredientAnchor.GetComponentInParent<BambooTray>();
+            if (bambooTray != null)
+            {
+                bambooTray.RemoveIngredientCount(ingredientType);
+            }
             attachedIngredientAnchor.attachedIngredient = null;
             attachedIngredientAnchor.isEmpty = true;
             attachedIngredientAnchor = null;

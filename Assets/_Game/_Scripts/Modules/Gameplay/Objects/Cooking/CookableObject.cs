@@ -12,17 +12,23 @@ public class CookableObject : MonoBehaviour
     public float maxBurnLevel = 200f;
     public float totalTimeToBurn = 10f;
     public float perfectCookOffset = 10f;
+    public float tasteScore;
 
     [Header("Visual")]
     public Gradient cookingColors;
     public Tween cookingTween;
 
-    public float welldoneProgress => cookProgress / perfectCookLevel; 
-    public float burnProgress => cookProgress / maxBurnLevel;
+    [ShowInInspector] public float cookProgressSliderValue => cookProgress / perfectCookLevel;
+
     void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         foodMat = meshRenderer.material;
+    }
+
+    void Update()
+    {
+        GetTasteScore();
     }
 
     public void StartCooking()
@@ -66,7 +72,6 @@ public class CookableObject : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
-        Debug.Log("TRIGGER WITH:" + other.name);
         if (other.TryGetComponent<CookingOil>(out var cookingOil))
         {
             if (cookingOil.isHot)
@@ -94,20 +99,20 @@ public class CookableObject : MonoBehaviour
         float perfectMax = perfectCookLevel + perfectCookOffset;
         if (cookProgress >= perfectMin && cookProgress <= perfectMax)
         {
-            return 1f; 
+            return tasteScore = 1f; 
         }
 
         if (cookProgress < perfectMin)
         {
-            return Mathf.InverseLerp(0f, perfectMin, cookProgress);
+            return tasteScore = Mathf.InverseLerp(0f, perfectMin, cookProgress);
         }
 
         if (cookProgress > perfectMax)
         {
-            return Mathf.InverseLerp(maxBurnLevel, perfectMax, cookProgress);
+            return tasteScore = Mathf.InverseLerp(maxBurnLevel, perfectMax, cookProgress);
         }
 
-        return 0f; // Đề phòng lỗi logic (Fallback)
+        return tasteScore = 0f; // Đề phòng lỗi logic (Fallback)
     }
 
 }

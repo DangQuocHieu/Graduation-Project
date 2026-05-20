@@ -17,20 +17,20 @@ MonoBehaviour:
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 1
-      serveDuration: 30
-      gracePeriodDuration: 10
+      serveDuration: 240
+      gracePeriodDuration: 30
     spawnTime: 2
   - customerPrefab: {fileID: 6408027025894718258, guid: ecc6970dc065a0b4aa8535c588b265f2, type: 3}
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 0
-      serveDuration: 30
-      gracePeriodDuration: 10
-    spawnTime: 10
+      serveDuration: 240
+      gracePeriodDuration: 30
+    spawnTime: 30
   - customerPrefab: {fileID: 4681516225093614145, guid: e1dcf98291f95634aa8ed115324c2de5, type: 3}
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 0
-      serveDuration: 30
-      gracePeriodDuration: 10
-    spawnTime: 20
+      serveDuration: 240
+      gracePeriodDuration: 30
+    spawnTime: 60

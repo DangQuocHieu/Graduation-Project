@@ -3,10 +3,13 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Unity.VisualScripting;
+using Sirenix.OdinInspector;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class ObjectHoverPanel : MonoBehaviour
-{
+public class ObjectHoverPanel : SerializedMonoBehaviour
+{   
+    [Header("Text UI")]
     public TextMeshProUGUI displayNameText;
     public TextMeshProUGUI weightText;
     public RectTransform weightRect;
@@ -31,6 +34,10 @@ public class ObjectHoverPanel : MonoBehaviour
     private Tween moveTween;
 
     public CookProgressSlider cookProgressSlider;
+
+    [TabGroup("Ingredient Amount")]
+    public Dictionary<IngredientType, IngredientAmountSlider> ingredientAmountSliderDic = new();
+
 
     private void Start()
     {
@@ -127,12 +134,31 @@ public class ObjectHoverPanel : MonoBehaviour
 
         // Mờ dần đi
         fadeTween = canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.InQuad);
+        
     }
 
     private void OnDestroy()
     {
         fadeTween?.Kill();
         moveTween?.Kill();
+    }
+
+    public void DisplayIngredientAmount(BambooTray tray)
+    {
+        var amountDic = tray.CurrentIngredientsCount; 
+        foreach(var kvp in amountDic)
+        {
+            ingredientAmountSliderDic[kvp.Key].gameObject.SetActive(true);
+            ingredientAmountSliderDic[kvp.Key].UpdateValue(kvp.Value);
+        }
+    }
+
+    public void HideIngredientAmount()
+    {
+        foreach(var slider in ingredientAmountSliderDic.Values)
+        {
+            slider.gameObject.SetActive(false);
+        }
     }
 
 }
