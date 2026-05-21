@@ -24,9 +24,10 @@ public class Customer : MonoBehaviour
     [TabGroup("AI Behaviour")] public float stateTimer;
     [TabGroup("AI Behaviour")] public CustomerOrder customerOrder;
     [TabGroup("AI Behaviour")] public DishScore dishScore;
-    [TabGroup("AI Behaviour")] public bool serviceDelayed = false;  
+    [TabGroup("AI Behaviour")] public bool serviceDelayed = false;
     [TabGroup("AI Behaviour")] public bool foodServed = false;
     [TabGroup("AI Behaviour")] public BambooTray attachedDish;
+    [TabGroup("AI Behaviour")] public CustomerPayPoint currentPaypoint;
 
     void Awake()
     {
@@ -177,7 +178,7 @@ public class Customer : MonoBehaviour
     private void UpdateWaitingForFoodState()
     {
         stateTimer -= Time.deltaTime;
-        if(stateTimer <= 0f)
+        if (stateTimer <= 0f)
         {
             ChangeState(CustomerState.ServiceDelayed);
         }
@@ -240,15 +241,7 @@ public class Customer : MonoBehaviour
     {
         if (stateTimer >= currentStateDuration)
         {
-            LeaveChair();
-            chopstickVisual.visualObject.gameObject.SetActive(false);
-            customerAnim.SetWalking(true);
-            customerMovement.MoveToPosition(orderManager.payPoint.position);
-            if (chopstickVisual.attachedDish != null)
-            {
-                chopstickVisual.attachedDish.ReleseDish();
-            }
-            StartCoroutine(WaitForReachPayPointCoroutine());
+            ChangeState(CustomerState.Paying);
         }
         else
         {
@@ -258,27 +251,67 @@ public class Customer : MonoBehaviour
 
     private void ExitEatingState()
     {
+        LeaveChair();
+        chopstickVisual.visualObject.gameObject.SetActive(false);
+        customerAnim.SetWalking(true);
+        if (chopstickVisual.attachedDish != null)
+        {
+            chopstickVisual.attachedDish.ReleseDish();
+        }
+
     }
 
-    private IEnumerator WaitForReachPayPointCoroutine()
-    {
-        yield return new WaitUntil(() => customerMovement.HasReachedDestination());
-        customerMovement.StartRotating(orderManager.payPoint.rotation);
-        ChangeState(CustomerState.Paying);
-    }
 
     #endregion
 
     #region methods for paying state
     private void EnterPayingState()
     {
-        paymentVisual.gameObject.SetActive(true);
-        customerAnim.SetPaying(true);
+        currentPaypoint = orderManager.GetAvailablePayPoint();
+        StartCoroutine(HandlePayingStateCoroutine());
+    }
+
+    private IEnumerator HandlePayingStateCoroutine()
+    {
+        currentPaypoint.attachedCustomer = this;
+        while (currentPaypoint.nextPayPoint != null)
+        {
+            customerMovement.EnableMovement();
+            customerAnim.SetWalking(true);
+            customerMovement.MoveToPosition(currentPaypoint.transform.position);
+            yield return new WaitUntil(() => customerMovement.HasReachedDestination());
+            customerMovement.StartRotating(currentPaypoint.transform.rotation);
+
+            customerMovement.DisableMovement();
+            customerAnim.SetWalking(false);
+            customerAnim.SetIdle();
+            if (currentPaypoint.nextPayPoint != null)
+            {
+                yield return new WaitUntil(() => currentPaypoint.nextPayPoint.attachedCustomer == null);
+                currentPaypoint = currentPaypoint.nextPayPoint;
+            }
+        }
+
+        if (currentPaypoint != null)
+        {
+            yield return new WaitForSeconds(2f);
+            customerMovement.EnableMovement();
+            customerAnim.SetWalking(true);
+            customerMovement.MoveToPosition(currentPaypoint.transform.position);
+            yield return new WaitUntil(() => customerMovement.HasReachedDestination());
+            customerMovement.StartRotating(currentPaypoint.transform.rotation);
+            customerAnim.SetPaying(true);
+            paymentVisual.gameObject.SetActive(true);
+        }
     }
 
     private void ExitPayingState()
     {
         customerAnim.SetPaying(false);
+        if (currentPaypoint != null)
+        {
+            currentPaypoint.attachedCustomer = null;
+        }
     }
 
     #endregion
@@ -286,7 +319,7 @@ public class Customer : MonoBehaviour
     #region methods for leaving state
     private void EnterLeavingState()
     {
-        if(attachedChairObject != null)
+        if (attachedChairObject != null)
         {
             LeaveChair();
         }
@@ -308,7 +341,7 @@ public class Customer : MonoBehaviour
     private void UpdateServiceDelayedState()
     {
         stateTimer -= Time.deltaTime;
-        if(stateTimer <= 0f)
+        if (stateTimer <= 0f)
         {
             ChangeState(CustomerState.Leaving);
         }
@@ -316,7 +349,7 @@ public class Customer : MonoBehaviour
 
     private void ExitServiceDelayedState()
     {
-        
+
     }
     #endregion
 }

@@ -10,6 +10,10 @@ public class IngredientAmountSlider : MonoBehaviour
     }
     public void UpdateValue(int value)
     {
+        if(value == 0)
+        {
+            gameObject.SetActive(false);
+        }
         slider.value = value;
     }
 

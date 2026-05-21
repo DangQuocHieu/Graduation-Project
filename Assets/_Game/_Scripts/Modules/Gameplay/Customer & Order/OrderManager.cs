@@ -8,16 +8,20 @@ public class OrderManager : MonoBehaviour
     [Title("Customer & Order")]
     public List<Customer> allCustomers = new();
     public Transform orderPoint;
-    public Transform payPoint;
+    public List<CustomerPayPoint> payPoints = new();
     public Transform[] leavePoints;
     public List<ChairObject> chairObjects = new();
 
-    
+
     void OnDrawGizmos()
     {
         DrawBoxGizmo(orderPoint.position, Color.red);
-        DrawBoxGizmo(payPoint.position, Color.yellow);
-        foreach(var leavePoint in leavePoints)
+        foreach (var payPoint in payPoints)
+        {
+            DrawBoxGizmo(payPoint.transform.position, Color.yellow);
+        }
+
+        foreach (var leavePoint in leavePoints)
         {
             DrawBoxGizmo(leavePoint.position, Color.black);
         }
@@ -43,4 +47,10 @@ public class OrderManager : MonoBehaviour
     {
         return leavePoints[Random.Range(0, leavePoints.Length)];
     }
+
+    public CustomerPayPoint GetAvailablePayPoint()
+    {
+        return payPoints.Find(T => T.attachedCustomer == null);
+    }
+
 }
