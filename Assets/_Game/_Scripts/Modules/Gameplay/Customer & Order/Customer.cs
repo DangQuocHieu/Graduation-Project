@@ -294,7 +294,6 @@ public class Customer : MonoBehaviour
 
         if (currentPaypoint != null)
         {
-            yield return new WaitForSeconds(2f);
             customerMovement.EnableMovement();
             customerAnim.SetWalking(true);
             customerMovement.MoveToPosition(currentPaypoint.transform.position);
