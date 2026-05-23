@@ -494,6 +494,52 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 642e655fe81704647852a2fc7c1d7867, type: 3}
   m_PrefabInstance: {fileID: 9207521424116268270}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &118197420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 118197421}
+  - component: {fileID: 118197422}
+  m_Layer: 0
+  m_Name: 'Pay Point  '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &118197421
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118197420}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.2099998, y: -2.89, z: -18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 867415897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &118197422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118197420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b995cb8b78cf524f95dedafb6820610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextPayPoint: {fileID: 601308986}
+  attachedCustomer: {fileID: 0}
 --- !u!4 &141829400 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 642e655fe81704647852a2fc7c1d7867, type: 3}
@@ -2092,6 +2138,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecee268164440e24fa0c98b92fc950c9, type: 3}
   m_PrefabInstance: {fileID: 8291513166372285317}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &601308984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 601308985}
+  - component: {fileID: 601308986}
+  m_Layer: 0
+  m_Name: 'Pay Point '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &601308985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601308984}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.2099998, y: -2.89, z: -16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 867415897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &601308986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601308984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b995cb8b78cf524f95dedafb6820610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextPayPoint: {fileID: 5012831460366675875}
+  attachedCustomer: {fileID: 0}
 --- !u!4 &605032981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecee268164440e24fa0c98b92fc950c9, type: 3}
@@ -3538,8 +3630,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
   m_PrefabInstance: {fileID: 2822975651976046598}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &867415901
-BoxCollider:
+--- !u!64 &867415906
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3556,51 +3648,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 21.446518, y: 13.656512, z: 0.52417374}
-  m_Center: {x: 1.5121994, y: 3.6918588, z: -34.185204}
---- !u!65 &867415902
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378808096}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.2590327, y: 13.656512, z: 39.604652}
-  m_Center: {x: -8.081543, y: 3.6918588, z: -14.644962}
---- !u!65 &867415903
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378808096}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.521698, y: 13.656512, z: 37.386665}
-  m_Center: {x: 10.974609, y: 3.6918588, z: -15.753957}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9056335027435241018, guid: 83583c0d396569a41bb21ea626a995ec, type: 3}
 --- !u!114 &868637641 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 935412298795951202, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
@@ -4142,6 +4193,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1044746844}
   m_CullTransparentMesh: 1
+--- !u!1 &1056978462 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1995267692010044228, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+  m_PrefabInstance: {fileID: 2822975651976046598}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1065414189 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 642e655fe81704647852a2fc7c1d7867, type: 3}
@@ -7695,6 +7751,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4745994088737565864, guid: cf5f2d9c94345624e81ad5bd714423b8, type: 3}
   m_PrefabInstance: {fileID: 4360186329395719948}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2016440843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2016440844}
+  - component: {fileID: 2016440845}
+  m_Layer: 0
+  m_Name: 'Pay Point  '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2016440844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016440843}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.2099998, y: -2.89, z: -20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 867415897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2016440845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016440843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b995cb8b78cf524f95dedafb6820610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextPayPoint: {fileID: 118197422}
+  attachedCustomer: {fileID: 0}
 --- !u!1 &2020483828 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 642e655fe81704647852a2fc7c1d7867, type: 3}
@@ -12860,6 +12962,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1209148274663245266, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14
+      objectReference: {fileID: 0}
     - target: {fileID: 2052707726979173414, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -12930,7 +13036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3479076824148406295, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3479076824148406295, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       propertyPath: m_IsActive
@@ -13040,6 +13146,15 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 601308985}
+    - targetCorrespondingSourceObject: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 118197421}
+    - targetCorrespondingSourceObject: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 2016440844}
+    - targetCorrespondingSourceObject: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1309766905}
     - targetCorrespondingSourceObject: {fileID: 4252516650241796781, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
@@ -13051,13 +13166,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3479076824148406295, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 867415903}
-    - targetCorrespondingSourceObject: {fileID: 3479076824148406295, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
+      addedObject: {fileID: 867415906}
+    - targetCorrespondingSourceObject: {fileID: 1995267692010044228, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 867415902}
-    - targetCorrespondingSourceObject: {fileID: 3479076824148406295, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 867415901}
+      addedObject: {fileID: 5012831460366675875}
   m_SourcePrefab: {fileID: 100100000, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
 --- !u!1001 &2828740521140714117
 PrefabInstance:
@@ -15483,7 +15595,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCustomers: []
   orderPoint: {fileID: 1956162907659307028}
-  payPoint: {fileID: 5012831460366675874}
+  payPoints:
+  - {fileID: 5012831460366675875}
+  - {fileID: 601308986}
+  - {fileID: 118197422}
+  - {fileID: 2016440845}
   leavePoints:
   - {fileID: 5704603208192256093}
   - {fileID: 5560143342146712986}
@@ -17607,11 +17723,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!4 &5012831460366675874 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1209148274663245266, guid: b0f163d4debc9b54d9d59f87b5c768d4, type: 3}
-  m_PrefabInstance: {fileID: 2822975651976046598}
+--- !u!114 &5012831460366675875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056978462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b995cb8b78cf524f95dedafb6820610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextPayPoint: {fileID: 0}
+  attachedCustomer: {fileID: 0}
 --- !u!4 &5014194743628840381
 Transform:
   m_ObjectHideFlags: 0

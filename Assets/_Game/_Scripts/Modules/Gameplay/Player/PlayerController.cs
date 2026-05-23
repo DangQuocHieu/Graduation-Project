@@ -2,7 +2,7 @@ using CoreGame.Movement;
 using DQHieu.Framework;
 using UnityEngine;
 
-public class PlayerEventHandler : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public PickupAndDropHandler pickupAndDropHandler;
     public KCCManager kccManager;
@@ -30,13 +30,13 @@ public class PlayerEventHandler : MonoBehaviour
 
     public void HandlePourLiquidMessage(PourLiquid message)
     {
-        kccManager.BlockInput();
+        kccManager.SetAllInputBlocked(true);
         DisablePickup();
     }
 
     public void HandlePourLiquidComplete(PourLiquidComplete evt)
     {
-        kccManager.UnblockInput();
+        kccManager.SetAllInputBlocked(false);
         EnablePickup();
     }
 
@@ -53,17 +53,17 @@ public class PlayerEventHandler : MonoBehaviour
 
     private void HandlePurchaseShopItemSuccessEvent(PurchaseShopItemSucess evt)
     {
-        kccManager.BlockInput();
+        kccManager.SetAllInputBlocked(true);
     }
 
     private void HandlePurchaseShopItemPickedUp(ItemPickedUpComplete evt)
     {
-        kccManager.UnblockInput();
+        kccManager.SetAllInputBlocked(false);
     }
 
     private void HandlePickUpIngredientByTray(PickUpIngredientByTray evt)
     {
-        kccManager.BlockInput();
+        kccManager.SetMoveInputBlocked(false);
     }
 
 }

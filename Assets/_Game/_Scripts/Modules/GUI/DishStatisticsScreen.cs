@@ -50,7 +50,7 @@ public class DishStatisticsScreen : MonoBehaviour
 
     private void HandleInteractWithCashObject(InteractWithCashObject evt)
     {
-        if (kccManager != null) kccManager.BlockInput();
+        if (kccManager != null) kccManager.SetAllInputBlocked(true);
 
         CursorHelper.ShowCursor();
         currentCustomer = evt.customer;
@@ -93,8 +93,7 @@ public class DishStatisticsScreen : MonoBehaviour
 
     public void OnNextButtonClicked()
     {
-        if (kccManager != null) kccManager.UnblockInput();
-
+        if (kccManager != null) kccManager.SetAllInputBlocked(false);
         EventBus.Raise<CustomerPaymentReceived>(new CustomerPaymentReceived(currentCustomer.dishScore.guestPaidAmount));
         HideScreen();
         CursorHelper.HideCursor();

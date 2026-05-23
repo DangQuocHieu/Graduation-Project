@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c193183c520bed746a329f6c31d4e486, type: 3}
   m_Name: Perilla Leaf
   m_EditorClassIdentifier: 
-  displayName: Perilla Leaf
+  displayName: Herbs
   price: 500
   ingredientType: 3
   initialAmount: 20

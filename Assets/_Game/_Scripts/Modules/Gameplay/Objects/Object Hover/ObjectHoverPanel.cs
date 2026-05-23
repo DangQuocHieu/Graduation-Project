@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class ObjectHoverPanel : SerializedMonoBehaviour
-{   
+{
     [Header("Text UI")]
     public TextMeshProUGUI displayNameText;
     public TextMeshProUGUI weightText;
@@ -37,6 +37,7 @@ public class ObjectHoverPanel : SerializedMonoBehaviour
 
     [TabGroup("Ingredient Amount")]
     public Dictionary<IngredientType, IngredientAmountSlider> ingredientAmountSliderDic = new();
+    public bool followCamera = true;
 
 
     private void Start()
@@ -51,6 +52,7 @@ public class ObjectHoverPanel : SerializedMonoBehaviour
 
     private void LateUpdate()
     {
+        if(!followCamera) return;
         if (mainCamera == null) return;
 
         // Vẫn cập nhật vị trí nếu đang ở trong quá trình fade out (alpha > 0)
@@ -79,7 +81,7 @@ public class ObjectHoverPanel : SerializedMonoBehaviour
             weightText.text = "";
             return;
         }
-        if(displayPrice)
+        if (displayPrice)
         {
             priceText.text = CurrencyFormatter.ToVNDCurrency(grabbableObjectSO.price);
             priceRect.gameObject.SetActive(true);
@@ -134,7 +136,7 @@ public class ObjectHoverPanel : SerializedMonoBehaviour
 
         // Mờ dần đi
         fadeTween = canvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.InQuad);
-        
+
     }
 
     private void OnDestroy()
@@ -145,8 +147,8 @@ public class ObjectHoverPanel : SerializedMonoBehaviour
 
     public void DisplayIngredientAmount(BambooTray tray)
     {
-        var amountDic = tray.CurrentIngredientsCount; 
-        foreach(var kvp in amountDic)
+        var amountDic = tray.CurrentIngredientsCount;
+        foreach (var kvp in amountDic)
         {
             ingredientAmountSliderDic[kvp.Key].gameObject.SetActive(true);
             ingredientAmountSliderDic[kvp.Key].UpdateValue(kvp.Value);
@@ -155,10 +157,24 @@ public class ObjectHoverPanel : SerializedMonoBehaviour
 
     public void HideIngredientAmount()
     {
-        foreach(var slider in ingredientAmountSliderDic.Values)
+        foreach (var slider in ingredientAmountSliderDic.Values)
         {
             slider.gameObject.SetActive(false);
         }
+    }
+
+
+    public void ShowPanel()
+    {
+        isPanelVisible = true;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
+
+        fadeTween?.Kill();
+        fadeTween = canvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.OutQuad);
+
+
     }
 
 }

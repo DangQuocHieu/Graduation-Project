@@ -781,6 +781,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1146854352903109554}
     m_Modifications:
+    - target: {fileID: 1450288091017593100, guid: 7b542d896d46b0747976b231dd72e331, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3718822888612466210, guid: 7b542d896d46b0747976b231dd72e331, type: 3}
       propertyPath: m_Name
       value: Chopstick & Cash (Right Hand Thump)

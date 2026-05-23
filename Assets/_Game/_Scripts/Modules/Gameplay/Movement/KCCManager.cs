@@ -17,8 +17,9 @@ namespace CoreGame.Movement
         private const string HorizontalInput = "Horizontal";
         private const string VerticalInput = "Vertical";
 
-        // Thêm biến cờ để kiểm soát việc chặn input
-        private bool isInputBlocked = false;
+        // Tách biệt hai cờ kiểm soát để quản lý độc lập
+        private bool isMoveInputBlocked = false;
+        private bool isLookInputBlocked = false;
 
         private void Start()
         {
@@ -52,8 +53,8 @@ namespace CoreGame.Movement
             float mouseLookAxisRight = 0f;
             float scrollInput = 0f;
 
-            // Chỉ đọc input camera nếu không bị chặn
-            if (!isInputBlocked)
+            // Chỉ đọc input camera nếu LOOK không bị chặn
+            if (!isLookInputBlocked)
             {
                 mouseLookAxisUp = Input.GetAxisRaw(MouseYInput);
                 mouseLookAxisRight = Input.GetAxisRaw(MouseXInput);
@@ -83,8 +84,8 @@ namespace CoreGame.Movement
             // Vẫn luôn cần truyền CameraRotation để KCC biết hướng của nhân vật
             characterInputs.CameraRotation = CharacterCamera.Transform.rotation;
 
-            // Chỉ lấy các input di chuyển/hành động nếu không bị chặn
-            if (!isInputBlocked)
+            // Chỉ lấy các input di chuyển/hành động nếu MOVE không bị chặn
+            if (!isMoveInputBlocked)
             {
                 characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
                 characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
@@ -105,30 +106,35 @@ namespace CoreGame.Movement
             Character.SetInputs(ref characterInputs);
         }
 
-        // --- CÁC PHƯƠNG THỨC ĐIỀU KHIỂN INPUT ---
+        // --- CÁC PHƯƠNG THỨC ĐIỀU KHIỂN INPUT MỚI ---
 
         /// <summary>
-        /// Gọi hàm này để chặn mọi thao tác điều khiển (ví dụ: khi mở UI, xem Cutscene)
+        /// Chặn hoặc mở chặn riêng input di chuyển và nhảy/ngồi
         /// </summary>
-        public void BlockInput()
+        public void SetMoveInputBlocked(bool isBlocked)
         {
-            isInputBlocked = true;
+            isMoveInputBlocked = isBlocked;
         }
 
         /// <summary>
-        /// Gọi hàm này để trả lại quyền điều khiển cho người chơi
+        /// Chặn hoặc mở chặn riêng input xoay góc nhìn camera
         /// </summary>
-        public void UnblockInput()
+        public void SetLookInputBlocked(bool isBlocked)
         {
-            isInputBlocked = false;
+            isLookInputBlocked = isBlocked;
         }
 
         /// <summary>
-        /// Kiểm tra xem input có đang bị chặn hay không
+        /// Hàm tiện ích để chặn/mở chặn nhanh cả hai cùng lúc khi cần (như mở Menu chính)
         /// </summary>
-        public bool IsInputBlocked()
+        public void SetAllInputBlocked(bool isBlocked)
         {
-            return isInputBlocked;
+            isMoveInputBlocked = isBlocked;
+            isLookInputBlocked = isBlocked;
         }
+
+        // --- PROPERTY KIỂM TRA TRẠNG THÁI ---
+        public bool IsMoveInputBlocked => isMoveInputBlocked;
+        public bool IsLookInputBlocked => isLookInputBlocked;
     }
 }

@@ -7,15 +7,18 @@ public class GhostCollisionTracker : MonoBehaviour
     public int overlapCount = 0;
 
     private int _interactableLayer = -1;
+    private int _defaultLayer = -1;
 
     private void Awake()
     {
         _interactableLayer = LayerMask.NameToLayer("Interactable Object");
+        _defaultLayer = LayerMask.NameToLayer("Kitchen Area");
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_interactableLayer != -1 && other.gameObject.layer == _interactableLayer)
+        int layer = other.gameObject.layer;
+        if ((_interactableLayer != -1 && layer == _interactableLayer) || (_defaultLayer != -1 && layer == _defaultLayer))
         {
             if (ignoredObject != null && other.transform.IsChildOf(ignoredObject.transform))
             {
@@ -27,7 +30,8 @@ public class GhostCollisionTracker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (_interactableLayer != -1 && other.gameObject.layer == _interactableLayer)
+        int layer = other.gameObject.layer;
+        if ((_interactableLayer != -1 && layer == _interactableLayer) || (_defaultLayer != -1 && layer == _defaultLayer))
         {
             if (ignoredObject != null && other.transform.IsChildOf(ignoredObject.transform))
             {

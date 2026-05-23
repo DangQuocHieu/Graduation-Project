@@ -162,6 +162,18 @@ public class BambooTray : GrabbableObject
         return true;
     }
 
+    /// <summary>
+    /// Kiểm tra xem một loại nguyên liệu (IngredientType) đã đủ định lượng (đầy các điểm đặt) trên mẹt chưa.
+    /// </summary>
+    public bool IsIngredientEnough(IngredientType ingredientType)
+    {
+        if (IngredientAnchorsDic.TryGetValue(ingredientType, out var anchors))
+        {
+            return IsIngredientAnchorsFull(anchors);
+        }
+        return false;
+    }
+
     public bool IsFullPortion(List<IngredientType> ingredientTypes)
     {
         foreach (var type in ingredientTypes)

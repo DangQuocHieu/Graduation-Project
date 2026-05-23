@@ -10,6 +10,7 @@ public class GameplayManager : MonoBehaviour
     public OrderManager orderManager;
     public GameLoopManager gameLoopManager;
     public LevelStatisticsManager levelStatisticsManager;
+    public TutorialManager tutorialManager;
 
 
     [Title("GUI")]
@@ -28,6 +29,11 @@ public class GameplayManager : MonoBehaviour
         levelStatisticsManager.Initialize(gameLoopManager.currentLevel);
         summaryScreen.Initialize(levelStatisticsManager);
         dishStatisticsScreen.Initialize(gameLoopManager);
+
+        if(tutorialManager != null)
+        {
+            tutorialManager.StartTutorial();
+        }
 
     }
 }

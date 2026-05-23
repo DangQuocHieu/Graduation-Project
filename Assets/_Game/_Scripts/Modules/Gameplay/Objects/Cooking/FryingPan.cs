@@ -9,6 +9,7 @@ public class FryingPan : GrabbableObject
     public LiquidContainer oilContainer;
     public PlaceableSurface placeableSurface;
     public bool containCookingOil = false;
+    public bool fillCompleted = false;
 
     protected override void Awake()
     {
@@ -64,6 +65,7 @@ public class FryingPan : GrabbableObject
         oilSequence.Append(cookingOil.DOScaleX(1f, 1.2f).SetEase(Ease.OutCubic));
         oilSequence.Join(cookingOil.DOScaleZ(1f, 1.2f).SetEase(Ease.OutCubic));
         oilSequence.Join(cookingOil.DOScaleY(1f, 2f).SetEase(Ease.Linear));
+        oilSequence.OnComplete(() => {fillCompleted = true;});
         return oilSequence.SetLink(gameObject);
     }
 }

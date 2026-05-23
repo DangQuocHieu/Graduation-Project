@@ -53,16 +53,19 @@ public class CrosshairManager : SerializedMonoBehaviour
 
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
+
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
             targetCrosshair = EvaluateCrosshairTarget(hit);
+
         }
 
-        // Chỉ cập nhật giao diện khi trạng thái crosshair thực sự thay đổi
         if (targetCrosshair != currentCrosshairType)
         {
             SetCrosshairActive(targetCrosshair);
-        }
+        } 
+
+
     }
 
     // Tách riêng logic xử lý Raycast để code dễ đọc, dễ bảo trì
@@ -85,7 +88,7 @@ public class CrosshairManager : SerializedMonoBehaviour
             {
                 if (grabbableObject is CuttingBoard)
                     return CrosshairType.Place;
-                if(ingredient.cookableObject == null && grabbableObject is FryingPan)
+                if (ingredient.cookableObject == null && grabbableObject is FryingPan)
                 {
                     return CrosshairType.Error;
                 }

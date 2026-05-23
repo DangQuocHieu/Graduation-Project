@@ -3,6 +3,7 @@ using DQHieu.Framework;
 using UnityEngine;
 using CoreGame.Movement;
 using UnityEngine.EventSystems;
+using Sirenix.OdinInspector;
 
 public class PickupAndDropHandler : MonoBehaviour
 {
@@ -17,6 +18,22 @@ public class PickupAndDropHandler : MonoBehaviour
     private Coroutine waitForPurchasedObjectPickedUpCoroutine;
     private float _currentCrouchOffset = 0f;
     private GhostObjectHandler _ghostObjectHandler = new GhostObjectHandler();
+
+    [ShowInInspector] private bool _isPickupBlocked = false;
+    [ShowInInspector] private bool _isDropBlocked = false;
+
+    public bool IsPickupBlocked => _isPickupBlocked;
+    public bool IsDropBlocked => _isDropBlocked;
+
+    public void SetBlockPickup(bool block)
+    {
+        _isPickupBlocked = block;
+    }
+
+    public void SetBlockDrop(bool block)
+    {
+        _isDropBlocked = block;
+    }
 
     void Update()
     {
@@ -47,8 +64,9 @@ public class PickupAndDropHandler : MonoBehaviour
         }
     }
 
-    public void PickupObject(GrabbableObject grabbableObject)
+    public void PickupObject(GrabbableObject grabbableObject, bool ignoreBlock = false)
     {
+        if (!ignoreBlock && _isPickupBlocked) return;
         _objectInHand = grabbableObject;
         _objectInHand.OnPickUp(_grabObjectPoint);
         _objectInHand.SetCrouchOffset(_currentCrouchOffset);
@@ -79,6 +97,8 @@ public class PickupAndDropHandler : MonoBehaviour
 
             if (_objectInHand == null)
             {
+                if (_isPickupBlocked) return;
+
                 if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, _pickUpRange))
                 {
                     if (hit.collider.TryGetComponent<IngredientAnchor>(out var ingredientAnchor))
@@ -120,6 +140,11 @@ public class PickupAndDropHandler : MonoBehaviour
                     {
                         if (hit.collider.TryGetComponent<KitchenArea>(out var kitchenArea))
                         {
+                            if (_isDropBlocked)
+                            {
+                                return; // Block manual drop on KitchenArea
+                            }
+
                             if (!_ghostObjectHandler.IsPlacementValid)
                             {
                                 return; // Block drop
@@ -134,8 +159,9 @@ public class PickupAndDropHandler : MonoBehaviour
         }
     }
 
-    public void DropObject()
+    public void DropObject(bool ignoreBlock = false)
     {
+        if (_objectInHand == null) return;
         _objectInHand.OnDrop();
         _objectInHand = null;
         _ghostObjectHandler.DestroyGhostObject();
@@ -148,7 +174,7 @@ public class PickupAndDropHandler : MonoBehaviour
             float distanceToCamera = Vector3.Distance(_objectInHand.transform.position, _camera.position);
             if (distanceToCamera >= _autoDropDistance)
             {
-                DropObject();
+                DropObject(true);
             }
         }
     }
@@ -158,6 +184,7 @@ public class PickupAndDropHandler : MonoBehaviour
         StopAllCoroutines();
         if (_objectInHand == null)
         {
+            if (_isPickupBlocked) return;
             _objectInHand = evt.purchasedObject;
             evt.purchasedObject.OnPickUp(_grabObjectPoint);
             _objectInHand.SetCrouchOffset(_currentCrouchOffset);

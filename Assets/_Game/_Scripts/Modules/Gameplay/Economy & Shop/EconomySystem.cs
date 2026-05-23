@@ -36,14 +36,15 @@ public class EconomySystem : MonoBehaviour
 
     public void TryPurchaseItem(ShopItem shopItem)
     {
-        if(TrySpendMoney(shopItem.shopItemSO.grabbableObjectSO.price))
-        {
-            shopItem.HandlePurchaseItem(true);   
-        }
-        else
-        {
-            shopItem.HandlePurchaseItem(false);
-        }
+        // if(TrySpendMoney(shopItem.shopItemSO.grabbableObjectSO.price))
+        // {
+        //     shopItem.HandlePurchaseItem(true);   
+        // }
+        // else
+        // {
+        //     shopItem.HandlePurchaseItem(false);
+        // }
+        shopItem.HandlePurchaseItem(true);
     }
 
     public void HandleInteractWithShopItemEvent(InteractWithShopItemEvent evt)

@@ -38,6 +38,8 @@ public class CustomerOrderButton : MonoBehaviour, IInteractable
         orderTicketUI.ShowIngredients(attachedCustomer.customerOrder);
         orderTicketUI.gameObject.SetActive(true);
         orderScreen.OnCustomerOrderButtonClicked(this);
+        EventBus.Raise<CustomerOrderButtonClicked>(new CustomerOrderButtonClicked());
+        
     }
 
     public void Initialize(Customer customer, OrderTicketUI orderTicketUI, OrderScreen orderScreen)
