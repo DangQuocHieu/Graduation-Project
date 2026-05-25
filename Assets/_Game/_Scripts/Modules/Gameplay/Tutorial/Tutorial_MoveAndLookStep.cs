@@ -8,6 +8,10 @@ public class Tutorial_MoveAndLookStep : TutorialStep
     [TabGroup("Tutorial Arrow")]
     public TutorialArrow tutorialArrow;
     public PickupAndDropHandler pickupAndDropHandler;
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
     public override IEnumerator ExecuteStep()
     {
         pickupAndDropHandler.SetBlockPickup(true);
@@ -21,7 +25,7 @@ public class Tutorial_MoveAndLookStep : TutorialStep
         playerController.kccManager.SetAllInputBlocked(false);
         CursorHelper.HideCursor();  
         tutorialArrow.gameObject.SetActive(true);
-        ShowDialogueBox();
+        ShowDialogueBox("Go to the green arrow");
         yield return new WaitUntil(() => !tutorialArrow.gameObject.activeSelf);
         tutorialArrow.gameObject.SetActive(false);
     }

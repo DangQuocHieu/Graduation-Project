@@ -1,15 +1,19 @@
+using UnityEngine;
+// Thêm namespace của Odin Inspector
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
+
 namespace DQHieu.Framework
 {
-    using UnityEngine;
-
     public class DataManager : Singleton<DataManager>
     {
         public PlayerData playerData;
         public SettingData settingData;
 
-
         private const string PLAYER_DATA_KEY = "DQH_PlayerData";
         private const string SETTING_DATA_KEY = "DQH_SettingData";
+
         void OnEnable()
         {
             EventBus.Subcribe<LevelComplete>(HandleLevelCompleteEvent);
@@ -68,6 +72,12 @@ namespace DQHieu.Framework
             Debug.Log("All data saved successfully!");
         }
 
+        // --- ĐOẠN THAY ĐỔI Ở ĐÂY ---
+#if ODIN_INSPECTOR
+        [Button("Reset All Data", ButtonSizes.Large)] // Tạo nút bấm kích thước lớn
+        [GUIColor(1f, 0.3f, 0.3f)] // Đổi màu nút thành màu đỏ để cảnh báo nguy hiểm
+        [PropertyOrder(10)] // Đẩy nút xuống dưới cùng của Inspector
+#endif
         public void ResetData()
         {
             PlayerPrefs.DeleteKey(PLAYER_DATA_KEY);
@@ -92,12 +102,15 @@ namespace DQHieu.Framework
 
         private void HandleLevelCompleteEvent(LevelComplete evt)
         {
-            if (evt.overallScore >= 50)
+            if(!playerData.TutorialCompleted)
+            {
+                playerData.CompleteTutorial();
+            }
+            else if (evt.overallScore >= 50)
             {
                 ++playerData.CurrentLevelIndex;
             }
             SaveData();
-
         }
     }
 }

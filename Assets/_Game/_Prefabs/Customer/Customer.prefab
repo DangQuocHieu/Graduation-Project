@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6c04e2bdb206d41879ea7ed5082c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfxFootstep: {fileID: 11400000, guid: 6f7d70d7248ec1e49aed93d8047a7584, type: 2}
   animator: {fileID: 4262084099856504348}
 --- !u!114 &7184705504598285960
 MonoBehaviour:

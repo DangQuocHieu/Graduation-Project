@@ -1,3 +1,4 @@
+using DQHieu.Framework.Audio;
 using UnityEngine;
 
 public class CookingOil : MonoBehaviour
@@ -6,6 +7,9 @@ public class CookingOil : MonoBehaviour
 
     public bool isHot = false;
     public MeshCollider meshCollider;
+
+    public AudioData fryingSfx;
+    private AudioEmitter fryingSfxEmitter;
 
     void Awake()
     {
@@ -16,7 +20,40 @@ public class CookingOil : MonoBehaviour
 
     void Update()
     {
+        bool wasHot = isHot;
         isHot = attachedFryingPan != null && attachedFryingPan.isHot;
+
+        if (wasHot && !isHot)
+        {
+            if (fryingSfxEmitter != null)
+            {
+                AudioManager.Instance.StopSFX(fryingSfxEmitter, fadeDuration: 2f);
+                fryingSfxEmitter = null;
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<CookableObject>(out _) && isHot)
+        {
+            if (fryingSfxEmitter == null)
+            {
+                fryingSfxEmitter = AudioManager.Instance.PlaySFX(fryingSfx, transform.position, fadeInDuration: 2f);
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent<CookableObject>(out _))
+        {
+            if (fryingSfxEmitter != null)
+            {
+                AudioManager.Instance.StopSFX(fryingSfxEmitter, fadeDuration: 2f);
+                fryingSfxEmitter = null;
+            }
+        }
     }
 
 }

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using DQHieu.Framework.Audio;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class KnifeObject : GrabbableObject
 {
     public PlacePoint attachedPlacepoint;
+    public AudioData cutSfx;
 
     protected override void SetUpRigidbody()
     {
@@ -21,6 +23,7 @@ public class KnifeObject : GrabbableObject
             if (ingredient.attachedIngredientContainer != null && ingredient.attachedIngredientContainer.TryGetComponent<CuttingBoard>(out var cuttingBoard))
             {
                 ingredient.sliceableObject.OnSlice(cuttingBoard);
+                AudioManager.Instance.PlaySFX(cutSfx);
             }
         }
         else if (hit.collider.TryGetComponent<KnifeBlockObject>(out var knifeBlockObject))

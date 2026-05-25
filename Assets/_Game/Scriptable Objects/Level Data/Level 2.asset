@@ -17,13 +17,13 @@ MonoBehaviour:
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 1
-      serveDuration: 30
-      gracePeriodDuration: 10
+      serveDuration: 300
+      gracePeriodDuration: 60
     spawnTime: 2
   - customerPrefab: {fileID: 6408027025894718258, guid: ecc6970dc065a0b4aa8535c588b265f2, type: 3}
     customerOrder:
       ingredientTypes: 000000000200000003000000
       sauceType: 0
-      serveDuration: 30
-      gracePeriodDuration: 10
-    spawnTime: 10
+      serveDuration: 270
+      gracePeriodDuration: 60
+    spawnTime: 60

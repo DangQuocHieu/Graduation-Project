@@ -2169,7 +2169,7 @@ MonoBehaviour:
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
   placeableSurface: {fileID: 3976280260409323052}
-  applyFullPortionCheck: 0
+  applyFullPortionCheck: 1
   sauceAnchor: {fileID: 489990009013168799}
   attachedBowl: {fileID: 0}
   tofuIngredientAnchors:

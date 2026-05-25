@@ -160,7 +160,10 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 11400000, guid: ed3f382ea0bac2f469730335963d3c34, type: 2}
+  surfaceImpactSound: {fileID: 0}
   attachedPlacepoint: {fileID: 0}
+  cutSfx: {fileID: 11400000, guid: 5a5088b309d4d2c4193b6bf5cff5f262, type: 2}
 --- !u!114 &1437123451050716527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 1437123451050716527}
   grabbableObjectSO: {fileID: 11400000, guid: 799b6895674d367468d797d61f8596ab, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!65 &4438962595096617708
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -778,6 +778,7 @@ MonoBehaviour:
   oilContainer: {fileID: 8962190255705925896}
   placeableSurface: {fileID: 2695547458227793203}
   containCookingOil: 0
+  fillCompleted: 0
 --- !u!114 &8962190255705925896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2953,6 +2954,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachedFryingPan: {fileID: 9197000069142543204}
   isHot: 0
+  meshCollider: {fileID: 0}
+  fryingSfx: {fileID: 11400000, guid: 2fc7c879b8f952044aa5552894e12066, type: 2}
 --- !u!64 &3003255801861312321
 MeshCollider:
   m_ObjectHideFlags: 0

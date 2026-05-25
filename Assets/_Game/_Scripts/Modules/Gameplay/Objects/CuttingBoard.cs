@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using DQHieu.Framework;
 using UnityEngine;
 
 public class CuttingBoard : GrabbableObject
@@ -14,9 +16,18 @@ public class CuttingBoard : GrabbableObject
     {
         if(hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<BambooTray>(out var bambooTray))
         {
-            StartCoroutine(bambooTray.FillCookableObjectCoroutine(PlaceableSurface.ingredientContainer.GetIngredientList()));
+            StartCoroutine(InteractWithBambooTrayCoroutine(bambooTray));
         }
         base.InteractWith(hit, pickupAndDropHandler);
+    }
+
+    private IEnumerator InteractWithBambooTrayCoroutine(BambooTray bambooTray)
+    {
+        EventBus.Raise<PourLiquid>(new PourLiquid());
+
+        yield return StartCoroutine(bambooTray.FillCookableObjectCoroutine(PlaceableSurface.ingredientContainer.GetIngredientList()));
+
+        EventBus.Raise<PourLiquidComplete>(new PourLiquidComplete());
     }
 
 }

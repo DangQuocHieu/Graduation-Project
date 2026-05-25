@@ -4,6 +4,7 @@ using UnityEngine;
 using KinematicCharacterController;
 using System;
 using DQHieu.Framework;
+using DQHieu.Framework.Audio;
 
 namespace CoreGame.Movement
 {
@@ -69,6 +70,11 @@ namespace CoreGame.Movement
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
 
+        [Header("Audio")]
+        public AudioData sfxFootstep;
+        private AudioEmitter _footstepEmitter;
+        private bool _isWalkingAudio;
+
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
         public BonusOrientationMethod BonusOrientationMethod = BonusOrientationMethod.None;
@@ -117,6 +123,25 @@ namespace CoreGame.Movement
 
         private void Update()
         {
+            bool isMovingNow = _moveInputVector.sqrMagnitude > 0.01f && Motor.GroundingStatus.IsStableOnGround;
+            if (isMovingNow && !_isWalkingAudio)
+            {
+                _isWalkingAudio = true;
+                if (sfxFootstep != null && _footstepEmitter == null)
+                {
+                    _footstepEmitter = AudioManager.Instance.PlaySFX(sfxFootstep, transform);
+                }
+            }
+            else if (!isMovingNow && _isWalkingAudio)
+            {
+                _isWalkingAudio = false;
+                if (_footstepEmitter != null)
+                {
+                    AudioManager.Instance.StopSFX(_footstepEmitter, 0.2f);
+                    _footstepEmitter = null;
+                }
+            }
+
             // Tween MeshRoot scale and CameraFollowPoint position for crouching
             // We check MeshRoot != transform to prevent modifying the scale of the root object (KinematicCharacterMotor restricts its scale to 1,1,1)
             if (MeshRoot != null && MeshRoot != transform)

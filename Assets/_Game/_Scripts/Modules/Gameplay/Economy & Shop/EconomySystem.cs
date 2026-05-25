@@ -25,26 +25,27 @@ public class EconomySystem : MonoBehaviour
 
     public bool TrySpendMoney(int money)
     {
-        if(dataManager.playerData.Money >= money)
-        {
-            dataManager.playerData.Money -= money;
-            EventBus.Raise<SpendMoneyEvent>(new SpendMoneyEvent(money));
-            return true;
-        }
-        return false;
+        // if(dataManager.playerData.Money >= money)
+        // {
+        //     dataManager.playerData.Money -= money;
+        //     EventBus.Raise<SpendMoneyEvent>(new SpendMoneyEvent(money));
+        //     return true;
+        // }
+        // return false;
+        EventBus.Raise<SpendMoneyEvent>(new SpendMoneyEvent(money));
+        return true;
     }
 
     public void TryPurchaseItem(ShopItem shopItem)
     {
-        // if(TrySpendMoney(shopItem.shopItemSO.grabbableObjectSO.price))
-        // {
-        //     shopItem.HandlePurchaseItem(true);   
-        // }
-        // else
-        // {
-        //     shopItem.HandlePurchaseItem(false);
-        // }
-        shopItem.HandlePurchaseItem(true);
+        if(TrySpendMoney(shopItem.shopItemSO.grabbableObjectSO.price))
+        {
+            shopItem.HandlePurchaseItem(true);   
+        }
+        else
+        {
+            shopItem.HandlePurchaseItem(false);
+        }
     }
 
     public void HandleInteractWithShopItemEvent(InteractWithShopItemEvent evt)

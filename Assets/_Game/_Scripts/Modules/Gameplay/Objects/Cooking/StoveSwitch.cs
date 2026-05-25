@@ -4,7 +4,7 @@ using DG.Tweening; // Đừng quên khai báo thư viện này nhé!
 public class StoveSwitch : MonoBehaviour, IInteractable
 {
     public CookingZone cookingZone;
-    private bool isOn = false;
+    public bool isOn = false;
     private Tween rotateTween;
 
     

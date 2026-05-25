@@ -1,4 +1,5 @@
 using DG.Tweening;
+using DQHieu.Framework.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,12 +14,14 @@ public class CookableObject : MonoBehaviour
     public float totalTimeToBurn = 10f;
     public float perfectCookOffset = 10f;
     public float tasteScore;
+    public bool isTutorialObject;
 
     [Header("Visual")]
     public Gradient cookingColors;
     public Tween cookingTween;
 
     [ShowInInspector] public float cookProgressSliderValue => cookProgress / perfectCookLevel;
+
 
     void Awake()
     {
@@ -39,7 +42,19 @@ public class CookableObject : MonoBehaviour
         cookingTween = DOTween.To(() => cookProgress, x => cookProgress = x, maxBurnLevel, timeRemaining)
             .SetEase(Ease.Linear)
             .SetLink(gameObject)
-            .OnUpdate(() => UpdateFoodColor());
+            .OnUpdate(() =>
+            {
+                UpdateFoodColor();
+                CheckTutorialLimit();
+            });
+    }
+
+    private void CheckTutorialLimit()
+    {
+        if(isTutorialObject && cookProgress >= perfectCookLevel)
+        {
+            cookProgress = perfectCookLevel;
+        }
     }
 
     public void PauseCooking()

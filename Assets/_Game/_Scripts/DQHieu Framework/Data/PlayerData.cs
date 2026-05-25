@@ -5,6 +5,7 @@ public class PlayerData
 {   
     [SerializeField] private int money;
     [SerializeField] private int currentLevelIndex;
+    [SerializeField] private bool tutorialCompleted = false;
     public const int maxLevel = 3;
     
     public int Money 
@@ -31,5 +32,12 @@ public class PlayerData
         {
             currentLevelIndex = Mathf.Min(value, maxLevel - 1);
         }
+    }
+
+    public bool TutorialCompleted => tutorialCompleted;
+
+    public void CompleteTutorial()
+    {
+        tutorialCompleted = true;
     }
 }

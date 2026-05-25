@@ -209,6 +209,34 @@ public class BambooTray : GrabbableObject
     public void OnServed()
     {
         canBePickedUp = false;
+        
+        // Destroy ObjectHover on the tray
+        if (TryGetComponent<ObjectHover>(out var trayHover))
+        {
+            Destroy(trayHover);
+        }
+
+        // Disable outline if active
+        if (TryGetComponent<Outline>(out var trayOutline))
+        {
+            trayOutline.enabled = false;
+        }
+
+        // Handle attached bowl
+        if (attachedBowl != null)
+        {
+            attachedBowl.canBePickedUp = false;
+            if (attachedBowl.TryGetComponent<ObjectHover>(out var bowlHover))
+            {
+                Destroy(bowlHover);
+            }
+            if (attachedBowl.TryGetComponent<Outline>(out var bowlOutline))
+            {
+                bowlOutline.enabled = false;
+            }
+        }
+
+        // Handle attached ingredients
         foreach (var anchors in IngredientAnchorsDic.Values)
         {
             foreach (var anchor in anchors)
@@ -216,6 +244,14 @@ public class BambooTray : GrabbableObject
                 if (anchor.attachedIngredient != null)
                 {
                     anchor.attachedIngredient.canBePickedUp = false;
+                    if (anchor.attachedIngredient.TryGetComponent<ObjectHover>(out var ingHover))
+                    {
+                        Destroy(ingHover);
+                    }
+                    if (anchor.attachedIngredient.TryGetComponent<Outline>(out var ingOutline))
+                    {
+                        ingOutline.enabled = false;
+                    }
                 }
             }
         }

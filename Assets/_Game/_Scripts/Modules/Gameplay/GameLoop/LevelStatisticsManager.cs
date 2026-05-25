@@ -102,7 +102,13 @@ public class LevelStatisticsManager : MonoBehaviour
             dishScores.Add(customer.dishScore);
         }
 
-        if(dishScores.Count == orderAmount)
+        if(!DataManager.Instance.playerData.TutorialCompleted)
+        {
+            EventBus.Raise<LevelComplete>(new LevelComplete(GetOverallScore()));
+        
+        }
+
+        else if(dishScores.Count == orderAmount)
         {
             EventBus.Raise<LevelComplete>(new LevelComplete(GetOverallScore()));
         }

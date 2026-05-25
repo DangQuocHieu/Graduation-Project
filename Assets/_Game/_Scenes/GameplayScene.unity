@@ -8226,7 +8226,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 58c1c256ec19e754c866251c8f361000, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 3be6fd96b11aabe418c7c0e014b394ce, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &13882893730293137
 PrefabInstance:
@@ -10269,6 +10269,7 @@ MonoBehaviour:
   playerData:
     money: 50000
     currentLevelIndex: 0
+    tutorialCompleted: 0
 --- !u!223 &1260870979716229568
 Canvas:
   m_ObjectHideFlags: 0
@@ -21257,6 +21258,7 @@ MonoBehaviour:
   orderManager: {fileID: 4056216287874340332}
   gameLoopManager: {fileID: 5768047128282745422}
   levelStatisticsManager: {fileID: 1030021811143838884}
+  tutorialManager: {fileID: 0}
   moneyUIPanel: {fileID: 2377198449771679601}
   summaryScreen: {fileID: 3611339509022831566}
   dishStatisticsScreen: {fileID: 5083741250234452850}
@@ -21389,6 +21391,7 @@ MonoBehaviour:
   fadeDuration: 0.15
   moveDuration: 0.15
   cookProgressSlider: {fileID: 1810854189}
+  followCamera: 1
 --- !u!222 &7309895457103114862
 CanvasRenderer:
   m_ObjectHideFlags: 0

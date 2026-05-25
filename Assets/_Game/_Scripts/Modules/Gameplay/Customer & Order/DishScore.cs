@@ -24,6 +24,7 @@ public class DishScore : MonoBehaviour
     {
         CalculateWaitingScore();
         CalculateTasteScore();
+        CalculateGuestPaidAmount();
     }
 
     private void CalculateWaitingScore()
@@ -78,5 +79,11 @@ public class DishScore : MonoBehaviour
         waitingScore = 0;
         tasteScore = 0;
         guestPaidAmount = 0;
+    }
+
+    public void CalculateGuestPaidAmount()
+    {
+        float guestPaid = ((waitingScore + tasteScore) / 2 * 20000) / 100f;
+        guestPaidAmount = Mathf.RoundToInt(guestPaid);
     }
 }

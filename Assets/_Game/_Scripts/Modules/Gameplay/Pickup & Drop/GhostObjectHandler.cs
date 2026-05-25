@@ -157,6 +157,11 @@ public class GhostObjectHandler
 
         foreach (Transform child in source)
         {
+            if (!child.gameObject.activeSelf)
+            {
+                continue;
+            }
+
             GameObject newChild = new GameObject(child.name);
             newChild.transform.SetParent(destination);
             newChild.transform.localPosition = child.localPosition;

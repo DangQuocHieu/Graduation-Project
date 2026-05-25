@@ -16,23 +16,24 @@ public class Tutorial_OrderStep : TutorialStep
         EventBus.Subcribe<CustomerOrderButtonClicked>(HandleCustomerOrderButtonClicked);
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventBus.UnSubcribe<CustomerOrderButtonClicked>(HandleCustomerOrderButtonClicked);
     }
 
     public override IEnumerator ExecuteStep()
     {
-        ShowDialogueBox();
+        ShowDialogueBox("Waiting for the customer to enter");
         playerController.kccManager.SetMoveInputBlocked(true);
         sampleCustomer.gameObject.SetActive(true);
         yield return new WaitUntil(() => sampleCustomer.attachedChairObject != null);
-        ShowDialogueBox();
+        ShowDialogueBox("Check the customer's order");
         playerController.kccManager.SetMoveInputBlocked(false);
         orderTutorialArrow.gameObject.SetActive(true);
         yield return new WaitUntil(() => !orderTutorialArrow.gameObject.activeSelf);
-        ShowDialogueBox();
-        orderTutorialPointer.gameObject.SetActive(true);
+        ShowDialogueBox("Press LEFT CLICK to the customer's order");
+        orderTutorialPointer.gameObject.SetActive(true); 
         yield return new WaitUntil(() => orderButtonClicked);
         orderTutorialPointer.gameObject.SetActive(false);
         playerController.kccManager.SetAllInputBlocked(true);

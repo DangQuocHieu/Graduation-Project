@@ -17,17 +17,62 @@ public abstract class TutorialStep : MonoBehaviour
         tutorialDialogueBox = tutorialScreen.tutorialDialogueBox;
     }
 
-    public void ShowDialogueBox()
+    protected virtual void OnDisable()
     {
-        tutorialDialogueBox.ShowDialogueBox(tutorialStrings[currentStringIndex]);
-        ++currentStringIndex;
+        if (playerController != null && playerController.kccManager != null)
+        {
+            playerController.kccManager.SetMoveInputBlocked(false);
+            playerController.kccManager.SetLookInputBlocked(false);
+        }
     }
 
-    public IEnumerator WaitForReachTutorialArrowPosition(TutorialArrow arrow)
+    public void ShowDialogueBox(string text)
+    {
+        tutorialDialogueBox.ShowDialogueBox(text);
+    }
+
+    public IEnumerator WaitForReachTutorialArrowPosition(TutorialArrow arrow, string text)
     {
         arrow.gameObject.SetActive(true);
-        ShowDialogueBox();
+        ShowDialogueBox(text);
         yield return new WaitUntil(() => !arrow.gameObject.activeSelf);
+    }
+
+    public IEnumerator WaitForAimAndPickup<T>(
+        string aimText, 
+        string pickupText, 
+        System.Func<bool> isHoveringCondition, 
+        System.Func<T> getPickedUpObject,
+        System.Action onAimed = null) where T : GrabbableObject
+    {
+        ShowDialogueBox(aimText);
+
+        bool hasBeenAimed = false;
+
+        while (getPickedUpObject() == null)
+        {
+            bool isCurrentlyHovered = isHoveringCondition();
+
+            if (isCurrentlyHovered)
+            {
+                if (!hasBeenAimed)
+                {
+                    hasBeenAimed = true;
+                    ShowDialogueBox(pickupText);
+                    onAimed?.Invoke();
+                }
+            }
+            else
+            {
+                if (hasBeenAimed)
+                {
+                    hasBeenAimed = false;
+                    ShowDialogueBox(aimText);
+                }
+            }
+
+            yield return null;
+        }
     }
 
     public abstract IEnumerator ExecuteStep();

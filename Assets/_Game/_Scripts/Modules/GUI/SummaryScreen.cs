@@ -46,7 +46,11 @@ public class SummaryScreen : MonoBehaviour
     }
     void Start()
     {
-        levelText.text = "Level " + (DataManager.Instance.playerData.CurrentLevelIndex + 1);
+        if(!DataManager.Instance.playerData.TutorialCompleted)
+        {
+            levelText.text = "Tutorial";
+        }
+        else levelText.text = "Level " + (DataManager.Instance.playerData.CurrentLevelIndex + 1);
     }
 
     public void Initialize(LevelStatisticsManager levelStatisticsManager)

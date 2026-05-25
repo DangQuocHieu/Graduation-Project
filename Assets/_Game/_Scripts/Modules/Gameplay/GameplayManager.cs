@@ -21,8 +21,15 @@ public class GameplayManager : MonoBehaviour
 
     void Awake()
     {
-        CursorHelper.HideCursor();
         dataManager.LoadData();
+        if (!dataManager.playerData.TutorialCompleted)
+        {
+            CursorHelper.ShowCursor(); 
+        }
+        else
+        {
+            CursorHelper.HideCursor();
+        }
         economySystem.Initialize(dataManager);
         moneyUIPanel.Initialize(dataManager);
         gameLoopManager.Initialize(orderManager, dataManager);
@@ -30,7 +37,7 @@ public class GameplayManager : MonoBehaviour
         summaryScreen.Initialize(levelStatisticsManager);
         dishStatisticsScreen.Initialize(gameLoopManager);
 
-        if(tutorialManager != null)
+        if (tutorialManager != null)
         {
             tutorialManager.StartTutorial();
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DQHieu.Framework.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -39,6 +40,10 @@ public class GrabbableObject : MonoBehaviour
     public bool canBePickedUp = true;
     public bool canSliced => GetComponent<SliceableObject>() != null;
 
+    [Title("Sound")]
+    public AudioData pickupSound;
+    public AudioData surfaceImpactSound;
+
 
     public void SetCrouchOffset(float offset)
     {
@@ -49,7 +54,7 @@ public class GrabbableObject : MonoBehaviour
     {
         SetUpRigidbody();
         objectColliders = GetComponentsInChildren<Collider>().Where(T => !T.isTrigger).ToList();
-        
+
     }
 
     private void FixedUpdate()
@@ -70,6 +75,7 @@ public class GrabbableObject : MonoBehaviour
 
     public virtual void OnPickUp(Transform grabObjectPoint)
     {
+
         isPickupCompleted = false;
         isMoveToSurfaceCompleted = false;
 
@@ -89,6 +95,10 @@ public class GrabbableObject : MonoBehaviour
         ToggleCollider(isTrigger: true);
         StopWaitForPickupCompleteCoroutine();
         _waitForPickupCompleteCoroutine = StartCoroutine(WaitForPickupComplete());
+
+
+        if (pickupSound != null)
+            AudioManager.Instance.PlaySFX(pickupSound);
     }
 
 
@@ -261,7 +271,8 @@ public class GrabbableObject : MonoBehaviour
 
         _moveCoroutine = null;
         isMoveToSurfaceCompleted = true;
-
+        if (surfaceImpactSound != null)
+            AudioManager.Instance.PlaySFX(surfaceImpactSound);
         onComplete?.Invoke();
     }
 
@@ -293,9 +304,9 @@ public class GrabbableObject : MonoBehaviour
 
         rb.MovePosition(targetPosition);
         rb.MoveRotation(targetRotation);
-        
+
         yield return new WaitForFixedUpdate();
-        
+
         if (!keepKinematic)
         {
             rb.isKinematic = false;
@@ -305,7 +316,7 @@ public class GrabbableObject : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         ToggleCollider(isTrigger: false);
-        
+
         if (itemContainer != null)
         {
             foreach (var item in itemContainer.containedItems)
@@ -318,11 +329,11 @@ public class GrabbableObject : MonoBehaviour
                 item.ToggleCollider(isTrigger: false);
             }
         }
-        
+
         yield return new WaitForFixedUpdate();
 
         _moveCoroutine = null;
-        
+
         onComplete?.Invoke();
     }
 
