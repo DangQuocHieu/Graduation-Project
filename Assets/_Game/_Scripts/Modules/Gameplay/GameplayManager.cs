@@ -1,4 +1,5 @@
 using DQHieu.Framework;
+using DQHieu.Framework.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -17,6 +18,9 @@ public class GameplayManager : MonoBehaviour
     public MoneyUIPanel moneyUIPanel;
     public SummaryScreen summaryScreen;
     public DishStatisticsScreen dishStatisticsScreen;
+
+    [Title("Sound")]
+    public AudioData gameplayBGM;
 
 
     void Awake()
@@ -41,6 +45,8 @@ public class GameplayManager : MonoBehaviour
         {
             tutorialManager.StartTutorial();
         }
+
+        AudioManager.Instance.PlayBGM(gameplayBGM);
 
     }
 }

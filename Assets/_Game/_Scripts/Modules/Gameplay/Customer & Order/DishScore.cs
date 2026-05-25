@@ -87,3 +87,4 @@ public class DishScore : MonoBehaviour
         guestPaidAmount = Mathf.RoundToInt(guestPaid);
     }
 }
+    

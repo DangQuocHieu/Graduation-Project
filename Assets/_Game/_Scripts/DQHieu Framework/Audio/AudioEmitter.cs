@@ -21,6 +21,7 @@ namespace DQHieu.Framework.Audio
 
         public void Play(AudioData data, Vector3 position, Action<AudioEmitter> callback, float fadeInDuration = 0f)
         {
+            
             _audioSource.DOKill();
             _returnToPoolCallback = callback;
             transform.position = position;
@@ -80,6 +81,13 @@ namespace DQHieu.Framework.Audio
             _returnToPoolCallback?.Invoke(this);
         }
 
+        public void ToggleMute(bool isMuted)
+        {
+            if (_audioSource != null)
+            {
+                _audioSource.mute = isMuted;
+            }
+        }
     }
 
 }

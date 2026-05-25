@@ -773,6 +773,8 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 0}
+  surfaceImpactSound: {fileID: 11400000, guid: 9d8fb358637e0fe43a5cebd86ddf8e94, type: 2}
   isHot: 0
   attachedCookingZone: {fileID: 0}
   oilContainer: {fileID: 8962190255705925896}

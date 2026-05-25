@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97877e486eaa4141a890d5aa564a54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: 7a0212e6dec4161498bd38d7932a14c1, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 0}
   objectColliders:
@@ -181,8 +180,11 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 0}
+  surfaceImpactSound: {fileID: 11400000, guid: a01454f26aab9e6469b6af85d6cf2826, type: 2}
   pourEffect: {fileID: 3223625945760499931}
   topNap: {fileID: 8651754943858652590}
+  pouringSfx: {fileID: 11400000, guid: 4bfcf7a76764bc84a9a66ffe1713a3ee, type: 2}
   sauceType: 1
 --- !u!65 &7575786770219802629
 BoxCollider:
@@ -237,6 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 4593036005092311495}
   grabbableObjectSO: {fileID: 11400000, guid: 7a0212e6dec4161498bd38d7932a14c1, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!1001 &5600742155168146776
 PrefabInstance:
   m_ObjectHideFlags: 0

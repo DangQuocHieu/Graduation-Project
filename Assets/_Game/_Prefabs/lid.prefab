@@ -93,6 +93,8 @@ MonoBehaviour:
   isOpened: 0
   localRotationWhenOpen: {x: 90, y: 0, z: 0}
   localRotationWhenClose: {x: 0, y: 0, z: 0}
+  openSfx: {fileID: 11400000, guid: d7d1e9d681cee174d9e52a73c817b6b3, type: 2}
+  closeSfx: {fileID: 11400000, guid: 2984918727729564599a0a38600e7e0a, type: 2}
 --- !u!114 &5314888729331184634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 5314888729331184634}
-  attachedObject: {fileID: 0}
+  grabbableObjectSO: {fileID: 0}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!65 &1235010212052133290
 BoxCollider:
   m_ObjectHideFlags: 0

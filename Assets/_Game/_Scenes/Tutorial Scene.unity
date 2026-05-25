@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 133347283e115d147a5fcce7f47a538f, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -7855,6 +7855,7 @@ MonoBehaviour:
   JumpScalableForwardSpeed: 0
   JumpPreGroundingGraceTime: 0
   JumpPostGroundingGraceTime: 0
+  sfxFootstep: {fileID: 11400000, guid: 6f7d70d7248ec1e49aed93d8047a7584, type: 2}
   IgnoredColliders: []
   BonusOrientationMethod: 0
   BonusOrientationSharpness: 10
@@ -15267,6 +15268,9 @@ MonoBehaviour:
     money: 0
     currentLevelIndex: 0
     tutorialCompleted: 0
+  settingData:
+    isMusicOn: 1
+    isSfxOn: 1
 --- !u!4 &1163676458
 Transform:
   m_ObjectHideFlags: 0
@@ -18763,6 +18767,7 @@ MonoBehaviour:
   moneyUIPanel: {fileID: 1282103425}
   summaryScreen: {fileID: 153862330}
   dishStatisticsScreen: {fileID: 1670220185}
+  gameplayBGM: {fileID: 11400000, guid: 4d83f34cdbe4b594bb496016786bc708, type: 2}
 --- !u!4 &1519736215
 Transform:
   m_ObjectHideFlags: 0

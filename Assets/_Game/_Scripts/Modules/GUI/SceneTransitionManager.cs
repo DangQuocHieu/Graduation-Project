@@ -3,6 +3,7 @@ using DQHieu.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using DQHieu.Framework.Audio;
 
 public class SceneTransitionManager : PersistentSingleton<SceneTransitionManager>
 {
@@ -15,6 +16,7 @@ public class SceneTransitionManager : PersistentSingleton<SceneTransitionManager
 
     private IEnumerator TransitionRoutine(string sceneName)
     {
+        AudioManager.Instance.StopBGM(fadeDuration: 2f);
         bool animationDone = false;
         circleRect.DOScale(10f, 1f).SetEase(Ease.InCubic).SetUpdate(true).OnComplete(() => {
             animationDone = true;

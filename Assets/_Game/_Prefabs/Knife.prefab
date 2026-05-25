@@ -161,7 +161,7 @@ MonoBehaviour:
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
   pickupSound: {fileID: 11400000, guid: ed3f382ea0bac2f469730335963d3c34, type: 2}
-  surfaceImpactSound: {fileID: 0}
+  surfaceImpactSound: {fileID: 11400000, guid: a01454f26aab9e6469b6af85d6cf2826, type: 2}
   attachedPlacepoint: {fileID: 0}
   cutSfx: {fileID: 11400000, guid: 5a5088b309d4d2c4193b6bf5cff5f262, type: 2}
 --- !u!114 &1437123451050716527

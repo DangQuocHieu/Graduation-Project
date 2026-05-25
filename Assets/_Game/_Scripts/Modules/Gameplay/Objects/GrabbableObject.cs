@@ -271,8 +271,7 @@ public class GrabbableObject : MonoBehaviour
 
         _moveCoroutine = null;
         isMoveToSurfaceCompleted = true;
-        if (surfaceImpactSound != null)
-            AudioManager.Instance.PlaySFX(surfaceImpactSound);
+
         onComplete?.Invoke();
     }
 
@@ -387,11 +386,14 @@ public class GrabbableObject : MonoBehaviour
                         attachedIngredientContainer = placeableSurface.ingredientContainer;
                         JoinWithOtherRigidbody(placeableSurface.ingredientContainer.rb);
                     }
+                    if (surfaceImpactSound != null)
+                        AudioManager.Instance.PlaySFX(surfaceImpactSound);
                 }
                 else
                 {
                     isWaitingForSurfaceImpact = false;
                     targetSurface = null;
+                    
                 }
             }
         }

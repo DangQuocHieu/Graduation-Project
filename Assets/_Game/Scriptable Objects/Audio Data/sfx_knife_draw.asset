@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a6b1ad42a497248bc18d4fc2ab7f97, type: 3}
   m_Name: sfx_knife_draw
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 3461099381769f849a067cc6f8fc5e75, type: 3}
-  MixerGroup: {fileID: 0}
+  Clip: {fileID: 8300000, guid: fe23d37c5d5d4494a92d3ba4b434253f, type: 3}
+  MixerGroup: {fileID: -7706618403941422148, guid: 0a4a466669cd45e4f8ac7f85a4a0da3a, type: 2}
   Volume: 1
   Pitch: 1
   Loop: 0

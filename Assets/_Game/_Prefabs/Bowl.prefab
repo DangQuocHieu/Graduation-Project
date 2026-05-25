@@ -199,11 +199,14 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 11400000, guid: 2d846325135781340b12f0fe66954b8b, type: 2}
+  surfaceImpactSound: {fileID: 11400000, guid: d0daf968b51472446974c6eb2f67b598, type: 2}
   shrimpPasteContainer: {fileID: 6681809201100264502}
   fishSauceContainer: {fileID: 4748757538461141241}
   attachedBambooTray: {fileID: 0}
   fill: 0
   sauceType: 2
+  containSauce: 0
 --- !u!114 &6681809201100264502
 MonoBehaviour:
   m_ObjectHideFlags: 0

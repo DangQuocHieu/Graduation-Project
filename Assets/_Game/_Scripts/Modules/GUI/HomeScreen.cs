@@ -11,11 +11,13 @@ public class HomeScreen : MonoBehaviour
     void OnEnable()
     {
         startButton.onClick.AddListener(OnStartButtonClicked);
+        settingButton.onClick.AddListener(OnSettingButtonClicked);
     }
 
     void OnDisable()
     {
         startButton.onClick.RemoveListener(OnStartButtonClicked);
+        settingButton.onClick.RemoveListener(OnSettingButtonClicked);
     }
 
     private void OnStartButtonClicked()
@@ -29,5 +31,10 @@ public class HomeScreen : MonoBehaviour
             SceneTransitionManager.Instance.LoadScene("GameplayScene");
         }
 
+    }
+
+    private void OnSettingButtonClicked()
+    {
+        HomeManager.Instance.settingScreen.ShowScreen();
     }
 }

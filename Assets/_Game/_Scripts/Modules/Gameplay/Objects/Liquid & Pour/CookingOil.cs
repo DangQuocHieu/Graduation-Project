@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DQHieu.Framework.Audio;
 using UnityEngine;
 
@@ -18,41 +19,43 @@ public class CookingOil : MonoBehaviour
         meshCollider.isTrigger = true;
     }
 
+    private List<CookableObject> objectsInOil = new List<CookableObject>();
+
     void Update()
     {
-        bool wasHot = isHot;
         isHot = attachedFryingPan != null && attachedFryingPan.isHot;
 
-        if (wasHot && !isHot)
+        objectsInOil.RemoveAll(item => item == null);
+
+        bool shouldPlaySound = isHot && objectsInOil.Count > 0;
+
+        if (shouldPlaySound && fryingSfxEmitter == null)
         {
-            if (fryingSfxEmitter != null)
-            {
-                AudioManager.Instance.StopSFX(fryingSfxEmitter, fadeDuration: 2f);
-                fryingSfxEmitter = null;
-            }
+            fryingSfxEmitter = AudioManager.Instance.PlaySFX(fryingSfx, transform.position, fadeInDuration: 2f);
+        }
+        else if (!shouldPlaySound && fryingSfxEmitter != null)
+        {
+            AudioManager.Instance.StopSFX(fryingSfxEmitter, fadeDuration: 2f);
+            fryingSfxEmitter = null;
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<CookableObject>(out _) && isHot)
+        if (other.TryGetComponent<CookableObject>(out var cookableObj))
         {
-            if (fryingSfxEmitter == null)
+            if (!objectsInOil.Contains(cookableObj))
             {
-                fryingSfxEmitter = AudioManager.Instance.PlaySFX(fryingSfx, transform.position, fadeInDuration: 2f);
+                objectsInOil.Add(cookableObj);
             }
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<CookableObject>(out _))
+        if (other.TryGetComponent<CookableObject>(out var cookableObj))
         {
-            if (fryingSfxEmitter != null)
-            {
-                AudioManager.Instance.StopSFX(fryingSfxEmitter, fadeDuration: 2f);
-                fryingSfxEmitter = null;
-            }
+            objectsInOil.Remove(cookableObj);
         }
     }
 

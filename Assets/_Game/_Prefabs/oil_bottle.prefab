@@ -188,15 +188,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.279
+      value: 10.766
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.662
+      value: -0.22800016
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.23
+      value: -8.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6411e68059587c9448941a540647b0cd, type: 3}
       propertyPath: m_LocalRotation.y
@@ -334,7 +334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 926f4d7855b295546a205be0898a4624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableObjectSO: {fileID: 11400000, guid: a01d929fdb22f9141b0c72e40eb89e7e, type: 2}
   fixedJoint: {fileID: 0}
   rb: {fileID: 41350864183368073}
   objectColliders:
@@ -351,8 +350,11 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 0}
+  surfaceImpactSound: {fileID: 11400000, guid: a01454f26aab9e6469b6af85d6cf2826, type: 2}
   pourEffect: {fileID: 2331832270262343205}
   topNap: {fileID: 7381748490363208774}
+  pouringSfx: {fileID: 11400000, guid: 4bfcf7a76764bc84a9a66ffe1713a3ee, type: 2}
 --- !u!114 &635275683131300752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 635275683131300752}
   grabbableObjectSO: {fileID: 11400000, guid: a01d929fdb22f9141b0c72e40eb89e7e, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!1001 &7060382359490487213
 PrefabInstance:
   m_ObjectHideFlags: 0

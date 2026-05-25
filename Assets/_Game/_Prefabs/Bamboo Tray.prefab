@@ -2168,6 +2168,8 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 0}
+  surfaceImpactSound: {fileID: 11400000, guid: a01454f26aab9e6469b6af85d6cf2826, type: 2}
   placeableSurface: {fileID: 3976280260409323052}
   applyFullPortionCheck: 1
   sauceAnchor: {fileID: 489990009013168799}

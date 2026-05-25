@@ -5,19 +5,29 @@ namespace DQHieu.Framework.Audio
     using DG.Tweening;
     using JetBrains.Annotations;
 
-    public class AudioManager : Singleton<AudioManager>
+    public class AudioManager : PersistentSingleton<AudioManager>
     {
         [SerializeField] private int _initialPoolSize = 15;
         private Queue<AudioEmitter> _sfxPool = new();
         [SerializeField] private AudioSource _bgmSource;
         [SerializeField] private AudioEmitter _audioEmitterPrefab;
-        [SerializeField] private AudioData _bgmData;
+
         [SerializeField] private AudioData _buttonClickSound;
+        [SerializeField] private UnityEngine.Audio.AudioMixer _mainMixer;
+
         protected override void Awake()
         {
             base.Awake();
             InitializeSystem();
-            PlayBGM(_bgmData);
+        }
+
+        private void Start()
+        {
+            if (DataManager.Instance != null && DataManager.Instance.settingData != null)
+            {
+                ToggleMusic(DataManager.Instance.settingData.isMusicOn);
+                ToggleSFX(DataManager.Instance.settingData.isSfxOn);
+            }
         }
 
         private void InitializeSystem()
@@ -126,6 +136,22 @@ namespace DQHieu.Framework.Audio
             PlaySFX(_buttonClickSound);
         }
 
+        public void ToggleMusic(bool isOn)
+        {
+            if (_mainMixer != null)
+            {
+                // Sử dụng AudioMixer để mute, -80dB là mute hoàn toàn, 0dB là mức bình thường
+                _mainMixer.SetFloat("MusicVolume", isOn ? 0f : -80f);
+            }
+        }
+
+        public void ToggleSFX(bool isOn)
+        {
+            if (_mainMixer != null)
+            {
+                _mainMixer.SetFloat("SFXVolume", isOn ? 0f : -80f);
+            }
+        }
     }
 
 }

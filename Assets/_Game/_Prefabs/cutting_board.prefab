@@ -572,6 +572,8 @@ MonoBehaviour:
   isPickupCompleted: 0
   isMoveToSurfaceCompleted: 0
   canBePickedUp: 1
+  pickupSound: {fileID: 0}
+  surfaceImpactSound: {fileID: 11400000, guid: a01454f26aab9e6469b6af85d6cf2826, type: 2}
   PlaceableSurface: {fileID: 1192232388534982373}
 --- !u!114 &1192232388534982373
 MonoBehaviour:
@@ -647,6 +649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectOutline: {fileID: 8891547374996942950}
   grabbableObjectSO: {fileID: 11400000, guid: 5870af365b3bcb14f828dc626d697226, type: 2}
+  attachedGrabbableObject: {fileID: 0}
 --- !u!114 &8891547374996942950
 MonoBehaviour:
   m_ObjectHideFlags: 0
