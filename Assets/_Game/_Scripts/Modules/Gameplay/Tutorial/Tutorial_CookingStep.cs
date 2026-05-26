@@ -209,6 +209,7 @@ public class Tutorial_CookingStep : TutorialStep
                     ing.ingredientType == IngredientType.Tofu)
                 {
                     currentTofuObject = ing;
+                    currentTofuObject.cookableObject.totalTimeToBurn /= 2;
                     return pickupAndDropHandler._objectInHand;
                 }
                 return null;

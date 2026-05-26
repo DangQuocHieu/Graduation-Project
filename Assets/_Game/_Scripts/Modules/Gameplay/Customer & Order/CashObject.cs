@@ -10,8 +10,8 @@ public class CashObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        attachedCustomer.ChangeState(CustomerState.Leaving);
         EventBus.Raise<InteractWithCashObject>(new InteractWithCashObject(amount, attachedCustomer));
+        attachedCustomer.ChangeState(CustomerState.Leaving);
         gameObject.SetActive(false);
     }
 }

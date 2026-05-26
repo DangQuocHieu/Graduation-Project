@@ -27509,6 +27509,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1195515285255275068, guid: 593438b95565c104a8e1e8edf8543295, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c5956d5ab6b02d24fbf7a5c89b54b5b4, type: 3}
     - target: {fileID: 1219555491909961122, guid: 593438b95565c104a8e1e8edf8543295, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -27524,6 +27528,14 @@ PrefabInstance:
     - target: {fileID: 1784336766186074342, guid: 593438b95565c104a8e1e8edf8543295, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793951913158004759, guid: 593438b95565c104a8e1e8edf8543295, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793951913158004759, guid: 593438b95565c104a8e1e8edf8543295, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1906827085077145244, guid: 593438b95565c104a8e1e8edf8543295, type: 3}
       propertyPath: m_Pivot.x

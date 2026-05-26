@@ -106,7 +106,7 @@ namespace DQHieu.Framework
             {
                 playerData.CompleteTutorial();
             }
-            else if (evt.overallScore >= 50)
+            else if (evt.overallScore > 50)
             {
                 ++playerData.CurrentLevelIndex;
             }

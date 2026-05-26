@@ -8094,7 +8094,7 @@ GameObject:
   - component: {fileID: 2084104706}
   - component: {fileID: 2084104705}
   m_Layer: 5
-  m_Name: 'Temperature '
+  m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8117,7 +8117,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 26.3, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2084104705
 MonoBehaviour:
@@ -8139,7 +8139,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d54539b9a25a9524c8d2ee597d6eb30e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c5956d5ab6b02d24fbf7a5c89b54b5b4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
