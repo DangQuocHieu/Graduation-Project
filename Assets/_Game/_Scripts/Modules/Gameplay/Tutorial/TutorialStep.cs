@@ -48,10 +48,16 @@ public abstract class TutorialStep : MonoBehaviour
         ShowDialogueBox(aimText);
 
         bool hasBeenAimed = false;
+        PickupAndDropHandler pickupAndDropHandler = FindObjectOfType<PickupAndDropHandler>();
 
         while (getPickedUpObject() == null)
         {
             bool isCurrentlyHovered = isHoveringCondition();
+
+            if (pickupAndDropHandler != null)
+            {
+                pickupAndDropHandler.SetBlockPickup(!isCurrentlyHovered);
+            }
 
             if (isCurrentlyHovered)
             {

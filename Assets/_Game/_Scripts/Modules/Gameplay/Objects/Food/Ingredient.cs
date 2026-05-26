@@ -28,9 +28,19 @@ public class Ingredient : GrabbableObject
 
     public override void InteractWith(RaycastHit hit, PickupAndDropHandler pickupAndDropHandler)
     {
-        if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
+        // if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.TryGetComponent<FryingPan>(out var fryingPan))
+        // {
+        //     if (fryingPan.containCookingOil)
+        //     {
+        //         pickupAndDropHandler.DropObject();
+        //         MoveToPlaceableSurface(fryingPan.placeableSurface, hit);
+        //     }
+        // }
+        Debug.Log(hit.collider.name);
+        if(hit.collider.TryGetComponent<FryingPanCookingSurface>(out var fryingPanCookingSurface))
         {
-            if (fryingPan.containCookingOil)
+            var fryingPan = fryingPanCookingSurface.attachedFryingPan;
+            if(fryingPan.containCookingOil)
             {
                 pickupAndDropHandler.DropObject();
                 MoveToPlaceableSurface(fryingPan.placeableSurface, hit);

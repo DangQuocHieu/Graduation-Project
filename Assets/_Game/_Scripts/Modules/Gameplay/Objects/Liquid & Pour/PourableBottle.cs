@@ -19,7 +19,7 @@ public abstract class PourableBottle : GrabbableObject
         EventBus.Raise<PourLiquid>(new PourLiquid());
         rb.isKinematic = true;
         yield return OpenCap().WaitForCompletion();
-        transform.DORotate(new Vector3(0, 0f, 180f), 0.3f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutSine).SetLink(gameObject);
+        transform.DORotate(new Vector3(0, 0f, 120f), 0.3f, RotateMode.LocalAxisAdd).SetEase(Ease.InOutSine).SetLink(gameObject);
         yield return transform.DOMove(liquidContainer.pourPoint.position, 0.3f).SetEase(Ease.InOutSine).SetLink(gameObject).WaitForCompletion();
         if (pouringAudioEmitter == null)
         {
@@ -34,6 +34,7 @@ public abstract class PourableBottle : GrabbableObject
         if (pouringAudioEmitter != null)
         {
             AudioManager.Instance.StopSFX(pouringAudioEmitter, fadeDuration: 1f);
+            pouringAudioEmitter = null;
         }
         pickupAndDropHandler.PickupObject(this);
         StopWaitForPickupCompleteCoroutine();

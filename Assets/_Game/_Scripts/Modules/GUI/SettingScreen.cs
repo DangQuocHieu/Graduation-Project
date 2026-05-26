@@ -51,14 +51,20 @@ public class SettingScreen : MonoBehaviour
     private void OnAcceptButtonClicked()
     {
         if (DataManager.Instance != null) DataManager.Instance.SaveSettingData();
-        gameObject.SetActive(false);
+        HideScreen();
     }
 
     public void ShowScreen()
     {
         overlay.gameObject.SetActive(true);
+        settingPanel.gameObject.SetActive(true);
         settingPanel.DOKill();
-
         settingPanel.DOScale(1f, 0.3f).From(0f).SetEase(Ease.OutBack).SetLink(gameObject);   
+    }
+
+    public void HideScreen()
+    {
+        overlay.gameObject.SetActive(false);
+        settingPanel.gameObject.SetActive(false);
     }
 }
